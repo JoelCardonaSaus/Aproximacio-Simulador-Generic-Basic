@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638149254713499056
-    m_Hash: 2349020075
+      ticks: 638149460601493965
+    m_Hash: 1616461635
   m_LockFileStatus:
     m_FilePath: C:/Users/joelc/AproximacioSimuladorGenericBasic/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638149255450737696
-    m_Hash: 815515474
+      ticks: 638149460601498058
+    m_Hash: 785664851
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -867,8 +867,10 @@ m_ResolvedPackages:
     - 1.7.1
     - 1.7.2
     - 1.7.3
+    - 1.7.4
     - 1.8.0
     - 1.8.1
+    - 1.8.2
     compatible:
     - 1.6.4
     - 1.7.0-pre.1
@@ -877,8 +879,10 @@ m_ResolvedPackages:
     - 1.7.1
     - 1.7.2
     - 1.7.3
+    - 1.7.4
     - 1.8.0
     - 1.8.1
+    - 1.8.2
     verified: 1.6.4
   dependencies:
   - name: com.unity.modules.director
@@ -3186,11 +3190,13 @@ m_ResolvedPackages:
     - 1.6.0
     - 1.7.0
     - 1.7.1
+    - 1.8.1
     compatible:
     - 1.5.2
     - 1.6.0
     - 1.7.0
     - 1.7.1
+    - 1.8.1
     verified: 1.5.2
   dependencies:
   - name: com.unity.modules.unitywebrequest
@@ -3328,8 +3334,10 @@ m_ResolvedPackages:
     - 2.0.2
     - 3.0.1
     - 3.0.2
+    - 3.1.0
     compatible:
     - 3.0.2
+    - 3.1.0
     verified: 3.0.2
   dependencies: []
   resolvedDependencies: []
