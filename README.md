@@ -1,3 +1,3 @@
 # Aproximacio-Simulador-Generic-Basic
-Hello world!
-TFG Joel Cardona Saus
+## Hello world!
+### Autor: Joel Cardona Saus
