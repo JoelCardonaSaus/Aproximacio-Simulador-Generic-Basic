@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
 using UnityEngine.Windows;
+
 public class CridesAPIEstadistics : MonoBehaviour
 { 
     public int[] timeInStates = { 20, 30, 5 }; // FREE, BUSY, BROKEN
@@ -10,21 +11,20 @@ public class CridesAPIEstadistics : MonoBehaviour
 
     private void Start()
     {
-        generatePlots(2, timeInStates, labels);
     }
 
 
     private void Update()
     {
-        
+       
     }
 
-    public void generatePlots(int graphType, int[] stats, string[] labels)
+    public void generatePlots(int graphType, double[] stats, string[] labels)
     {
         StartCoroutine(GetTexture(graphType, stats, labels));
     }
 
-    IEnumerator GetTexture(int graphType, int[] stats, string[] labels)
+    IEnumerator GetTexture(int graphType, double[] stats, string[] labels)
     {
         //Prepare data for the API CALL:
         string type = "";
