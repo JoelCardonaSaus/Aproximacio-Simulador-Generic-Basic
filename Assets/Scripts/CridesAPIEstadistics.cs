@@ -6,11 +6,12 @@ using UnityEngine.Windows;
 
 public class CridesAPIEstadistics : MonoBehaviour
 { 
-    public int[] timeInStates = { 20, 30, 5 }; // FREE, BUSY, BROKEN
-    public string[] labels = { "FREE", "BUSY", "BROKEN" };
+    //public double[] timeInStates = { 20, 30, 5 }; // FREE, BUSY, BROKEN
+    //public string[] labels = { "FREE", "BUSY", "BROKEN" };
 
     private void Start()
     {
+        //generatePlots(0, timeInStates, labels, "Test");
     }
 
 
@@ -19,12 +20,12 @@ public class CridesAPIEstadistics : MonoBehaviour
        
     }
 
-    public void generatePlots(int graphType, double[] stats, string[] labels)
+    public void generatePlots(int graphType, double[] stats, string[] labels, string imageTag)
     {
-        StartCoroutine(GetTexture(graphType, stats, labels));
+        StartCoroutine(GetTexture(graphType, stats, labels, imageTag));
     }
 
-    IEnumerator GetTexture(int graphType, double[] stats, string[] labels)
+    IEnumerator GetTexture(int graphType, double[] stats, string[] labels, string imageTag)
     {
         //Prepare data for the API CALL:
         string type = "";
@@ -74,13 +75,13 @@ public class CridesAPIEstadistics : MonoBehaviour
         else
         {
             Texture2D myTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
-            saveTexture(myTexture);
+            saveTexture(myTexture, imageTag);
         }
 
      
     }
 
-    private void saveTexture(Texture2D texture)
+    private void saveTexture(Texture2D texture, string imageTag)
     {
         byte[] bytesTexture = texture.EncodeToPNG();
         var dirPath = Application.dataPath + "/../SaveImages/";
@@ -89,7 +90,7 @@ public class CridesAPIEstadistics : MonoBehaviour
         {
             Directory.CreateDirectory(dirPath);
         }
-        File.WriteAllBytes(dirPath + "Image2.png", bytesTexture);
+        File.WriteAllBytes(dirPath + imageTag + ".png", bytesTexture);
     }
 
 }
