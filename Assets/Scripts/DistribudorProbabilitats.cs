@@ -11,9 +11,7 @@ public class DistribudorProbabilitats
     private Normal normalObject = null;
     private Exponential exponentialObject = null;
     private Poisson poissonObject = null;
-    private StudentT tStudentObject = null;
-    private ChiSquared chiSquaredObject = null;
-    private FisherSnedecor fisherObject = null;
+    // Afegir una uniforme i una binomial
 
     public float constantDistribution(float seconds)
     {
@@ -38,18 +36,6 @@ public class DistribudorProbabilitats
         poissonObject = new Poisson(lambda);
     }
 
-    public void defineTStudent(double location, double scale, double freedom){
-        tStudentObject = new StudentT(location, scale, freedom);
-    }
-
-    public void defineChiSquared(double freedom){
-        chiSquaredObject = new ChiSquared(freedom);
-    }
-
-    public void defineFisher(double d1, double d2){
-        fisherObject = new FisherSnedecor(d1, d2);
-    }
-
     // GETTERS
 
     public double getNormalSample(){
@@ -70,21 +56,6 @@ public class DistribudorProbabilitats
     public double getPoissonSample(){
         if (poissonObject == null) return -1;
         return poissonObject.Sample();
-    }
-
-    public double getTStudentSample(){
-        if (tStudentObject == null) return -1;
-        return tStudentObject.Sample();
-    }
-
-    public double getChiSquaredSample(){
-        if (chiSquaredObject == null) return -1;
-        return chiSquaredObject.Sample();
-    }
-
-    public double getFisherSample(){
-        if (fisherObject == null) return -1;
-        return fisherObject.Sample();
     }
     
 }
