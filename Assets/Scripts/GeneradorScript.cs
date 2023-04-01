@@ -7,10 +7,10 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
 
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
     public politiquesEnrutament enrutament;
-    public enum distribucionsProbabilitat { EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
+    public enum distribucionsProbabilitat { BINOMIAL, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
     public distribucionsProbabilitat distribucio;
     private distribucionsProbabilitat currentDistribution = distribucionsProbabilitat.EXPONENTIAL;
-    public double[] parametres = new double[1];
+    public double[] parametres = new double[2];
     public ISeguentNumero distribuidor;
     public List<GameObject> SeguentsObjectes;
     public GameObject entitatTemporal;
@@ -26,6 +26,12 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
     {
         switch (distribucio)
         {
+            case distribucionsProbabilitat.BINOMIAL:
+                distribuidor = new BinomialDistribution(parametres[0], parametres[1]);
+                break;
+            case distribucionsProbabilitat.DISCRETEUNIFORM:
+                distribuidor = new DiscreteUniformDistribution(parametres[0], parametres[1]);
+                break;
             case distribucionsProbabilitat.EXPONENTIAL:
                 distribuidor = new ExponentialDistribution(parametres[0]);
                 break;
@@ -85,7 +91,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
         if (distribucio == distribucionsProbabilitat.EXPONENTIAL || distribucio == distribucionsProbabilitat.POISSON){
             parametres = new double[1];
         }
-        else if (distribucio == distribucionsProbabilitat.NORMAL){
+        else if (distribucio == distribucionsProbabilitat.NORMAL || distribucio == distribucionsProbabilitat.BINOMIAL || distribucio == distribucionsProbabilitat.DISCRETEUNIFORM){
             parametres = new double[2];
         }
         else {
