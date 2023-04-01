@@ -144,6 +144,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
     public bool isAvailable(){
         return false;
     }
+    
     public void recieveObject(GameObject entity){
 
     }
