@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GeneradorScript : MonoBehaviour
+public class GeneradorScript : MonoBehaviour, IRebreObjecte
 {
 
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
@@ -10,7 +10,7 @@ public class GeneradorScript : MonoBehaviour
     public enum distribucionsProbabilitat { EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
     public distribucionsProbabilitat distribucio;
     private distribucionsProbabilitat currentDistribution = distribucionsProbabilitat.EXPONENTIAL;
-    public double[] parametres;
+    public double[] parametres = new double[1];
     public ISeguentNumero distribuidor;
     public List<GameObject> SeguentsObjectes;
     public GameObject entitatTemporal;
@@ -42,7 +42,7 @@ public class GeneradorScript : MonoBehaviour
                 distribuidor = new ExponentialDistribution(parametres[0]);
                 break;
         }
-        timeForNextObject = distribuidor.getNextSample();
+        timeForNextObject = distribuidor.getNextSample()*60;
         timeScale = 1;
         //TODO: QUE EL MOTOR DE SIMULACIÓ SIGUI EL QUE INDIQUI LA ESCALA DEL TEMPS A CADA OBJECTE (GETSCALETIME)
     }
@@ -53,7 +53,7 @@ public class GeneradorScript : MonoBehaviour
         if (timeForNextObject - (Time.deltaTime * timeScale) < 0){
             if (sendObject()){
                 double rest = timeForNextObject - (Time.deltaTime * timeScale);
-                timeForNextObject = distribuidor.getNextSample() + rest;
+                timeForNextObject = (distribuidor.getNextSample()*60) + rest;
                 ++nEntitatsGenerades;
                 tempsEntreEntitats.Add(timeForNextObject);
             } else {
@@ -65,7 +65,7 @@ public class GeneradorScript : MonoBehaviour
         }
         else {
             if(sendObject()){
-                timeForNextObject = distribuidor.getNextSample();
+                timeForNextObject = distribuidor.getNextSample() * 60;
                 ++nEntitatsGenerades;
                 tempsEntreEntitats.Add(timeForNextObject);
             }
@@ -93,21 +93,58 @@ public class GeneradorScript : MonoBehaviour
         }
     }
 
-    //POTSER AQUESTES DUES FUNCIONS VAN A NIVELL DE UN SCRIPT QUE TOTS HAN DE TENIR
-    private bool sendObject(){
-        if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
-            /*
-            foreach (var object in SeguentsObjectes)
-            {
-                // TODO: FER CRIDES
-                if (objecte);
+    public bool sendObject(){
+        IRebreObjecte NextObjecte;
+
+        // Comprovem que almenys hi ha un objecte disponible
+        if (nDisponibles() >= 1){
+            if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
+                foreach (GameObject objecte in SeguentsObjectes)
+                {
+                    NextObjecte = objecte.GetComponent<IRebreObjecte>();
+                    if (NextObjecte.isAvailable()) {
+                        GameObject newEntity = Instantiate(entitatTemporal, new Vector3(0,0,0), Quaternion.identity);
+                        NextObjecte.recieveObject(newEntity);
+                        return true;
+                    }
+                }
+                return false;
             }
-            */
+
+            else if (enrutament == politiquesEnrutament.RANDOM){
+                bool[] attemts = new bool[SeguentsObjectes.Count]; // Teoricament, al crearse el valor per defecte es false
+                int numIntents = 0;
+                while (numIntents < attemts.Length){
+                    int intent = Random.Range(0, attemts.Length - 1);
+                    if (!attemts[intent]) {
+                        ++numIntents;
+                        attemts[intent] = true;
+                        NextObjecte = SeguentsObjectes[intent].GetComponent<IRebreObjecte>();
+                        if (NextObjecte.isAvailable()) {
+                            GameObject newEntity = Instantiate(entitatTemporal, new Vector3(0,0,0), Quaternion.identity);
+                            NextObjecte.recieveObject(newEntity);
+                            return true;
+                        }
+                    }
+                }
+                
+            }
         }
         return false;
     }
 
-    public bool recieveObject(GameObject entity){
+    private int nDisponibles(){
+        int n = 0;
+        foreach (GameObject seguent in SeguentsObjectes){
+            if (seguent.GetComponent<IRebreObjecte>().isAvailable()) ++n;
+        }
+        return n;
+    }
+
+    public bool isAvailable(){
         return false;
+    }
+    public void recieveObject(GameObject entity){
+
     }
 }
