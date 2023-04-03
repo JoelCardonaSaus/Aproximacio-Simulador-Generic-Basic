@@ -2,19 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class CuaScript : MonoBehaviour, IRebreObjecte
 {
+    [SerializeField]
     public int capacitatMaxima = -1; // -1 == No hi ha capacitat màxima, >0 capacitat màxima de la cua
+    [SerializeField]
     public List<GameObject> SeguentsObjectes;
 
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
+    [SerializeField]
     public politiquesEnrutament enrutament;
     private Queue<GameObject> cuaObjecte = new Queue<GameObject>();
     private Dictionary<GameObject, double> tempsObjecteCua = new Dictionary<GameObject, double>();
 
     private enum states { IDLE, BUSY };
+
+    private states state = states.IDLE;
     private float timeIdle = 0;
     private float timeBusy = 0;
+
 
     void Start()
     {
@@ -40,16 +47,16 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
 
     public bool isAvailable()
     {
-        Debug.Log("Pregutnen si estic disponible");
         if (capacitatMaxima == -1 || cuaObjecte.Count < capacitatMaxima) return true;
         else return false;
     }
 
     public void recieveObject(GameObject entity)
     {
+        Debug.Log("La CUA rep un objecte!");
+        if (state == states.IDLE) state = states.BUSY;
         cuaObjecte.Enqueue(entity);
         tempsObjecteCua.Add(entity, 0);
-        Debug.Log(cuaObjecte.Count);
 
     }
 
@@ -64,6 +71,7 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
                     NextObjecte = objecte.GetComponent<IRebreObjecte>();
                     if (NextObjecte.isAvailable()) {
                         NextObjecte.recieveObject(cuaObjecte.Dequeue());
+                        if (cuaObjecte.Count == 0) state = states.IDLE;
                         return true;
                     }
                 }
@@ -81,11 +89,11 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
                         NextObjecte = SeguentsObjectes[intent].GetComponent<IRebreObjecte>();
                         if (NextObjecte.isAvailable()) {
                             NextObjecte.recieveObject(cuaObjecte.Dequeue());
+                            if (cuaObjecte.Count == 0) state = states.IDLE;
                             return true;
                         }
                     }
                 }
-                
             }
         }
         return false;
@@ -98,4 +106,5 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
         }
         return n;
     }
+    
 }

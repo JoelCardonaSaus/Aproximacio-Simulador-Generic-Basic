@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 [System.Serializable]
-public class GeneradorScript : MonoBehaviour, IRebreObjecte
+public class ProcessadorScript : MonoBehaviour, IRebreObjecte
 {
-
+    public int maxEntitatsParalel = 1;
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
     [SerializeField]
     public politiquesEnrutament enrutament;
@@ -16,16 +15,25 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
     public double[] parametres;
     public ISeguentNumero distribuidor;
     [SerializeField]
-    public List<GameObject> SeguentsObjectes;
-    public GameObject entitatTemporal;
-    private double timeForNextObject;
+    public List<GameObject> SeguentsObjectes = new List<GameObject>(); 
+    private Dictionary<GameObject, double> entitatsProcessant = new Dictionary<GameObject, double>();
     private double timeScale;
 
     //Variables per als estadistics
-    private int nEntitatsGenerades = 0;
-    private List<double> tempsEntreEntitats = new List<double>();
+    private int nEntitatsTractades = 0;
+    private int nEntitatsEntrades = 0;
+    private double tempsMigEntitatsProcessador;
+    private enum states { IDLE, BUSY };
 
-    // UNA VEGADA COMENÇA LA SIMULACIÓ NO ES POT CANVIAR LA DISTRIBUCIÓ DE L'OBJECTE
+    private states state = states.IDLE;
+
+    private double timeIdle = 0;
+    private double timeBusy = 0;
+
+    private Queue<GameObject> entitatsAEnviar = new Queue<GameObject>();
+
+
+    // Start is called before the first frame update
     void Start()
     {
         switch (distribucio)
@@ -43,7 +51,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
                 distribuidor = new NormalDistribution(parametres[0], parametres[1]);
                 break;
             case distribucionsProbabilitat.POISSON:
-                distribuidor = new PoissonDistribution(parametres[0]);
+                distribuidor = new PoissonDistribution(7);
                 break;
             case distribucionsProbabilitat.TRIANGULAR:
                 distribuidor = new TriangularDistribution(parametres[0], parametres[1], parametres[2]);
@@ -52,37 +60,35 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
                 distribuidor = new ExponentialDistribution(parametres[0]);
                 break;
         }
-        timeForNextObject = distribuidor.getNextSample();
         timeScale = 1;
-        //TODO: QUE EL MOTOR DE SIMULACIÓ SIGUI EL QUE INDIQUI LA ESCALA DEL TEMPS A CADA OBJECTE (GETSCALETIME)
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (timeForNextObject - (Time.deltaTime * timeScale) < 0){
-            if (sendObject()){
-                double rest = timeForNextObject - (Time.deltaTime * timeScale);
-                timeForNextObject = (distribuidor.getNextSample()) + rest;
-                ++nEntitatsGenerades;
-                tempsEntreEntitats.Add(timeForNextObject);
-            } else {
-                timeForNextObject = 0;
+        if (entitatsProcessant.Count > 0){
+            List<GameObject> entitats = new List<GameObject>(entitatsProcessant.Keys);
+            foreach(GameObject entitat in entitats)
+            {
+                entitatsProcessant[entitat] -= Time.deltaTime;
+                if (entitatsProcessant[entitat] < 0){
+                    entitatsAEnviar.Enqueue(entitat);
+                    entitatsProcessant.Remove(entitat);
+                    ++nEntitatsTractades;
+                }
             }
-        }
-        else if (timeForNextObject - (Time.deltaTime * timeScale) > 0) {
-            timeForNextObject -=  (Time.deltaTime * timeScale);
+            timeBusy += Time.deltaTime;
+            if (entitatsProcessant.Count == 0) state = states.IDLE;
         }
         else {
-            if(sendObject()){
-                timeForNextObject = distribuidor.getNextSample();
-                ++nEntitatsGenerades;
-                tempsEntreEntitats.Add(timeForNextObject);
-            }
+            timeIdle += Time.deltaTime;
         }
+        if (entitatsAEnviar.Count > 0){
+            sendObject();
+        }
+
     }
 
-    // Funcio per comprovar si es canvia la distribució del objecte
     private void OnValidate() {
         if (nParameters() != parametres.Length){
             checkNumberOfParameters();    
@@ -102,6 +108,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
     }
 
     private void checkNumberOfParameters(){
+
         if (distribucio == distribucionsProbabilitat.EXPONENTIAL || distribucio == distribucionsProbabilitat.POISSON){
             parametres = new double[1];
         }
@@ -113,6 +120,21 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
         }
     }
 
+    public bool isAvailable()
+    {
+        if (entitatsProcessant.Count < maxEntitatsParalel) return true;
+        else return false;
+    }
+
+    public void recieveObject(GameObject entity)
+    {
+        Debug.Log("El PROCESSADOR rep un objecte");
+        if (state == states.IDLE) state = states.BUSY;
+        ++nEntitatsEntrades;
+        double tempsTractament = distribuidor.getNextSample();
+        entitatsProcessant.Add(entity, tempsTractament);
+        tempsMigEntitatsProcessador += tempsTractament;
+    }
     public bool sendObject(){
         IRebreObjecte NextObjecte;
 
@@ -123,8 +145,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
                 {
                     NextObjecte = objecte.GetComponent<IRebreObjecte>();
                     if (NextObjecte.isAvailable()) {
-                        GameObject newEntity = Instantiate(entitatTemporal, new Vector3(0,0,0), Quaternion.identity);
-                        NextObjecte.recieveObject(newEntity);
+                        NextObjecte.recieveObject(entitatsAEnviar.Dequeue());
                         return true;
                     }
                 }
@@ -141,8 +162,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
                         attemts[intent] = true;
                         NextObjecte = SeguentsObjectes[intent].GetComponent<IRebreObjecte>();
                         if (NextObjecte.isAvailable()) {
-                            GameObject newEntity = Instantiate(entitatTemporal, new Vector3(0,0,0), Quaternion.identity);
-                            NextObjecte.recieveObject(newEntity);
+                            NextObjecte.recieveObject(entitatsAEnviar.Dequeue());
                             return true;
                         }
                     }
@@ -159,13 +179,5 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
             if (seguent.GetComponent<IRebreObjecte>().isAvailable()) ++n;
         }
         return n;
-    }
-
-    public bool isAvailable(){
-        return false;
-    }
-    
-    public void recieveObject(GameObject entity){
-
     }
 }
