@@ -129,6 +129,7 @@ public class ProcessadorScript : MonoBehaviour, IRebreObjecte
     public void recieveObject(GameObject entity)
     {
         Debug.Log("El PROCESSADOR rep un objecte");
+        entity.transform.position = transform.position + new Vector3(0,+1,0);
         if (state == states.IDLE) state = states.BUSY;
         ++nEntitatsEntrades;
         double tempsTractament = distribuidor.getNextSample();

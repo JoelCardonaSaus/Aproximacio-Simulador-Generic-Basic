@@ -54,6 +54,7 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
     public void recieveObject(GameObject entity)
     {
         Debug.Log("La CUA rep un objecte!");
+        entity.transform.position = transform.position + new Vector3(0,+1,0);
         if (state == states.IDLE) state = states.BUSY;
         cuaObjecte.Enqueue(entity);
         tempsObjecteCua.Add(entity, 0);

@@ -99,8 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxEntitatsParalel: 1
   enrutament: 0
-  distribucio: 0
+  distribucio: 2
   parametres:
-  - 0
-  - 0
+  - 7
   SeguentsObjectes: []

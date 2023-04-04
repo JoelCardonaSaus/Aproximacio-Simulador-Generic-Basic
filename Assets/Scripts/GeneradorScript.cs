@@ -123,7 +123,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
                 {
                     NextObjecte = objecte.GetComponent<IRebreObjecte>();
                     if (NextObjecte.isAvailable()) {
-                        GameObject newEntity = Instantiate(entitatTemporal, new Vector3(0,0,0), Quaternion.identity);
+                        GameObject newEntity = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
                         NextObjecte.recieveObject(newEntity);
                         return true;
                     }
@@ -141,7 +141,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
                         attemts[intent] = true;
                         NextObjecte = SeguentsObjectes[intent].GetComponent<IRebreObjecte>();
                         if (NextObjecte.isAvailable()) {
-                            GameObject newEntity = Instantiate(entitatTemporal, new Vector3(0,0,0), Quaternion.identity);
+                            GameObject newEntity = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
                             NextObjecte.recieveObject(newEntity);
                             return true;
                         }
