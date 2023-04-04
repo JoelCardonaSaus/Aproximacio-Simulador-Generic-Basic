@@ -32,7 +32,7 @@ public class SortidaScript : MonoBehaviour, IRebreObjecte
         tempsEntreEntitats.Add(0);
 
         // Recolectar estadistics de la entitat abans de destruirla!
-        Destroy(entity);
+        Destroy(entity, 1);
     }
 
     public bool sendObject()
