@@ -16,11 +16,11 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
     private Queue<GameObject> cuaObjecte = new Queue<GameObject>();
     private Dictionary<GameObject, double> tempsObjecteCua = new Dictionary<GameObject, double>();
 
-    private enum states { IDLE, BUSY };
+    private enum states { EMPTY, NOEMPTY };
 
-    private states state = states.IDLE;
-    private float timeIdle = 0;
-    private float timeBusy = 0;
+    private states state = states.EMPTY;
+    private float timeEmpty = 0;
+    private float timeNoEmpty = 0;
 
 
     void Start()
@@ -37,10 +37,10 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
                 tempsObjecteCua[enumerator.Current] += Time.deltaTime;
             }
             sendObject();
-            timeBusy += Time.deltaTime;
+            timeNoEmpty += Time.deltaTime;
         }
         else {
-            timeIdle += Time.deltaTime;
+            timeEmpty += Time.deltaTime;
         }
         
     }
@@ -55,7 +55,7 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
     {
         Debug.Log("La CUA rep un objecte!");
         entity.transform.position = transform.position + new Vector3(0,+1,0);
-        if (state == states.IDLE) state = states.BUSY;
+        if (state == states.EMPTY) state = states.NOEMPTY;
         cuaObjecte.Enqueue(entity);
         tempsObjecteCua.Add(entity, 0);
 
@@ -72,7 +72,7 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
                     NextObjecte = objecte.GetComponent<IRebreObjecte>();
                     if (NextObjecte.isAvailable()) {
                         NextObjecte.recieveObject(cuaObjecte.Dequeue());
-                        if (cuaObjecte.Count == 0) state = states.IDLE;
+                        if (cuaObjecte.Count == 0) state = states.EMPTY;
                         return true;
                     }
                 }
@@ -90,7 +90,7 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
                         NextObjecte = SeguentsObjectes[intent].GetComponent<IRebreObjecte>();
                         if (NextObjecte.isAvailable()) {
                             NextObjecte.recieveObject(cuaObjecte.Dequeue());
-                            if (cuaObjecte.Count == 0) state = states.IDLE;
+                            if (cuaObjecte.Count == 0) state = states.EMPTY;
                             return true;
                         }
                     }
