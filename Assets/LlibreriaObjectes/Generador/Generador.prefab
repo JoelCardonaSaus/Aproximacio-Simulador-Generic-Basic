@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4113484340368951286}
   - component: {fileID: 651282893545511134}
   - component: {fileID: 9207985256496430228}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Generador
-  m_TagString: Untagged
+  m_TagString: ObjecteLlibreria
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

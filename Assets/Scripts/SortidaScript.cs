@@ -6,6 +6,7 @@ public class SortidaScript : MonoBehaviour, IRebreObjecte
 {
     private int nEntitatsDestruides;
     private List<double> tempsEntreEntitats = new List<double>();
+    private float timeScale = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +17,11 @@ public class SortidaScript : MonoBehaviour, IRebreObjecte
     // Update is called once per frame
     void Update()
     {
-        tempsEntreEntitats[tempsEntreEntitats.Count-1] += Time.deltaTime;
+        tempsEntreEntitats[tempsEntreEntitats.Count-1] += (Time.deltaTime * timeScale);
+    }
+
+    public void setTimeScale(float timeScale){
+        this.timeScale = timeScale;
     }
 
     public bool isAvailable()
@@ -27,7 +32,7 @@ public class SortidaScript : MonoBehaviour, IRebreObjecte
     public void recieveObject(GameObject entity)
     {
         entity.transform.position = transform.position + new Vector3(0,+1,0);
-        Debug.Log("Temps de l'entitat: " + tempsEntreEntitats[tempsEntreEntitats.Count-1]);
+        Debug.Log("Temps entre entitats: " + tempsEntreEntitats[tempsEntreEntitats.Count-1]);
         ++nEntitatsDestruides;
         tempsEntreEntitats.Add(0);
 

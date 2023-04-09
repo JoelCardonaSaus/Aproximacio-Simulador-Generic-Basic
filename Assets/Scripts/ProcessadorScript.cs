@@ -17,7 +17,7 @@ public class ProcessadorScript : MonoBehaviour, IRebreObjecte
     [SerializeField]
     public List<GameObject> SeguentsObjectes = new List<GameObject>(); 
     private Dictionary<GameObject, double> entitatsProcessant = new Dictionary<GameObject, double>();
-    private double timeScale;
+    private float timeScale = 1;
 
     //Variables per als estadistics
     private int nEntitatsTractades = 0;
@@ -60,7 +60,6 @@ public class ProcessadorScript : MonoBehaviour, IRebreObjecte
                 distribuidor = new ExponentialDistribution(parametres[0]);
                 break;
         }
-        timeScale = 1;
     }
 
     // Update is called once per frame
@@ -70,18 +69,18 @@ public class ProcessadorScript : MonoBehaviour, IRebreObjecte
             List<GameObject> entitats = new List<GameObject>(entitatsProcessant.Keys);
             foreach(GameObject entitat in entitats)
             {
-                entitatsProcessant[entitat] -= Time.deltaTime;
+                entitatsProcessant[entitat] -= (Time.deltaTime*timeScale);
                 if (entitatsProcessant[entitat] < 0){
                     entitatsAEnviar.Enqueue(entitat);
                     entitatsProcessant.Remove(entitat);
                     ++nEntitatsTractades;
                 }
             }
-            timeBusy += Time.deltaTime;
+            timeBusy += (Time.deltaTime * timeScale);
             if (entitatsProcessant.Count == 0) state = states.IDLE;
         }
         else {
-            timeIdle += Time.deltaTime;
+            timeIdle += (Time.deltaTime * timeScale);
         }
         if (entitatsAEnviar.Count > 0){
             sendObject();
@@ -165,6 +164,10 @@ public class ProcessadorScript : MonoBehaviour, IRebreObjecte
             }
         }
         return false;
+    }
+
+    public void setTimeScale(float timeScale){
+        this.timeScale = timeScale;
     }
 
     private int nDisponibles(){

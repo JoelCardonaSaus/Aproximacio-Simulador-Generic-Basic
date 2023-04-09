@@ -21,6 +21,7 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
     private states state = states.EMPTY;
     private float timeEmpty = 0;
     private float timeNoEmpty = 0;
+    private float timeScale = 1;
 
 
     void Start()
@@ -34,15 +35,19 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
         if (cuaObjecte.Count > 0){
             IEnumerator<GameObject> enumerator = cuaObjecte.GetEnumerator();
             while (enumerator.MoveNext()) {
-                tempsObjecteCua[enumerator.Current] += Time.deltaTime;
+                tempsObjecteCua[enumerator.Current] += (Time.deltaTime * timeScale);
             }
             sendObject();
-            timeNoEmpty += Time.deltaTime;
+            timeNoEmpty += (Time.deltaTime * timeScale);
         }
         else {
-            timeEmpty += Time.deltaTime;
+            timeEmpty += (Time.deltaTime * timeScale);
         }
         
+    }
+
+    public void setTimeScale(float timeScale){
+        this.timeScale = timeScale;
     }
 
     public bool isAvailable()

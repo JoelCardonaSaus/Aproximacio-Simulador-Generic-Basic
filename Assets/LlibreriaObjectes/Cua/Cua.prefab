@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5464624653990494544}
   - component: {fileID: 520055955989915659}
   - component: {fileID: -3704632326284811939}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cua
-  m_TagString: Untagged
+  m_TagString: ObjecteLlibreria
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

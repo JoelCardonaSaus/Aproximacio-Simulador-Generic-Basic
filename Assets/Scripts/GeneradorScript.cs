@@ -19,7 +19,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
     public List<GameObject> SeguentsObjectes;
     public GameObject entitatTemporal;
     private double timeForNextObject;
-    private double timeScale;
+    private float timeScale = 1;
 
     //Variables per als estadistics
     private int nEntitatsGenerades = 0;
@@ -53,8 +53,11 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
                 break;
         }
         timeForNextObject = distribuidor.getNextSample();
-        timeScale = 1;
         //TODO: QUE EL MOTOR DE SIMULACIÓ SIGUI EL QUE INDIQUI LA ESCALA DEL TEMPS A CADA OBJECTE (GETSCALETIME)
+    }
+
+    public void setTimeScale(float timeScale){
+        this.timeScale = timeScale;
     }
 
     // Update is called once per frame
