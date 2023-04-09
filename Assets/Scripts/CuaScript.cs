@@ -78,21 +78,14 @@ public class CuaScript : MonoBehaviour, IRebreObjecte
                 }
                 return false;
             }
-
             else if (enrutament == politiquesEnrutament.RANDOM){
-                bool[] attemts = new bool[SeguentsObjectes.Count]; // Teoricament, al crearse el valor per defecte es false
-                int numIntents = 0;
-                while (numIntents < attemts.Length){
-                    int intent = Random.Range(0, attemts.Length - 1);
-                    if (!attemts[intent]) {
-                        ++numIntents;
-                        attemts[intent] = true;
-                        NextObjecte = SeguentsObjectes[intent].GetComponent<IRebreObjecte>();
-                        if (NextObjecte.isAvailable()) {
-                            NextObjecte.recieveObject(cuaObjecte.Dequeue());
-                            if (cuaObjecte.Count == 0) state = states.EMPTY;
-                            return true;
-                        }
+                for (int i = 0; i < SeguentsObjectes.Count; i++){
+                    int obj = Random.Range(0, SeguentsObjectes.Count);
+                    NextObjecte = SeguentsObjectes[obj].GetComponent<IRebreObjecte>();
+                    if (NextObjecte.isAvailable()) {
+                        NextObjecte.recieveObject(cuaObjecte.Dequeue());
+                        if (cuaObjecte.Count == 0) state = states.EMPTY;
+                        return true;
                     }
                 }
             }

@@ -132,22 +132,15 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
             }
 
             else if (enrutament == politiquesEnrutament.RANDOM){
-                bool[] attemts = new bool[SeguentsObjectes.Count]; // Teoricament, al crearse el valor per defecte es false
-                int numIntents = 0;
-                while (numIntents < attemts.Length){
-                    int intent = Random.Range(0, attemts.Length - 1);
-                    if (!attemts[intent]) {
-                        ++numIntents;
-                        attemts[intent] = true;
-                        NextObjecte = SeguentsObjectes[intent].GetComponent<IRebreObjecte>();
-                        if (NextObjecte.isAvailable()) {
-                            GameObject newEntity = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
-                            NextObjecte.recieveObject(newEntity);
-                            return true;
-                        }
+                for (int i = 0; i < SeguentsObjectes.Count; i++){
+                    int obj = Random.Range(0, SeguentsObjectes.Count);
+                    NextObjecte = SeguentsObjectes[obj].GetComponent<IRebreObjecte>();
+                    if (NextObjecte.isAvailable()) {
+                        GameObject newEntity = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
+                        NextObjecte.recieveObject(newEntity);
+                        return true;
                     }
                 }
-                
             }
         }
         return false;
