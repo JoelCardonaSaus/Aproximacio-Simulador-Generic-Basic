@@ -164,4 +164,8 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
     public void recieveObject(GameObject entity){
 
     }
+
+    public int getNGenerats(){
+        return nEntitatsGenerades;
+    }
 }
