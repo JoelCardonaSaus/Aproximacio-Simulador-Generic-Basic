@@ -18,6 +18,8 @@ public class GeneradorTest
         GameObject generador = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Generador/Generador")) as GameObject;
         GeneradorScript gs = generador.GetComponent<GeneradorScript>();
         gs.entitatTemporal = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        gs.distribucio = GeneradorScript.distribucionsProbabilitat.EXPONENTIAL;
+        gs.parametres[0] = 1;
         gs.SeguentsObjectes.Add(fakeObject);
         gs.sendObject();
         Assert.That(gs.getNGenerats(), Is.EqualTo(1));

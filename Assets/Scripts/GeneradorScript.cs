@@ -67,7 +67,6 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
             if (sendObject()){
                 double rest = timeForNextObject - (Time.deltaTime * timeScale);
                 timeForNextObject = (distribuidor.getNextSample()) + rest;
-                ++nEntitatsGenerades;
                 tempsEntreEntitats.Add(timeForNextObject);
             } else {
                 timeForNextObject = 0;
@@ -79,7 +78,6 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
         else {
             if(sendObject()){
                 timeForNextObject = distribuidor.getNextSample();
-                ++nEntitatsGenerades;
                 tempsEntreEntitats.Add(timeForNextObject);
             }
         }
@@ -128,6 +126,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
                     if (NextObjecte.isAvailable()) {
                         GameObject newEntity = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
                         NextObjecte.recieveObject(newEntity);
+                        ++nEntitatsGenerades;
                         return true;
                     }
                 }
@@ -141,6 +140,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
                     if (NextObjecte.isAvailable()) {
                         GameObject newEntity = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
                         NextObjecte.recieveObject(newEntity);
+                        ++nEntitatsGenerades;
                         return true;
                     }
                 }
