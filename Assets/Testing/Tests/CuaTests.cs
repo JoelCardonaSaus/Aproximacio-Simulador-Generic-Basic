@@ -47,6 +47,6 @@ public class CuaTests
         entitatTemporal = GameObject.CreatePrimitive(PrimitiveType.Plane);
         cuaScript.capacitatMaxima = 0;
 
-        Assert.That(cuaScript.isAvailable, Is.EqualTo(false));
+        Assert.That(cuaScript.isAvailable(), Is.EqualTo(false));
     }
 }

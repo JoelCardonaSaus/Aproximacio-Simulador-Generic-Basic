@@ -177,4 +177,8 @@ public class ProcessadorScript : MonoBehaviour, IRebreObjecte
         }
         return n;
     }
+
+    public int getState(){
+        return (int)state;
+    }
 }

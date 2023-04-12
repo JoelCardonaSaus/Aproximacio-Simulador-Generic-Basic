@@ -44,4 +44,13 @@ public class SortidaScript : MonoBehaviour, IRebreObjecte
     {
         return false;
     }
+
+    public int getNEntitatsDestruides(){
+        return nEntitatsDestruides;
+    }
+
+    public void inicialitzaPerFerTests(){
+        tempsEntreEntitats.Add(0); // Creem el temps d'espera per la primera entitat
+        nEntitatsDestruides = 0;
+    }
 }
