@@ -28,6 +28,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
     // UNA VEGADA COMENÇA LA SIMULACIÓ NO ES POT CANVIAR LA DISTRIBUCIÓ DE L'OBJECTE
     void Start()
     {
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
         switch (distribucio)
         {
             case distribucionsProbabilitat.BINOMIAL:
