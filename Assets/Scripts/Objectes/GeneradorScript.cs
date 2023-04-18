@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class GeneradorScript : MonoBehaviour, IRebreObjecte
+
+public class GeneradorScript : MonoBehaviour, IRebreObjecte, ITractarEsdeveniment
 {
 
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
@@ -24,6 +25,26 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte
     //Variables per als estadistics
     private int nEntitatsGenerades = 0;
     private List<double> tempsEntreEntitats = new List<double>();
+
+    public void IniciaSimulacio(){
+        nEntitatsGenerades = 0;
+        generarEsdevenimentArribada(0);
+    }
+
+    public void generarEsdevenimentArribada(float tempsActual){
+        Debug.Log("Es genera un esdeveniment " + tempsActual.ToString());
+        timeForNextObject = 2;
+        Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+(float)timeForNextObject, null, Esdeveniment.Tipus.ARRIBADES);
+        GameObject motor = GameObject.Find("MotorDeSimulacio");
+        motor.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(e);
+    }
+
+    public void TractarEsdeveniment(Esdeveniment e){
+        //if (state)
+        // Fer un switch per estat i esdeveniment
+        // programar la seguent arribada
+        generarEsdevenimentArribada(e.temps);
+    }
 
     // UNA VEGADA COMENÇA LA SIMULACIÓ NO ES POT CANVIAR LA DISTRIBUCIÓ DE L'OBJECTE
     void Start()

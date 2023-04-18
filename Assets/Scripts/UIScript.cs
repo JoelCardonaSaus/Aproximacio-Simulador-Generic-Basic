@@ -15,6 +15,7 @@ public class UIScript : MonoBehaviour
     public Button juntarButton;
     public Button desjuntarButton;
 
+    public GameObject motorSimulador;
     private float botoClikatCooldown = 0f;
     private GameObject generadorPrefab;
     private GameObject cuaPrefab;
@@ -150,25 +151,27 @@ public class UIScript : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Camera.main.nearClipPlane));
         switch (seleccionat){
             case btnSeleccionat.GENERADOR:
-                Instantiate(generadorPrefab, worldPosition , Quaternion.identity);
+                // Paasar-li l'objecte creat al motor
+                GameObject generadorNou = Instantiate(generadorPrefab, worldPosition , Quaternion.identity);
+                motorSimulador.GetComponent<MotorSimuladorScript>().afegirObjecteLlista(generadorNou);
                 deseleccionarBackground(seleccionat);
                 seleccionat = btnSeleccionat.CAP;
                 seleccionarBackground(seleccionat);
                 break;
             case btnSeleccionat.CUA:
-                Instantiate(cuaPrefab, worldPosition, Quaternion.identity);
+                motorSimulador.GetComponent<MotorSimuladorScript>().afegirObjecteLlista(Instantiate(cuaPrefab, worldPosition, Quaternion.identity));
                 deseleccionarBackground(seleccionat);
                 seleccionat = btnSeleccionat.CAP;
                 seleccionarBackground(seleccionat);
                 break;
             case btnSeleccionat.PROCESSADOR:
-                Instantiate(processadorPrefab, worldPosition, Quaternion.identity);
+                motorSimulador.GetComponent<MotorSimuladorScript>().afegirObjecteLlista(Instantiate(processadorPrefab, worldPosition, Quaternion.identity));
                 deseleccionarBackground(seleccionat);
                 seleccionat = btnSeleccionat.CAP;
                 seleccionarBackground(seleccionat);
                 break;
             case btnSeleccionat.SORTIDA:
-                Instantiate(sortidaPrefab, worldPosition, Quaternion.identity);
+                motorSimulador.GetComponent<MotorSimuladorScript>().afegirObjecteLlista(Instantiate(sortidaPrefab, worldPosition, Quaternion.identity));
                 deseleccionarBackground(seleccionat);
                 seleccionat = btnSeleccionat.CAP;
                 seleccionarBackground(seleccionat);
