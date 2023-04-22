@@ -1,0 +1,2 @@
+{ "version": "0.2.0", "configurations": [ { "name": "Unity Attach", "type": "unity", "request": "attach", "port": 5678, "sourceFiles": [ "Assets/**/*.{cs,txt}" ], "justMyCode": false } ] }
+

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SortidaScript : MonoBehaviour, IRebreObjecte
+public class SortidaScript : MonoBehaviour, IObjectes
 {
     private int nEntitatsDestruides;
     private List<double> tempsEntreEntitats = new List<double>();
@@ -52,5 +52,26 @@ public class SortidaScript : MonoBehaviour, IRebreObjecte
     public void inicialitzaPerFerTests(){
         tempsEntreEntitats.Add(0); // Creem el temps d'espera per la primera entitat
         nEntitatsDestruides = 0;
+    }
+
+    public void OnMouseDown()
+    {
+        MotorSimuladorScript motorScript = gameObject.transform.parent.GetComponent<MotorSimuladorScript>();
+        if (motorScript.AlgunDetallsObert())
+        {
+            motorScript.TancaDetallsObert();
+        }
+    }
+
+    public void ObreDetalls(){
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+    }   
+
+    public void TancaDetalls(){
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    public bool RatoliSobreDetalls(){
+        return false;
     }
 }

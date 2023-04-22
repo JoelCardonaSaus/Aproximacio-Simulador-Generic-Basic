@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
-public class ProcessadorScript : MonoBehaviour, IRebreObjecte
+public class ProcessadorScript : MonoBehaviour, IObjectes
 {
     public int maxEntitatsParalel = 1;
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
@@ -136,14 +136,14 @@ public class ProcessadorScript : MonoBehaviour, IRebreObjecte
         tempsMigEntitatsProcessador += tempsTractament;
     }
     public bool sendObject(){
-        IRebreObjecte NextObjecte;
+        IObjectes NextObjecte;
 
         // Comprovem que almenys hi ha un objecte disponible
         if (nDisponibles() >= 1){
             if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
                 foreach (GameObject objecte in SeguentsObjectes)
                 {
-                    NextObjecte = objecte.GetComponent<IRebreObjecte>();
+                    NextObjecte = objecte.GetComponent<IObjectes>();
                     if (NextObjecte.isAvailable()) {
                         NextObjecte.recieveObject(entitatsAEnviar.Dequeue());
                         return true;
@@ -155,7 +155,7 @@ public class ProcessadorScript : MonoBehaviour, IRebreObjecte
             else if (enrutament == politiquesEnrutament.RANDOM){
                 for (int i = 0; i < SeguentsObjectes.Count; i++){
                     int obj = Random.Range(0, SeguentsObjectes.Count);
-                    NextObjecte = SeguentsObjectes[obj].GetComponent<IRebreObjecte>();
+                    NextObjecte = SeguentsObjectes[obj].GetComponent<IObjectes>();
                     if (NextObjecte.isAvailable()) {
                         NextObjecte.recieveObject(entitatsAEnviar.Dequeue());
                         return true;
@@ -173,12 +173,38 @@ public class ProcessadorScript : MonoBehaviour, IRebreObjecte
     private int nDisponibles(){
         int n = 0;
         foreach (GameObject seguent in SeguentsObjectes){
-            if (seguent.GetComponent<IRebreObjecte>().isAvailable()) ++n;
+            if (seguent.GetComponent<IObjectes>().isAvailable()) ++n;
         }
         return n;
     }
 
     public int getState(){
         return (int)state;
+    }
+
+    public void OnMouseDown()
+    {
+        MotorSimuladorScript motorScript = gameObject.transform.parent.GetComponent<MotorSimuladorScript>();
+        if (motorScript.AlgunDetallsObert())
+        {
+            motorScript.TancaDetallsObert();
+        }
+        motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+    }
+
+    public void ObreDetalls(){
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+    }   
+
+    public void TancaDetalls(){
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
+    }
+    
+    public bool RatoliSobreDetalls(){
+        RectTransform canvasRectTransform = transform.GetChild(0).GetComponent<RectTransform>();
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, Input.mousePosition, null, out Vector2 localPoint)) {
+            return true;
+        }
+        return false;
     }
 }

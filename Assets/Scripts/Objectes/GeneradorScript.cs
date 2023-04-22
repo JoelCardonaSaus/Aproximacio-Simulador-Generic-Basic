@@ -2,21 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-
-public class GeneradorScript : MonoBehaviour, IRebreObjecte, ITractarEsdeveniment
+public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 {
 
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
-    [SerializeField]
     public politiquesEnrutament enrutament;
     public enum distribucionsProbabilitat { BINOMIAL, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
-    [SerializeField]
     public distribucionsProbabilitat distribucio;
-    [SerializeField]
     public double[] parametres;
     public ISeguentNumero distribuidor;
-    [SerializeField]
     public List<GameObject> SeguentsObjectes;
     public GameObject entitatTemporal;
     private double timeForNextObject;
@@ -49,7 +43,6 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte, ITractarEsdevenimen
     // UNA VEGADA COMENÇA LA SIMULACIÓ NO ES POT CANVIAR LA DISTRIBUCIÓ DE L'OBJECTE
     void Start()
     {
-        gameObject.transform.GetChild(0).gameObject.SetActive(true);
         switch (distribucio)
         {
             case distribucionsProbabilitat.BINOMIAL:
@@ -78,10 +71,6 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte, ITractarEsdevenimen
         //TODO: QUE EL MOTOR DE SIMULACIÓ SIGUI EL QUE INDIQUI LA ESCALA DEL TEMPS A CADA OBJECTE (GETSCALETIME)
     }
 
-    public void setTimeScale(float timeScale){
-        this.timeScale = timeScale;
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -105,11 +94,25 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte, ITractarEsdevenimen
         }
     }
 
+    public void OnMouseDown()
+    {
+        MotorSimuladorScript motorScript = gameObject.transform.parent.GetComponent<MotorSimuladorScript>();
+        if (motorScript.AlgunDetallsObert())
+        {
+            motorScript.TancaDetallsObert();
+        }
+        motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+    }
+
     // Funcio per comprovar si es canvia la distribució del objecte
     private void OnValidate() {
         if (nParameters() != parametres.Length){
             checkNumberOfParameters();    
         } 
+    }
+
+    public void setTimeScale(float timeScale){
+        this.timeScale = timeScale;
     }
 
     private int nParameters(){
@@ -137,14 +140,14 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte, ITractarEsdevenimen
     }
 
     public bool sendObject(){
-        IRebreObjecte NextObjecte;
+        IObjectes NextObjecte;
 
         // Comprovem que almenys hi ha un objecte disponible
         if (nDisponibles() >= 1){
             if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
                 foreach (GameObject objecte in SeguentsObjectes)
                 {
-                    NextObjecte = objecte.GetComponent<IRebreObjecte>();
+                    NextObjecte = objecte.GetComponent<IObjectes>();
                     if (NextObjecte.isAvailable()) {
                         GameObject newEntity = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
                         NextObjecte.recieveObject(newEntity);
@@ -158,7 +161,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte, ITractarEsdevenimen
             else if (enrutament == politiquesEnrutament.RANDOM){
                 for (int i = 0; i < SeguentsObjectes.Count; i++){
                     int obj = Random.Range(0, SeguentsObjectes.Count);
-                    NextObjecte = SeguentsObjectes[obj].GetComponent<IRebreObjecte>();
+                    NextObjecte = SeguentsObjectes[obj].GetComponent<IObjectes>();
                     if (NextObjecte.isAvailable()) {
                         GameObject newEntity = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
                         NextObjecte.recieveObject(newEntity);
@@ -174,7 +177,7 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte, ITractarEsdevenimen
     private int nDisponibles(){
         int n = 0;
         foreach (GameObject seguent in SeguentsObjectes){
-            if (seguent.GetComponent<IRebreObjecte>().isAvailable()) ++n;
+            if (seguent.GetComponent<IObjectes>().isAvailable()) ++n;
         }
         return n;
     }
@@ -190,4 +193,21 @@ public class GeneradorScript : MonoBehaviour, IRebreObjecte, ITractarEsdevenimen
     public int getNGenerats(){
         return nEntitatsGenerades;
     }
+
+    public void ObreDetalls(){
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+    }   
+
+    public void TancaDetalls(){
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    public bool RatoliSobreDetalls(){
+        RectTransform canvasRectTransform = transform.GetChild(0).GetComponent<RectTransform>();
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, Input.mousePosition, null, out Vector2 localPoint)) {
+            return true;
+        }
+        return false;
+    }
+    
 }

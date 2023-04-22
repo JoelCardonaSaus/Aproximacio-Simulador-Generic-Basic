@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 
 public class UIScript : MonoBehaviour
 {
-    private enum btnSeleccionat { GENERADOR, CUA, PROCESSADOR, SORTIDA, JUNTAR, DESJUNTAR, CAP };
+    private enum btnSeleccionat { GENERADOR, CUA, PROCESSADOR, SORTIDA, JUNTAR, DESJUNTAR, ELIMINAR, CAP };
     private btnSeleccionat seleccionat;
     public Button generadorButton;
     public Button cuaButton;
@@ -14,14 +15,34 @@ public class UIScript : MonoBehaviour
     public Button sortidaButton;
     public Button juntarButton;
     public Button desjuntarButton;
+    public Button eliminarButton;
 
     public GameObject motorSimulador;
-    private float botoClikatCooldown = 0f;
     private GameObject generadorPrefab;
     private GameObject cuaPrefab;
 
     private GameObject processadorPrefab;
     private GameObject sortidaPrefab;
+    private static UIScript instancia;
+
+    private UIScript() { }
+
+    public static UIScript Instancia {
+        get {
+            if (instancia == null){
+                instancia = FindObjectOfType<UIScript>();
+
+                if (instancia == null){
+                    GameObject singletonObject = new GameObject();
+                    instancia = singletonObject.AddComponent<UIScript>();
+                    singletonObject.name = typeof(UIScript).ToString();
+                    DontDestroyOnLoad(singletonObject);
+                }
+            }
+            return instancia;
+        }
+    }
+
 
 
 
@@ -31,20 +52,51 @@ public class UIScript : MonoBehaviour
     void Start()
     {
         seleccionat = btnSeleccionat.CAP;
-        generadorPrefab = Resources.Load("LlibreriaObjectes/Generador/Generador") as GameObject;
-        cuaPrefab = Resources.Load("LlibreriaObjectes/Cua/Cua") as GameObject;
-        processadorPrefab = Resources.Load("LlibreriaObjectes/Processador/Processador") as GameObject;
-        sortidaPrefab = Resources.Load("LlibreriaObjectes/Sortida/Sortida") as GameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && botoClikatCooldown<=0)
-        {
-            intentaInstanciarObjecte();
+        if (Input.GetMouseButtonDown(0)){
+            if (objecteLlibreriaSeleccionat() && !RatoliSobreBotonsUI())
+            {
+                instanciarObjecte();
+            } else if (!RatoliSobreAlgunObjece() && (motorSimulador.GetComponent<MotorSimuladorScript>().AlgunDetallsObert() && !RatoliSobreDetalls())){
+                motorSimulador.GetComponent<MotorSimuladorScript>().TancaDetallsObert();
+            }
         }
-        if (botoClikatCooldown > 0) botoClikatCooldown -= Time.deltaTime;
+    }
+
+    public bool RatoliSobreBotonsUI(){
+        return 
+            RectTransformUtility.RectangleContainsScreenPoint(generadorButton.GetComponent<RectTransform>(), Input.mousePosition) ||
+            RectTransformUtility.RectangleContainsScreenPoint(cuaButton.GetComponent<RectTransform>(), Input.mousePosition) ||
+            RectTransformUtility.RectangleContainsScreenPoint(processadorButton.GetComponent<RectTransform>(), Input.mousePosition) ||
+            RectTransformUtility.RectangleContainsScreenPoint(sortidaButton.GetComponent<RectTransform>(), Input.mousePosition) ||
+            RectTransformUtility.RectangleContainsScreenPoint(juntarButton.GetComponent<RectTransform>(), Input.mousePosition) ||
+            RectTransformUtility.RectangleContainsScreenPoint(desjuntarButton.GetComponent<RectTransform>(), Input.mousePosition) ||
+            RectTransformUtility.RectangleContainsScreenPoint(eliminarButton.GetComponent<RectTransform>(), Input.mousePosition);
+    }
+
+    public bool objecteLlibreriaSeleccionat(){
+        return seleccionat == btnSeleccionat.GENERADOR || seleccionat == btnSeleccionat.CUA || seleccionat == btnSeleccionat.PROCESSADOR || seleccionat == btnSeleccionat.SORTIDA;   
+    }
+
+    public bool RatoliSobreDetalls(){
+        return motorSimulador.GetComponent<MotorSimuladorScript>().RatoliSobreDetalls();
+    }
+
+    public bool RatoliSobreAlgunObjece(){
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = -Camera.main.transform.position.z;
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(worldPosition, Camera.main.transform.forward);
+
+        if (hit.collider != null && hit.collider.CompareTag("ObjecteLlibreria"))
+        {
+            return true;
+        }
+        return false;
     }
 
     public void botoGeneradorClicat(){
@@ -71,8 +123,11 @@ public class UIScript : MonoBehaviour
         seleccionarOpcio(btnSeleccionat.DESJUNTAR);
     }
 
+    public void botoEliminarClicat(){
+        seleccionarOpcio(btnSeleccionat.ELIMINAR);
+    }
+
     private void seleccionarOpcio(btnSeleccionat seleccionatNou){
-        botoClikatCooldown = 0.25f;
         if (seleccionatNou != seleccionat){
             deseleccionarBackground(seleccionat);
             if (seleccionatNou != btnSeleccionat.CAP){
@@ -108,6 +163,9 @@ public class UIScript : MonoBehaviour
             case btnSeleccionat.DESJUNTAR:
                 desjuntarButton.GetComponent<Image>().color = Color.white;
                 break;
+            case btnSeleccionat.ELIMINAR:
+                eliminarButton.GetComponent<Image>().color = Color.white;
+                break;
             case btnSeleccionat.CAP:
                 break;
         }
@@ -139,44 +197,45 @@ public class UIScript : MonoBehaviour
                 desjuntarButton.GetComponent<Image>().color = Color.green;
                 Cursor.SetCursor(imatgesCursor[5], Vector2.zero, CursorMode.Auto);
                 break;
+            case btnSeleccionat.ELIMINAR:
+                eliminarButton.GetComponent<Image>().color = Color.red;
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                break;
             case btnSeleccionat.CAP:
                 Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 break;
         }
     }
 
-    private void intentaInstanciarObjecte(){
+    private void instanciarObjecte(){
         Vector3 mousePosition = Input.mousePosition;
         // Convert the mouse position to a world position relative to the camera
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Camera.main.nearClipPlane));
         switch (seleccionat){
             case btnSeleccionat.GENERADOR:
-                // Paasar-li l'objecte creat al motor
-                GameObject generadorNou = Instantiate(generadorPrefab, worldPosition , Quaternion.identity);
-                motorSimulador.GetComponent<MotorSimuladorScript>().afegirObjecteLlista(generadorNou);
+                motorSimulador.GetComponent<MotorSimuladorScript>().creaObjecteFill(0, worldPosition);
                 deseleccionarBackground(seleccionat);
                 seleccionat = btnSeleccionat.CAP;
                 seleccionarBackground(seleccionat);
                 break;
             case btnSeleccionat.CUA:
-                motorSimulador.GetComponent<MotorSimuladorScript>().afegirObjecteLlista(Instantiate(cuaPrefab, worldPosition, Quaternion.identity));
+                motorSimulador.GetComponent<MotorSimuladorScript>().creaObjecteFill(1, worldPosition);
                 deseleccionarBackground(seleccionat);
                 seleccionat = btnSeleccionat.CAP;
                 seleccionarBackground(seleccionat);
                 break;
             case btnSeleccionat.PROCESSADOR:
-                motorSimulador.GetComponent<MotorSimuladorScript>().afegirObjecteLlista(Instantiate(processadorPrefab, worldPosition, Quaternion.identity));
+                motorSimulador.GetComponent<MotorSimuladorScript>().creaObjecteFill(2, worldPosition);
                 deseleccionarBackground(seleccionat);
                 seleccionat = btnSeleccionat.CAP;
                 seleccionarBackground(seleccionat);
                 break;
             case btnSeleccionat.SORTIDA:
-                motorSimulador.GetComponent<MotorSimuladorScript>().afegirObjecteLlista(Instantiate(sortidaPrefab, worldPosition, Quaternion.identity));
+                motorSimulador.GetComponent<MotorSimuladorScript>().creaObjecteFill(3, worldPosition);
                 deseleccionarBackground(seleccionat);
                 seleccionat = btnSeleccionat.CAP;
                 seleccionarBackground(seleccionat);
                 break;
         }
     }
-
 }

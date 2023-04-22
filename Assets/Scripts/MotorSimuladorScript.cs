@@ -8,15 +8,21 @@ public class MotorSimuladorScript : MonoBehaviour
 {
     public float escalaTemps;
 
+    private GameObject generadorPrefab;
+    private GameObject cuaPrefab;
+    private GameObject processadorPrefab;
+    private GameObject sortidaPrefab;
     private List<GameObject> objectesLlibreria = new List<GameObject>();
+    private int detallsObert = -1;
     private List<Esdeveniment> llistaEsdevenmients = new List<Esdeveniment>();
-
     private float tempsActual;
     // Start is called before the first frame update
     void Start()
     {
-        //GameObject[] objectesLlibreria = GameObject.FindGameObjectsWithTag("ObjecteLlibreria");
-        
+        generadorPrefab = Resources.Load("LlibreriaObjectes/Generador/Generador") as GameObject;
+        cuaPrefab = Resources.Load("LlibreriaObjectes/Cua/Cua") as GameObject;
+        processadorPrefab = Resources.Load("LlibreriaObjectes/Processador/Processador") as GameObject;
+        sortidaPrefab = Resources.Load("LlibreriaObjectes/Sortida/Sortida") as GameObject;
     }
 
     // Update is called once per frame
@@ -36,12 +42,66 @@ public class MotorSimuladorScript : MonoBehaviour
         llistaEsdevenmients.Sort((e1, e2)=>e1.temps.CompareTo(e2.temps));
     }
     public void afegirObjecteLlista(GameObject nouObjecte){
-        objectesLlibreria.Add(nouObjecte);
-        nouObjecte.GetComponent<GeneradorScript>().IniciaSimulacio();
-        Debug.Log("estic aqui");
+        if (!nouObjecte.name.Contains("Sortida")){
+            if (detallsObert != -1) {
+                objectesLlibreria[detallsObert].GetComponent<IObjectes>().TancaDetalls();
+            }
+            nouObjecte.GetComponent<IObjectes>().ObreDetalls();
+            objectesLlibreria.Add(nouObjecte);
+            detallsObert = objectesLlibreria.Count-1;
+        }
+        
+        //nouObjecte.GetComponent<GeneradorScript>().IniciaSimulacio();
+    }
+
+    public bool AlgunDetallsObert(){
+        return detallsObert != -1;
+    }
+
+    public void TancaDetallsObert(){
+        if (AlgunDetallsObert()){
+            objectesLlibreria[detallsObert].GetComponent<IObjectes>().TancaDetalls();
+            detallsObert = -1;
+        }
+    }
+
+    public void ObreDetallsFill(int nFill){
+        objectesLlibreria[nFill].GetComponent<IObjectes>().ObreDetalls();
+        detallsObert = nFill;
+    }
+
+    public bool RatoliSobreDetalls(){
+        return objectesLlibreria[detallsObert].GetComponent<IObjectes>().RatoliSobreDetalls();
     }
     private void OnValidate() {
         if (escalaTemps < 0.5f) escalaTemps = 0.5f;
         else if (escalaTemps > 10f) escalaTemps = 10f;     
+    }
+
+    public void creaObjecteFill(int obj, Vector3 posicio){
+        GameObject objecteNou;
+        switch(obj){
+            case 0:
+                objecteNou = Instantiate(generadorPrefab, new Vector3(posicio.x, posicio.y,0), Quaternion.identity);
+                objecteNou.transform.parent = gameObject.transform;
+                afegirObjecteLlista(objecteNou);
+                break;
+            case 1:
+                objecteNou = Instantiate(cuaPrefab, new Vector3(posicio.x, posicio.y,0) , Quaternion.identity);
+                objecteNou.transform.parent = gameObject.transform;
+                afegirObjecteLlista(objecteNou);
+                break;
+            case 2:
+                objecteNou = Instantiate(processadorPrefab, new Vector3(posicio.x, posicio.y,0) , Quaternion.identity);
+                objecteNou.transform.parent = gameObject.transform;
+                afegirObjecteLlista(objecteNou);
+                break;
+            case 3:
+                objecteNou = Instantiate(sortidaPrefab, new Vector3(posicio.x, posicio.y,0), Quaternion.identity);
+                objecteNou.transform.parent = gameObject.transform;
+                afegirObjecteLlista(objecteNou);
+                break;
+            
+        }
     }
 }

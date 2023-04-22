@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FakeRebreObjecte : MonoBehaviour, IRebreObjecte
+public class FakeRebreObjecte : MonoBehaviour, IObjectes
 {
     private void Start() {
         
@@ -25,5 +25,17 @@ public class FakeRebreObjecte : MonoBehaviour, IRebreObjecte
         
         public void recieveObject(GameObject entity){
 
+        }
+
+        public void ObreDetalls(){
+            
+        }   
+
+        public void TancaDetalls(){
+            
+        }
+
+        public bool RatoliSobreDetalls(){
+            return false;
         }
 }
