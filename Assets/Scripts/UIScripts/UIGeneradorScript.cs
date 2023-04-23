@@ -33,18 +33,18 @@ public class UIGeneradorScript : MonoBehaviour
     {
         cancela.interactable = true;
         aplicar.interactable = true;
-        if (distribuidor.value == 0) distribucioActual = GeneradorScript.distribucionsProbabilitat.BINOMIAL;
-        else if (distribuidor.value == 1) distribucioActual = GeneradorScript.distribucionsProbabilitat.CONSTANT;
+        if (distribuidor.value == 1) distribucioActual = GeneradorScript.distribucionsProbabilitat.BINOMIAL;
+        else if (distribuidor.value == 0) distribucioActual = GeneradorScript.distribucionsProbabilitat.CONSTANT;
         else if (distribuidor.value == 2) distribucioActual = GeneradorScript.distribucionsProbabilitat.EXPONENTIAL;
         else if (distribuidor.value == 3) distribucioActual = GeneradorScript.distribucionsProbabilitat.NORMAL;
         else if (distribuidor.value == 4) distribucioActual = GeneradorScript.distribucionsProbabilitat.POISSON;
         else if (distribuidor.value == 5) distribucioActual = GeneradorScript.distribucionsProbabilitat.TRIANGULAR;
         else if (distribuidor.value == 6) distribucioActual = GeneradorScript.distribucionsProbabilitat.DISCRETEUNIFORM;
         
-        if (distribuidor.value == 1 || distribuidor.value == 2 || distribuidor.value == 4){
+        if (distribuidor.value == 0 || distribuidor.value == 2 || distribuidor.value == 4){
             param2.SetActive(false); param3.SetActive(false);
         }
-        else if (distribuidor.value == 3 || distribuidor.value == 0 || distribuidor.value == 6){
+        else if (distribuidor.value == 3 || distribuidor.value == 1 || distribuidor.value == 6){
             param2.SetActive(true); param3.SetActive(false);
         } else {
             param2.SetActive(true); param3.SetActive(true);
@@ -90,19 +90,19 @@ public class UIGeneradorScript : MonoBehaviour
         if (politicaConfirmada == GeneradorScript.politiquesEnrutament.PRIMERDISPONIBLE) enrutament.value = 0;
         else if (politicaConfirmada == GeneradorScript.politiquesEnrutament.RANDOM) enrutament.value = 1;
 
-        if (distribucioActual == GeneradorScript.distribucionsProbabilitat.BINOMIAL) distribuidor.value = 0;
-        else if (distribucioActual == GeneradorScript.distribucionsProbabilitat.CONSTANT) distribuidor.value = 1;
+        if (distribucioActual == GeneradorScript.distribucionsProbabilitat.BINOMIAL) distribuidor.value = 1;
+        else if (distribucioActual == GeneradorScript.distribucionsProbabilitat.CONSTANT) distribuidor.value = 0;
         else if (distribucioActual == GeneradorScript.distribucionsProbabilitat.EXPONENTIAL) distribuidor.value = 2;
         else if (distribucioActual == GeneradorScript.distribucionsProbabilitat.NORMAL) distribuidor.value = 3;
         else if (distribucioActual == GeneradorScript.distribucionsProbabilitat.POISSON) distribuidor.value = 4;
         else if (distribucioActual == GeneradorScript.distribucionsProbabilitat.TRIANGULAR) distribuidor.value = 5;
         else if (distribucioActual == GeneradorScript.distribucionsProbabilitat.DISCRETEUNIFORM) distribuidor.value = 6;
         
-        if (distribuidor.value == 1 || distribuidor.value == 2 || distribuidor.value == 4){
+        if (distribuidor.value == 0 || distribuidor.value == 2 || distribuidor.value == 4){
             param2.SetActive(false); param3.SetActive(false);
             iParam1.text = parametresConfirmats[0].ToString();
         }
-        else if (distribuidor.value == 3 || distribuidor.value == 0 || distribuidor.value == 6){
+        else if (distribuidor.value == 3 || distribuidor.value == 1 || distribuidor.value == 6){
             param2.SetActive(true); param3.SetActive(false);
             iParam1.text = parametresConfirmats[0].ToString();
             iParam2.text = parametresConfirmats[1].ToString();
@@ -118,7 +118,7 @@ public class UIGeneradorScript : MonoBehaviour
     void Start()
     {
         generadorScript = gameObject.transform.parent.GetComponentInParent<GeneradorScript>();
-        distribucioConfirmada = GeneradorScript.distribucionsProbabilitat.CONSTANT;
+        distribucioConfirmada = GeneradorScript.distribucionsProbabilitat.BINOMIAL;
         politicaConfirmada = GeneradorScript.politiquesEnrutament.PRIMERDISPONIBLE;
         parametresConfirmats = new double[1];
     }

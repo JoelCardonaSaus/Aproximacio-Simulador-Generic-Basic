@@ -8,7 +8,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
     [SerializeField]
     public politiquesEnrutament enrutament;
-    public enum distribucionsProbabilitat { BINOMIAL, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
+    public enum distribucionsProbabilitat { BINOMIAL, CONSTANT, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
     [SerializeField]
     public distribucionsProbabilitat distribucio;
     [SerializeField]
@@ -207,5 +207,40 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
             return true;
         }
         return false;
+    }
+
+    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, double[] nousParametres, int nEntitatsParalelMax){
+        enrutament = novaPolitica;
+        distribucio = d;
+        parametres = nousParametres;
+        maxEntitatsParalel = nEntitatsParalelMax;
+        ActualitzaDistribuidor();
+    }
+
+    public void ActualitzaDistribuidor(){
+        switch (distribucio)
+        {
+            case distribucionsProbabilitat.BINOMIAL:
+                distribuidor = new BinomialDistribution(parametres[0], parametres[1]);
+                break;
+            case distribucionsProbabilitat.DISCRETEUNIFORM:
+                distribuidor = new DiscreteUniformDistribution(parametres[0], parametres[1]);
+                break;
+            case distribucionsProbabilitat.EXPONENTIAL:
+                distribuidor = new ExponentialDistribution(parametres[0]);
+                break;
+            case distribucionsProbabilitat.NORMAL:
+                distribuidor = new NormalDistribution(parametres[0], parametres[1]);
+                break;
+            case distribucionsProbabilitat.POISSON:
+                distribuidor = new PoissonDistribution(parametres[0]);
+                break;
+            case distribucionsProbabilitat.TRIANGULAR:
+                distribuidor = new TriangularDistribution(parametres[0], parametres[1], parametres[2]);
+                break;
+            default:
+                distribuidor = new ExponentialDistribution(parametres[0]);
+                break;
+        }
     }
 }
