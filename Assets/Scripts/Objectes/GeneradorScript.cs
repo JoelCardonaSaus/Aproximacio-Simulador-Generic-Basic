@@ -8,9 +8,9 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
     public politiquesEnrutament enrutament;
-    public enum distribucionsProbabilitat { BINOMIAL, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
+    public enum distribucionsProbabilitat { BINOMIAL, CONSTANT, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
     public distribucionsProbabilitat distribucio;
-    public double[] parametres;
+    public double[] parametres = new double[] {1,1,1}; // Inicialitza per evitar problemes
     public ISeguentNumero distribuidor;
     public List<GameObject> SeguentsObjectes;
     public GameObject entitatTemporal;
@@ -44,32 +44,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     // UNA VEGADA COMENÇA LA SIMULACIÓ NO ES POT CANVIAR LA DISTRIBUCIÓ DE L'OBJECTE
     void Start()
     {
-        switch (distribucio)
-        {
-            case distribucionsProbabilitat.BINOMIAL:
-                distribuidor = new BinomialDistribution(parametres[0], parametres[1]);
-                break;
-            case distribucionsProbabilitat.DISCRETEUNIFORM:
-                distribuidor = new DiscreteUniformDistribution(parametres[0], parametres[1]);
-                break;
-            case distribucionsProbabilitat.EXPONENTIAL:
-                distribuidor = new ExponentialDistribution(parametres[0]);
-                break;
-            case distribucionsProbabilitat.NORMAL:
-                distribuidor = new NormalDistribution(parametres[0], parametres[1]);
-                break;
-            case distribucionsProbabilitat.POISSON:
-                distribuidor = new PoissonDistribution(parametres[0]);
-                break;
-            case distribucionsProbabilitat.TRIANGULAR:
-                distribuidor = new TriangularDistribution(parametres[0], parametres[1], parametres[2]);
-                break;
-            default:
-                distribuidor = new ExponentialDistribution(parametres[0]);
-                break;
-        }
-        timeForNextObject = distribuidor.getNextSample();
-        //TODO: QUE EL MOTOR DE SIMULACIÓ SIGUI EL QUE INDIQUI LA ESCALA DEL TEMPS A CADA OBJECTE (GETSCALETIME)
+        
     }
 
     // Update is called once per frame
@@ -106,38 +81,9 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     }
 
     // Funcio per comprovar si es canvia la distribució del objecte
-    private void OnValidate() {
-        if (nParameters() != parametres.Length){
-            checkNumberOfParameters();    
-        } 
-    }
 
     public void setTimeScale(float timeScale){
         this.timeScale = timeScale;
-    }
-
-    private int nParameters(){
-        if (distribucio == distribucionsProbabilitat.EXPONENTIAL || distribucio == distribucionsProbabilitat.POISSON){
-            return 1;
-        }
-        else if (distribucio == distribucionsProbabilitat.NORMAL || distribucio == distribucionsProbabilitat.BINOMIAL || distribucio == distribucionsProbabilitat.DISCRETEUNIFORM){
-            return 2;
-        }
-        else {
-            return 3;
-        }
-    }
-
-    private void checkNumberOfParameters(){
-        if (distribucio == distribucionsProbabilitat.EXPONENTIAL || distribucio == distribucionsProbabilitat.POISSON){
-            parametres = new double[1];
-        }
-        else if (distribucio == distribucionsProbabilitat.NORMAL || distribucio == distribucionsProbabilitat.BINOMIAL || distribucio == distribucionsProbabilitat.DISCRETEUNIFORM){
-            parametres = new double[2];
-        }
-        else {
-            parametres = new double[3];
-        }
     }
 
     public bool sendObject(){
@@ -212,8 +158,38 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         return false;
     }
 
-    public void CanviaEnrutament(politiquesEnrutament novaPolitica){
+    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, double[] nousParametres){
         enrutament = novaPolitica;
+        distribucio = d;
+        parametres = nousParametres;
+        ActualitzaDistribuidor();
+    }
+
+    public void ActualitzaDistribuidor(){
+        switch (distribucio)
+        {
+            case distribucionsProbabilitat.BINOMIAL:
+                distribuidor = new BinomialDistribution(parametres[0], parametres[1]);
+                break;
+            case distribucionsProbabilitat.DISCRETEUNIFORM:
+                distribuidor = new DiscreteUniformDistribution(parametres[0], parametres[1]);
+                break;
+            case distribucionsProbabilitat.EXPONENTIAL:
+                distribuidor = new ExponentialDistribution(parametres[0]);
+                break;
+            case distribucionsProbabilitat.NORMAL:
+                distribuidor = new NormalDistribution(parametres[0], parametres[1]);
+                break;
+            case distribucionsProbabilitat.POISSON:
+                distribuidor = new PoissonDistribution(parametres[0]);
+                break;
+            case distribucionsProbabilitat.TRIANGULAR:
+                distribuidor = new TriangularDistribution(parametres[0], parametres[1], parametres[2]);
+                break;
+            default:
+                distribuidor = new ExponentialDistribution(parametres[0]);
+                break;
+        }
     }
     
 }
