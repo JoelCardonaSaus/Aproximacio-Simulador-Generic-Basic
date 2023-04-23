@@ -133,4 +133,9 @@ public class CuaScript : MonoBehaviour, IObjectes
         }
         return false;
     }
+
+    public void ActualitzaPropietats(politiquesEnrutament nouEnrutament, int capacitatMax){
+        enrutament = nouEnrutament;
+        capacitatMaxima = capacitatMax;
+    }
 }
