@@ -61,7 +61,8 @@ public class UIScript : MonoBehaviour
             if (objecteLlibreriaSeleccionat() && !RatoliSobreBotonsUI())
             {
                 instanciarObjecte();
-            } else if (!RatoliSobreAlgunObjece() && (motorSimulador.GetComponent<MotorSimuladorScript>().AlgunDetallsObert() && !RatoliSobreDetalls())){
+            }  
+            if ((motorSimulador.GetComponent<MotorSimuladorScript>().AlgunDetallsObert()) && (!RatoliSobreAlgunObjece() && !RatoliSobreDetalls())){
                 motorSimulador.GetComponent<MotorSimuladorScript>().TancaDetallsObert();
             }
         }

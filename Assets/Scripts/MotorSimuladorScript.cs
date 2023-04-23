@@ -71,6 +71,7 @@ public class MotorSimuladorScript : MonoBehaviour
     }
 
     public bool RatoliSobreDetalls(){
+        if (detallsObert == -1) return false;
         return objectesLlibreria[detallsObert].GetComponent<IObjectes>().RatoliSobreDetalls();
     }
     private void OnValidate() {

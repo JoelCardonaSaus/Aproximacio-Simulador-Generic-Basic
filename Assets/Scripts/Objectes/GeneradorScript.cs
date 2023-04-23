@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 {
@@ -203,11 +204,16 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     }
 
     public bool RatoliSobreDetalls(){
-        RectTransform canvasRectTransform = transform.GetChild(0).GetComponent<RectTransform>();
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, Input.mousePosition, null, out Vector2 localPoint)) {
+        var image = transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
+        if (RectTransformUtility.RectangleContainsScreenPoint(image.rectTransform, Input.mousePosition))
+        {
             return true;
         }
         return false;
+    }
+
+    public void CanviaEnrutament(politiquesEnrutament novaPolitica){
+        enrutament = novaPolitica;
     }
     
 }

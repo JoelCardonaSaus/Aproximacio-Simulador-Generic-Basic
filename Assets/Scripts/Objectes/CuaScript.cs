@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CuaScript : MonoBehaviour, IObjectes
 {
@@ -125,8 +126,9 @@ public class CuaScript : MonoBehaviour, IObjectes
     }
 
     public bool RatoliSobreDetalls(){
-        RectTransform canvasRectTransform = transform.GetChild(0).GetComponent<RectTransform>();
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRectTransform, Input.mousePosition, null, out Vector2 localPoint)) {
+        var image = transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
+        if (RectTransformUtility.RectangleContainsScreenPoint(image.rectTransform, Input.mousePosition))
+        {
             return true;
         }
         return false;
