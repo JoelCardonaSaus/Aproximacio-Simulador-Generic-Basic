@@ -30,8 +30,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         Debug.Log("Es genera un esdeveniment " + tempsActual.ToString());
         timeForNextObject = 2;
         Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+(float)timeForNextObject, null, Esdeveniment.Tipus.ARRIBADES);
-        GameObject motor = GameObject.Find("MotorDeSimulacio");
-        motor.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(e);
+        gameObject.parent.GetComponent<MotorDeSimulacio>().afegirEsdeveniment(e);
     }
 
     public void TractarEsdeveniment(Esdeveniment e){
@@ -170,6 +169,9 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         {
             case distribucionsProbabilitat.BINOMIAL:
                 distribuidor = new BinomialDistribution(parametres[0], parametres[1]);
+                break;
+            case distribucionsProbabilitat.CONSTANT:
+                distribucio = new ConstantDistribution(parametres[0]);
                 break;
             case distribucionsProbabilitat.DISCRETEUNIFORM:
                 distribuidor = new DiscreteUniformDistribution(parametres[0], parametres[1]);

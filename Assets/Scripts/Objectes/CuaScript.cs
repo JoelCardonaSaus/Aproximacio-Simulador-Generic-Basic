@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CuaScript : MonoBehaviour, IObjectes
+public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 {
     
     public int capacitatMaxima = -1; // -1 == No hi ha capacitat màxima, >0 capacitat màxima de la cua
@@ -41,6 +41,17 @@ public class CuaScript : MonoBehaviour, IObjectes
             timeEmpty += (Time.deltaTime * timeScale);
         }
         
+    }
+
+    public void generarEsdevenimentArribada(float tempsActual){
+        if (cuaObjecte.Count != 0) {
+            Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+1, Esdeveniment.Tipus.ARRIBADES);
+            gameObject.parent.GetComponent<MotorDeSimulacio>().afegirEsdeveniment(e);
+        }
+    }
+
+    public void TractarEsdeveniment(Esdeveniment e){
+        generarEsdevenimentArribada(e.temps);
     }
 
     public void setTimeScale(float timeScale){

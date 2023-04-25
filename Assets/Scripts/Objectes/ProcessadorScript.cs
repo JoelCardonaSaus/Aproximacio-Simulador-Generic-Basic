@@ -36,30 +36,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
     // Start is called before the first frame update
     void Start()
     {
-        switch (distribucio)
-        {
-            case distribucionsProbabilitat.BINOMIAL:
-                distribuidor = new BinomialDistribution(parametres[0], parametres[1]);
-                break;
-            case distribucionsProbabilitat.DISCRETEUNIFORM:
-                distribuidor = new DiscreteUniformDistribution(parametres[0], parametres[1]);
-                break;
-            case distribucionsProbabilitat.EXPONENTIAL:
-                distribuidor = new ExponentialDistribution(parametres[0]);
-                break;
-            case distribucionsProbabilitat.NORMAL:
-                distribuidor = new NormalDistribution(parametres[0], parametres[1]);
-                break;
-            case distribucionsProbabilitat.POISSON:
-                distribuidor = new PoissonDistribution(7);
-                break;
-            case distribucionsProbabilitat.TRIANGULAR:
-                distribuidor = new TriangularDistribution(parametres[0], parametres[1], parametres[2]);
-                break;
-            default:
-                distribuidor = new ExponentialDistribution(parametres[0]);
-                break;
-        }
+        
     }
 
     // Update is called once per frame
@@ -222,6 +199,9 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
         {
             case distribucionsProbabilitat.BINOMIAL:
                 distribuidor = new BinomialDistribution(parametres[0], parametres[1]);
+                break;
+            case distribucionsProbabilitat.CONSTANT:
+                distribucio = new ConstantDistribution(parametres[0]);
                 break;
             case distribucionsProbabilitat.DISCRETEUNIFORM:
                 distribuidor = new DiscreteUniformDistribution(parametres[0], parametres[1]);
