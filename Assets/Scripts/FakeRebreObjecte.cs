@@ -11,31 +11,36 @@ public class FakeRebreObjecte : MonoBehaviour, IObjectes
     private void Update() {
         
     }
-        public void setTimeScale(float timeScale){
-            
-        }
-
-        public bool sendObject(){
-            return true;
-        }
-
-        public bool isAvailable(){
-            return true;
-        }
+    public void setTimeScale(float timeScale){
         
-        public void recieveObject(GameObject entity){
+    }
 
-        }
+    public int sendObject(){
+        return 0;
+    }
 
-        public void ObreDetalls(){
-            
-        }   
+    public bool isAvailable(){
+        return true;
+    }
+    
+    public void recieveObject(GameObject entity){
 
-        public void TancaDetalls(){
-            
-        }
+    }
 
-        public bool RatoliSobreDetalls(){
-            return false;
-        }
+    public void ObreDetalls(){
+        
+    }   
+
+    public void TancaDetalls(){
+        
+    }
+
+    public bool RatoliSobreDetalls(){
+        return false;
+    }
+
+    public int ObteTipusObjecte()
+    {
+        return -1;
+    }
 }

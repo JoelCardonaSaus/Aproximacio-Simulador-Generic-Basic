@@ -112,21 +112,18 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
         entitatsProcessant.Add(entity, tempsTractament);
         tempsMigEntitatsProcessador += tempsTractament;
     }
-    public bool sendObject(){
+    public int sendObject(){
         IObjectes NextObjecte;
-
         // Comprovem que almenys hi ha un objecte disponible
         if (nDisponibles() >= 1){
             if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
-                foreach (GameObject objecte in SeguentsObjectes)
+                for (int i = 0; i < SeguentsObjectes.Count; i++)
                 {
-                    NextObjecte = objecte.GetComponent<IObjectes>();
+                    NextObjecte = SeguentsObjectes[i].GetComponent<IObjectes>();
                     if (NextObjecte.isAvailable()) {
-                        NextObjecte.recieveObject(entitatsAEnviar.Dequeue());
-                        return true;
+                        return i;
                     }
                 }
-                return false;
             }
             
             else if (enrutament == politiquesEnrutament.RANDOM){
@@ -134,13 +131,12 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
                     int obj = Random.Range(0, SeguentsObjectes.Count);
                     NextObjecte = SeguentsObjectes[obj].GetComponent<IObjectes>();
                     if (NextObjecte.isAvailable()) {
-                        NextObjecte.recieveObject(entitatsAEnviar.Dequeue());
-                        return true;
+                        return i;
                     }
                 }
             }
         }
-        return false;
+        return -1;
     }
 
     public void setTimeScale(float timeScale){
@@ -186,6 +182,11 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
         return false;
     }
 
+    public int ObteTipusObjecte()
+    {
+        return 2;
+    }
+
     public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, double[] nousParametres, int nEntitatsParalelMax){
         enrutament = novaPolitica;
         distribucio = d;
@@ -201,7 +202,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
                 distribuidor = new BinomialDistribution(parametres[0], parametres[1]);
                 break;
             case distribucionsProbabilitat.CONSTANT:
-                distribucio = new ConstantDistribution(parametres[0]);
+                distribuidor = new ConstantDistribution(parametres[0]);
                 break;
             case distribucionsProbabilitat.DISCRETEUNIFORM:
                 distribuidor = new DiscreteUniformDistribution(parametres[0], parametres[1]);

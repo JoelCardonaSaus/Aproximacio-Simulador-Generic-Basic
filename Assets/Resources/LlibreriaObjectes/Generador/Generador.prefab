@@ -145,7 +145,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enrutament: {fileID: 0}
+  distribuidor: {fileID: 0}
+  iParam1: {fileID: 0}
+  iParam2: {fileID: 0}
+  iParam3: {fileID: 0}
+  param1: {fileID: 0}
+  param2: {fileID: 0}
+  param3: {fileID: 0}
   generadorScript: {fileID: 0}
+  aplicar: {fileID: 0}
+  cancela: {fileID: 0}
 --- !u!1001 &7515449598813237841
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -330,7 +339,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enrutament: {fileID: 0}
+  distribuidor: {fileID: 0}
+  iParam1: {fileID: 0}
+  iParam2: {fileID: 0}
+  iParam3: {fileID: 0}
+  param1: {fileID: 0}
+  param2: {fileID: 0}
+  param3: {fileID: 0}
   generadorScript: {fileID: 0}
+  aplicar: {fileID: 0}
+  cancela: {fileID: 0}
 --- !u!1 &4440606641182879375 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6191334174997044446, guid: 207d8e9bcbf2cf54ebc7e4769c5826be, type: 3}
@@ -375,4 +393,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enrutament: {fileID: 0}
+  distribuidor: {fileID: 0}
+  iParam1: {fileID: 0}
+  iParam2: {fileID: 0}
+  iParam3: {fileID: 0}
+  param1: {fileID: 0}
+  param2: {fileID: 0}
+  param3: {fileID: 0}
   generadorScript: {fileID: 0}
+  aplicar: {fileID: 0}
+  cancela: {fileID: 0}

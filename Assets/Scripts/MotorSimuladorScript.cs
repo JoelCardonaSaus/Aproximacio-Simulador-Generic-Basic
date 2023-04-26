@@ -14,7 +14,7 @@ public class MotorSimuladorScript : MonoBehaviour
     private GameObject sortidaPrefab;
     private List<GameObject> objectesLlibreria = new List<GameObject>();
     private int detallsObert = -1;
-    private List<Esdeveniment> llistaEsdevenmients = new List<Esdeveniment>();
+    private PriorityQueue<Esdeveniment> llistaEsdevenmients = new PriorityQueue<Esdeveniment>((a, b) => a.temps.CompareTo(b.temps));
     private float tempsActual;
     // Start is called before the first frame update
     void Start()
@@ -29,8 +29,7 @@ public class MotorSimuladorScript : MonoBehaviour
     void Update()
     {
         if (llistaEsdevenmients.Count > 0){
-            Esdeveniment eActual = llistaEsdevenmients[0];
-            llistaEsdevenmients.Remove(eActual);
+            Esdeveniment eActual = llistaEsdevenmients.Dequeue();
             tempsActual = eActual.temps;
             eActual.Executar();
         }
@@ -38,9 +37,9 @@ public class MotorSimuladorScript : MonoBehaviour
     }
 
     public void afegirEsdeveniment(Esdeveniment nouEsdeveminemt){
-        llistaEsdevenmients.Add(nouEsdeveminemt);
-        llistaEsdevenmients.Sort((e1, e2)=>e1.temps.CompareTo(e2.temps));
+        llistaEsdevenmients.Enqueue(nouEsdeveminemt);
     }
+
     public void afegirObjecteLlista(GameObject nouObjecte){
         if (!nouObjecte.name.Contains("Sortida")){
             if (detallsObert != -1) {

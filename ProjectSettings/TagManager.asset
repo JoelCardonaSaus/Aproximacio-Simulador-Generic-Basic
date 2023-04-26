@@ -7,6 +7,7 @@ TagManager:
   - ObjecteLlibreria
   - MotorSimulador
   - Detalls
+  - Cua
   layers:
   - Default
   - TransparentFX

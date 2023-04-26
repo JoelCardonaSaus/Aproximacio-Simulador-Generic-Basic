@@ -40,9 +40,9 @@ public class SortidaScript : MonoBehaviour, IObjectes
         Destroy(entity, 1);
     }
 
-    public bool sendObject()
+    public int sendObject()
     {
-        return false;
+        return -1;
     }
 
     public int getNEntitatsDestruides(){
@@ -73,5 +73,10 @@ public class SortidaScript : MonoBehaviour, IObjectes
 
     public bool RatoliSobreDetalls(){
         return false;
+    }
+
+    public int ObteTipusObjecte()
+    {
+        return 3;
     }
 }

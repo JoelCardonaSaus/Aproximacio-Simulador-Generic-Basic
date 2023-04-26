@@ -14,8 +14,8 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     private Dictionary<GameObject, double> tempsObjecteCua = new Dictionary<GameObject, double>();
 
     private enum states { EMPTY, NOEMPTY };
+    private states estat = states.EMPTY;
 
-    private states state = states.EMPTY;
     private float timeEmpty = 0;
     private float timeNoEmpty = 0;
     private float timeScale = 1;
@@ -29,6 +29,7 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     // Update is called once per frame
     void Update()
     {
+        /*
         if (cuaObjecte.Count > 0){
             IEnumerator<GameObject> enumerator = cuaObjecte.GetEnumerator();
             while (enumerator.MoveNext()) {
@@ -40,18 +41,34 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         else {
             timeEmpty += (Time.deltaTime * timeScale);
         }
-        
+        */
     }
 
-    public void generarEsdevenimentArribada(float tempsActual){
+    /*
+    public void repEsdevenimentArribada(float tempsActual){
         if (cuaObjecte.Count != 0) {
-            Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+1, Esdeveniment.Tipus.ARRIBADES);
-            gameObject.parent.GetComponent<MotorDeSimulacio>().afegirEsdeveniment(e);
+            Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+1, cuaObjecte.Dequeue() ,Esdeveniment.Tipus.ARRIBADES);
+            transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(e);
         }
     }
-
+    */
     public void TractarEsdeveniment(Esdeveniment e){
-        generarEsdevenimentArribada(e.temps);
+        switch (e.Tipus)
+        {
+            // Arribades a la cua
+            case Esdeveniment.Tipus.ARRIBADES:
+                if (estat == states.EMPTY)
+                {
+                    estat = states.NOEMPTY;
+                } 
+                e.entitatImplicada.transform.position = transform.position + new Vector3(0,+1,0);
+                cuaObjecte.Enqueue(e.ObteEntitatImplicada());
+                tempsObjecteCua.Add(e.ObteEntitatImplicada(), e.temps);
+                int seguentObjecteDisponible = sendObject();
+                break;
+            case Esdeveniment.Tipus.PROCESSOS:
+                if (estat == state)
+        }
     }
 
     public void setTimeScale(float timeScale){
@@ -74,36 +91,33 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     }
 
-    public bool sendObject(){
+    public int sendObject(){
         IObjectes NextObjecte;
 
         // Comprovem que almenys hi ha un objecte disponible
         if (nDisponibles() >= 1){
             if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
-                foreach (GameObject objecte in SeguentsObjectes)
+                for (int i = 0; i < SeguentsObjectes.Count; i++)
                 {
-                    NextObjecte = objecte.GetComponent<IObjectes>();
+                    NextObjecte = SeguentsObjectes[i].GetComponent<IObjectes>();
                     if (NextObjecte.isAvailable()) {
-                        NextObjecte.recieveObject(cuaObjecte.Dequeue());
                         if (cuaObjecte.Count == 0) state = states.EMPTY;
-                        return true;
+                        return i;
                     }
                 }
-                return false;
             }
             else if (enrutament == politiquesEnrutament.RANDOM){
                 for (int i = 0; i < SeguentsObjectes.Count; i++){
                     int obj = Random.Range(0, SeguentsObjectes.Count);
                     NextObjecte = SeguentsObjectes[obj].GetComponent<IObjectes>();
                     if (NextObjecte.isAvailable()) {
-                        NextObjecte.recieveObject(cuaObjecte.Dequeue());
                         if (cuaObjecte.Count == 0) state = states.EMPTY;
-                        return true;
+                        return i;
                     }
                 }
             }
         }
-        return false;
+        return -1;
     }
 
     private int nDisponibles(){
@@ -143,6 +157,11 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
             return true;
         }
         return false;
+    }
+
+    public int ObteTipusObjecte()
+    {
+        return 1;
     }
 
     public void ActualitzaPropietats(politiquesEnrutament nouEnrutament, int capacitatMax){
