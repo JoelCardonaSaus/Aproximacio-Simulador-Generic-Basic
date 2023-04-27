@@ -16,7 +16,7 @@ public class SortidaTests
         entitatTemporal = GameObject.CreatePrimitive(PrimitiveType.Plane);
         
         sortidaScript.inicialitzaPerFerTests();
-        sortidaScript.recieveObject(entitatTemporal);
+        //sortidaScript.recieveObject(entitatTemporal);
 
         Assert.That(sortidaScript.getNEntitatsDestruides(), Is.EqualTo(1));
     }

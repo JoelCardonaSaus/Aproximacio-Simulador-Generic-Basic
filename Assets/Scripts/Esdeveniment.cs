@@ -37,7 +37,10 @@ public class Esdeveniment : IComparable<Esdeveniment>
         return consumidor;
     }
 
-    public GameObject ObteEntitatImplicada();
+    public GameObject ObteEntitatImplicada()
+    {
+        return entitatImplicada;
+    }
     
     public int CompareTo(Esdeveniment other) => temps.CompareTo(other.temps);
 }

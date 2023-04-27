@@ -16,6 +16,8 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     public GameObject entitatTemporal;
     private double timeForNextObject;
     private float timeScale = 1;
+    public enum estats { GENERANT, BLOQUEJAT };
+    public estats estat;
 
     //Variables per als estadistics
     private int nEntitatsGenerades = 0;
@@ -37,21 +39,26 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         switch (e.tipusEsdeveniment)
         {
             case Esdeveniment.Tipus.ARRIBADES:
-                int objecteAEnviar = sendObject();
-                if (objecteAEnviar != -1) { // Si hi ha algun dels seguents objectes disponible, aleshores s'instancia una nova entitat temporal i es crea un nou esdeveniment
-                    GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
-                    Esdeveniment eNou = new Esdeveniment(this.gameObject, SeguentsObjectes[objecteAEnviar], e.temps+1, novaEntitat, Esdeveniment.Tipus.ARRIBADES);
-                    transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(eNou);
-                    if (tempsEntreEntitats.Count != 0) {
-                        tempsEntreEntitats.Add(e.temps+tempsEntreEntitats[tempsEntreEntitats.Count-1]);
-                    } else {
-                        tempsEntreEntitats.Add(e.temps);
+                if (estat == estats.GENERANT){
+                    int objecteAEnviar = sendObject();
+                    if (objecteAEnviar != -1) { // Si hi ha algun dels seguents objectes disponible, aleshores s'instancia una nova entitat temporal i es crea un nou esdeveniment
+                        GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
+                        Esdeveniment eNou = new Esdeveniment(this.gameObject, SeguentsObjectes[objecteAEnviar], e.temps+1, novaEntitat, Esdeveniment.Tipus.ARRIBADES);
+                        transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(eNou);
+                        if (tempsEntreEntitats.Count != 0) {
+                            tempsEntreEntitats.Add(e.temps+tempsEntreEntitats[tempsEntreEntitats.Count-1]);
+                        } else {
+                            tempsEntreEntitats.Add(e.temps);
+                        }
+                        generarEsdevenimentArribada(e.temps);
+                    } else { // Si no hi ha cap disponible, alehores es programa un nou esdeveniment per dintre d'un segon més tard a veure si hi ha algún objecte disponible
+                        estat = estats.BLOQUEJAT;
                     }
-                    generarEsdevenimentArribada(e.temps);
-                } else { // Si no hi ha cap disponible, alehores es programa un nou esdeveniment per dintre d'un segon més tard a veure si hi ha algún objecte disponible
-                    Esdeveniment eNou = new Esdeveniment(this.gameObject, this.gameObject, e.temps+1, null, Esdeveniment.Tipus.ARRIBADES);
-                    transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(eNou);
                 }
+                else if (estat == estats.BLOQUEJAT){
+                    // Si esta bloquejat espera que algú li demani un objecte
+                }
+                
                 break;
             // De moment crec que no hauria de rebre esdeveniments d'aquest tipus el generador
             case Esdeveniment.Tipus.PROCESSOS:
@@ -62,31 +69,11 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     void Start()
     {
         distribuidor = new ConstantDistribution(5);
+        estat = estats.GENERANT;
     }
 
-    // Update is called once per frame
     void Update()
-    {
-        /*
-        if (timeForNextObject - (Time.deltaTime * timeScale) < 0){
-            if (sendObject()){
-                double rest = timeForNextObject - (Time.deltaTime * timeScale);
-                timeForNextObject = (distribuidor.getNextSample()) + rest;
-                tempsEntreEntitats.Add(timeForNextObject);
-            } else {
-                timeForNextObject = 0;
-            }
-        }
-        else if (timeForNextObject - (Time.deltaTime * timeScale) > 0) {
-            timeForNextObject -=  (Time.deltaTime * timeScale);
-        }
-        else {
-            if(sendObject()){
-                timeForNextObject = distribuidor.getNextSample();
-                tempsEntreEntitats.Add(timeForNextObject);
-            }
-        }
-        */
+    {   
     }
 
     public void OnMouseDown()
@@ -115,7 +102,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
                 for (int i = 0; i < SeguentsObjectes.Count; i++)//GameObject objecte in SeguentsObjectes)
                 {
                     NextObjecte = SeguentsObjectes[i].GetComponent<IObjectes>();
-                    if (NextObjecte.isAvailable()) {
+                    if (NextObjecte.isAvailable(this.gameObject)) {
                         GameObject newEntity = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
                         ++nEntitatsGenerades;
                         return i;
@@ -127,7 +114,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
                 for (int i = 0; i < SeguentsObjectes.Count; i++){
                     int obj = Random.Range(0, SeguentsObjectes.Count);
                     NextObjecte = SeguentsObjectes[obj].GetComponent<IObjectes>();
-                    if (NextObjecte.isAvailable()) {
+                    if (NextObjecte.isAvailable(this.gameObject)) {
                         GameObject newEntity = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
                         ++nEntitatsGenerades;
                         return i;
@@ -141,17 +128,28 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     private int nDisponibles(){
         int n = 0;
         foreach (GameObject seguent in SeguentsObjectes){
-            if (seguent.GetComponent<IObjectes>().isAvailable()) ++n;
+            if (seguent.GetComponent<IObjectes>().isAvailable(this.gameObject)) ++n;
         }
         return n;
     }
 
-    public bool isAvailable(){
+    public bool isAvailable(GameObject objectePropietari){
         return false;
     }
     
-    public void recieveObject(GameObject entity){
-
+    //Per parametre es passa el gameobject de la llibreria que demana rebre una entitat temporal
+    public bool recieveObject(GameObject entity, float tempsActual){
+        if (estat == estats.GENERANT) return false;
+        else if (estat == estats.BLOQUEJAT && entity.GetComponent<IObjectes>().isAvailable(this.gameObject))
+        {
+            GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
+            Esdeveniment eNou = new Esdeveniment(this.gameObject, entity, tempsActual+1, novaEntitat, Esdeveniment.Tipus.ARRIBADES);
+            generarEsdevenimentArribada(tempsActual);
+            estat = estats.GENERANT;
+            ++nEntitatsGenerades;
+            return true;
+        }
+        return false;
     }
 
     public int getNGenerats(){

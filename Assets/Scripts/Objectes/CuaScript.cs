@@ -12,9 +12,11 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     public politiquesEnrutament enrutament;
     private Queue<GameObject> cuaObjecte = new Queue<GameObject>();
     private Dictionary<GameObject, double> tempsObjecteCua = new Dictionary<GameObject, double>();
+    private Queue<GameObject> objectesRebutjats = new Queue<GameObject>();
+    private List<GameObject> objectesPendentsPerRebre = new List<GameObject>();
 
-    private enum states { EMPTY, NOEMPTY };
-    private states estat = states.EMPTY;
+    private enum states { BUIT, NOBUIT, BLOQUEJAT };
+    private states estat = states.BUIT;
 
     private float timeEmpty = 0;
     private float timeNoEmpty = 0;
@@ -26,48 +28,40 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        /*
-        if (cuaObjecte.Count > 0){
-            IEnumerator<GameObject> enumerator = cuaObjecte.GetEnumerator();
-            while (enumerator.MoveNext()) {
-                tempsObjecteCua[enumerator.Current] += (Time.deltaTime * timeScale);
-            }
-            sendObject();
-            timeNoEmpty += (Time.deltaTime * timeScale);
-        }
-        else {
-            timeEmpty += (Time.deltaTime * timeScale);
-        }
-        */
+
     }
 
-    /*
-    public void repEsdevenimentArribada(float tempsActual){
-        if (cuaObjecte.Count != 0) {
-            Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+1, cuaObjecte.Dequeue() ,Esdeveniment.Tipus.ARRIBADES);
-            transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(e);
-        }
-    }
-    */
     public void TractarEsdeveniment(Esdeveniment e){
-        switch (e.Tipus)
+        switch (e.tipusEsdeveniment)
         {
             // Arribades a la cua
             case Esdeveniment.Tipus.ARRIBADES:
-                if (estat == states.EMPTY)
-                {
-                    estat = states.NOEMPTY;
+                if (objectesPendentsPerRebre.Contains(e.obteProductor())){
+                    objectesPendentsPerRebre.Remove(e.obteProductor()); // Aquest objecte ja no ens te pendent per enviar cap objecte
+                    if (estat == states.BUIT)
+                    {
+                        e.ObteEntitatImplicada().transform.position = transform.position + new Vector3(0,+1,0);    
+                        int seguentObjecteEnviar = sendObject();
+                        if (seguentObjecteEnviar != -1){ // Podem enviar directament a algun dels seguents objectes
+                            tempsObjecteCua.Add(e.ObteEntitatImplicada(), 1);
+                            Esdeveniment eNou = new Esdeveniment(this.gameObject, SeguentsObjectes[seguentObjecteEnviar], e.temps+1, e.ObteEntitatImplicada(), Esdeveniment.Tipus.ARRIBADES);
+                            transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(eNou);
+                        } else {
+                            cuaObjecte.Enqueue(e.ObteEntitatImplicada());
+                            tempsObjecteCua.Add(e.ObteEntitatImplicada(), e.temps);
+                            estat = states.NOBUIT;
+                        }
+                    }       
+                    else if (estat == states.NOBUIT){
+                        cuaObjecte.Enqueue(e.ObteEntitatImplicada());
+                        tempsObjecteCua.Add(e.ObteEntitatImplicada(), e.temps);
+                    }
                 } 
-                e.entitatImplicada.transform.position = transform.position + new Vector3(0,+1,0);
-                cuaObjecte.Enqueue(e.ObteEntitatImplicada());
-                tempsObjecteCua.Add(e.ObteEntitatImplicada(), e.temps);
-                int seguentObjecteDisponible = sendObject();
                 break;
             case Esdeveniment.Tipus.PROCESSOS:
-                if (estat == state)
+                break;
         }
     }
 
@@ -75,20 +69,31 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         this.timeScale = timeScale;
     }
 
-    public bool isAvailable()
+    public bool isAvailable(GameObject objectePropietari)
     {
-        if (capacitatMaxima == -1 || cuaObjecte.Count < capacitatMaxima) return true;
-        else return false;
+        if (objectesPendentsPerRebre.Count < capacitatMaxima && (capacitatMaxima == -1 || cuaObjecte.Count < capacitatMaxima)){
+            objectesPendentsPerRebre.Add(objectePropietari);
+            return true;
+        } 
+        else{
+            if (!objectesRebutjats.Contains(objectePropietari))  objectesRebutjats.Enqueue(objectePropietari);
+            return false;
+        }
     }
 
-    public void recieveObject(GameObject entity)
+    // L'objecte (entity) del parametre ens demana que li enviem una entitat de la cua
+    public bool recieveObject(GameObject entity, float tempsActual)
     {
-        Debug.Log("La CUA rep un objecte!");
-        entity.transform.position = transform.position + new Vector3(0,+1,0);
-        if (state == states.EMPTY) state = states.NOEMPTY;
-        cuaObjecte.Enqueue(entity);
-        tempsObjecteCua.Add(entity, 0);
+        if (estat != states.BUIT && entity.GetComponent<IObjectes>().isAvailable(this.gameObject)){
+            Esdeveniment e = new Esdeveniment(this.gameObject, entity, tempsActual, cuaObjecte.Dequeue(), Esdeveniment.Tipus.ARRIBADES);
+            transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(e);
+            if (cuaObjecte.Count == 0) estat = states.BUIT;
 
+            // Busquem si alguns dels seguents objectes que hem rebutjat anteriorment ens pot enviar una entitat
+            while (objectesRebutjats.Count != 0 && !objectesRebutjats.Dequeue().GetComponent<IObjectes>().recieveObject(this.gameObject, tempsActual)) return true;                
+        }
+        else if (estat == states.BUIT) return false;
+        return false;
     }
 
     public int sendObject(){
@@ -100,8 +105,8 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
                 for (int i = 0; i < SeguentsObjectes.Count; i++)
                 {
                     NextObjecte = SeguentsObjectes[i].GetComponent<IObjectes>();
-                    if (NextObjecte.isAvailable()) {
-                        if (cuaObjecte.Count == 0) state = states.EMPTY;
+                    if (NextObjecte.isAvailable(this.gameObject)) {
+                        if (cuaObjecte.Count == 0) estat = states.BUIT;
                         return i;
                     }
                 }
@@ -110,8 +115,8 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
                 for (int i = 0; i < SeguentsObjectes.Count; i++){
                     int obj = Random.Range(0, SeguentsObjectes.Count);
                     NextObjecte = SeguentsObjectes[obj].GetComponent<IObjectes>();
-                    if (NextObjecte.isAvailable()) {
-                        if (cuaObjecte.Count == 0) state = states.EMPTY;
+                    if (NextObjecte.isAvailable(this.gameObject)) {
+                        if (cuaObjecte.Count == 0) estat = states.BUIT;
                         return i;
                     }
                 }
@@ -123,13 +128,13 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     private int nDisponibles(){
         int n = 0;
         foreach (GameObject seguent in SeguentsObjectes){
-            if (seguent.GetComponent<IObjectes>().isAvailable()) ++n;
+            if (seguent.GetComponent<IObjectes>().isAvailable(this.gameObject)) ++n;
         }
         return n;
     }
 
     public int getState(){
-        return (int)state;
+        return (int)estat;
     }
 
     public void OnMouseDown()

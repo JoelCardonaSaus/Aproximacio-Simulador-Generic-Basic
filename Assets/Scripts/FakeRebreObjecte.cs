@@ -19,12 +19,12 @@ public class FakeRebreObjecte : MonoBehaviour, IObjectes
         return 0;
     }
 
-    public bool isAvailable(){
+    public bool isAvailable(GameObject objectePropietari){
         return true;
     }
     
-    public void recieveObject(GameObject entity){
-
+    public bool recieveObject(GameObject entity, float tempsActual){
+        return true;
     }
 
     public void ObreDetalls(){

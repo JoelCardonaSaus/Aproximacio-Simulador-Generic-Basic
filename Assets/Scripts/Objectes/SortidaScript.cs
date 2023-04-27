@@ -24,12 +24,12 @@ public class SortidaScript : MonoBehaviour, IObjectes
         this.timeScale = timeScale;
     }
 
-    public bool isAvailable()
+    public bool isAvailable(GameObject objectePropietari)
     {
         return true;
     }
 
-    public void recieveObject(GameObject entity)
+    public bool recieveObject(GameObject entity, float tempsActual)
     {
         entity.transform.position = transform.position + new Vector3(0,+1,0);
         Debug.Log("Temps entre entitats: " + tempsEntreEntitats[tempsEntreEntitats.Count-1]);
@@ -38,6 +38,7 @@ public class SortidaScript : MonoBehaviour, IObjectes
 
         // Recolectar estadistics de la entitat abans de destruirla!
         Destroy(entity, 1);
+        return true;
     }
 
     public int sendObject()

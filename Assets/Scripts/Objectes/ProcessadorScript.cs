@@ -96,13 +96,13 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
         }
     }
 
-    public bool isAvailable()
+    public bool isAvailable(GameObject objectePropietari)
     {
         if (entitatsProcessant.Count < maxEntitatsParalel) return true;
         else return false;
     }
 
-    public void recieveObject(GameObject entity)
+    public bool recieveObject(GameObject entity, float tempsActual)
     {
         Debug.Log("El PROCESSADOR rep un objecte");
         entity.transform.position = transform.position + new Vector3(0,+1,0);
@@ -111,6 +111,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
         double tempsTractament = distribuidor.getNextSample();
         entitatsProcessant.Add(entity, tempsTractament);
         tempsMigEntitatsProcessador += tempsTractament;
+        return false;
     }
     public int sendObject(){
         IObjectes NextObjecte;
@@ -120,7 +121,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
                 for (int i = 0; i < SeguentsObjectes.Count; i++)
                 {
                     NextObjecte = SeguentsObjectes[i].GetComponent<IObjectes>();
-                    if (NextObjecte.isAvailable()) {
+                    if (NextObjecte.isAvailable(this.gameObject)) {
                         return i;
                     }
                 }
@@ -130,7 +131,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
                 for (int i = 0; i < SeguentsObjectes.Count; i++){
                     int obj = Random.Range(0, SeguentsObjectes.Count);
                     NextObjecte = SeguentsObjectes[obj].GetComponent<IObjectes>();
-                    if (NextObjecte.isAvailable()) {
+                    if (NextObjecte.isAvailable(this.gameObject)) {
                         return i;
                     }
                 }
@@ -146,7 +147,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
     private int nDisponibles(){
         int n = 0;
         foreach (GameObject seguent in SeguentsObjectes){
-            if (seguent.GetComponent<IObjectes>().isAvailable()) ++n;
+            if (seguent.GetComponent<IObjectes>().isAvailable(this.gameObject)) ++n;
         }
         return n;
     }
