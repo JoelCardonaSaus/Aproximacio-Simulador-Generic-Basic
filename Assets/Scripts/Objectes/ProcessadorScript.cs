@@ -43,7 +43,8 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         float tempsProcessat = (float)distribuidor.getNextSample();
         tempsMigEntitatsProcessador+=tempsProcessat;
         entitatsProcessant.Add(entitat, tempsActual);
-        Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+(float)tempsProcessat, null, Esdeveniment.Tipus.PROCESSOS);
+        estat = estats.PROCESSANT;
+        Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+(float)tempsProcessat, entitat, Esdeveniment.Tipus.PROCESSOS);
         transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(e);
     }
 
