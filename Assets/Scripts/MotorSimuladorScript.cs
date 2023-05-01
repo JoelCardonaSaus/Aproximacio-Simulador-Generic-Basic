@@ -55,7 +55,7 @@ public class MotorSimuladorScript : MonoBehaviour
             detallsObert = objectesLlibreria.Count-1;
         }
         
-        //nouObjecte.GetComponent<GeneradorScript>().IniciaSimulacio();
+        if(objectesLlibreria.Count == 3) objectesLlibreria[0].GetComponent<GeneradorScript>().IniciaSimulacio();
     }
 
     public bool AlgunDetallsObert(){

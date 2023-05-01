@@ -33,7 +33,7 @@ public class CuaTests
         
         cuaScript.SeguentsObjectes.Add(fakeObject);
         //cuaScript.recieveObject(entitatTemporal);
-        cuaScript.sendObject();
+        //cuaScript.sendObject();
         
         // state EMPTY --> 0
         Assert.That(cuaScript.getState(), Is.EqualTo(0));

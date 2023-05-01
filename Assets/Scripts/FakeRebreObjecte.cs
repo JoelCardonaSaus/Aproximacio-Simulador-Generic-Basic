@@ -11,20 +11,24 @@ public class FakeRebreObjecte : MonoBehaviour, IObjectes
     private void Update() {
         
     }
-    public void setTimeScale(float timeScale){
-        
-    }
-
-    public int sendObject(){
-        return 0;
-    }
-
-    public bool isAvailable(GameObject objectePropietari){
+    public bool estaDisponible(GameObject objecteLlibreria)
+    {
         return true;
     }
-    
-    public bool recieveObject(GameObject entity, float tempsActual){
-        return true;
+
+    public void repEntitat(GameObject entitat, GameObject objecteLlibreria)
+    {
+     
+    }
+
+    public int cercaDisponible(){   
+        return -1;
+    }
+
+    // Retorna fals si no pot enviar cap entitat al que ha avisat que esta disponible
+    public bool notificacioDisponible(GameObject objecteLlibreria)
+    {
+        return false;
     }
 
     public void ObreDetalls(){

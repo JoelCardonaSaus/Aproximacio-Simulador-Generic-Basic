@@ -15,7 +15,6 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     public List<GameObject> SeguentsObjectes;
     public GameObject entitatTemporal;
     private double tempsSeguentEntitat;
-    private float timeScale = 1;
     public enum estats { GENERANT, BLOQUEJAT };
     public estats estat;
 
@@ -40,6 +39,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     }
 
     public void generarEsdevenimentArribada(float tempsActual){
+        if (distribuidor==null) distribuidor = new ConstantDistribution(5);
         Debug.Log("Es genera un esdeveniment " + tempsActual.ToString());
         tempsSeguentEntitat = distribuidor.getNextSample();
         Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+(float)tempsSeguentEntitat, null, Esdeveniment.Tipus.ARRIBADES);
@@ -54,7 +54,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
                     int objecteAEnviar = cercaDisponible();
                     if (objecteAEnviar != -1) { // Si hi ha algun dels seguents objectes disponible, aleshores s'instancia una nova entitat temporal i s'envia l'entitat al objecte disponible
                         GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
-                        SeguentsObjectes[objecteAEnviar].repEntitat(novaEntitat, this.gameObject);
+                        SeguentsObjectes[objecteAEnviar].GetComponent<IObjectes>().repEntitat(novaEntitat, this.gameObject);
                         ++nEntitatsGenerades;
                         if (tempsEntreEntitats.Count != 0) {
                             tempsEntreEntitats.Add(e.temps-tempsEntreEntitats[tempsEntreEntitats.Count-1]);
@@ -103,7 +103,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
      // Per parametre es passa el gameobject de la llibreria que avisa de la seva disponibilitat
     public bool notificacioDisponible(GameObject objecteLlibreria){
         if (estat == estats.GENERANT) return false;
-        else if (estat == estats.BLOQUEJAT && entity.GetComponent<IObjectes>().estaDisponible(this.gameObject))
+        else if (estat == estats.BLOQUEJAT && objecteLlibreria.GetComponent<IObjectes>().estaDisponible(this.gameObject))
         {
             estat = estats.GENERANT;
             ++nEntitatsGenerades;
@@ -125,7 +125,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         return false;
     }
 
-    void repEntitat(GameObject entitat, GameObject objecteLlibreria){} // El generador mai rebra una entitat
+    public void repEntitat(GameObject entitat, GameObject objecteLlibreria){} // El generador mai rebra una entitat
 
     public int getNGenerats(){
         return nEntitatsGenerades;

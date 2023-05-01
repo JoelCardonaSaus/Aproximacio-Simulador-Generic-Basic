@@ -21,7 +21,7 @@ public class GeneradorTest
         gs.distribucio = GeneradorScript.distribucionsProbabilitat.EXPONENTIAL;
         gs.parametres[0] = 1;
         gs.SeguentsObjectes.Add(fakeObject);
-        gs.sendObject();
+        //gs.sendObject();
         Assert.That(gs.getNGenerats(), Is.EqualTo(1));
     }
 

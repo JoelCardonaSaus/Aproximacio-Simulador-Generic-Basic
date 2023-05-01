@@ -17,138 +17,132 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     [SerializeField]
     public List<GameObject> SeguentsObjectes = new List<GameObject>(); 
     private Dictionary<GameObject, double> entitatsProcessant = new Dictionary<GameObject, double>();
-    private float timeScale = 1;
     //Variables per als estadistics
     private int nEntitatsTractades = 0;
     private int nEntitatsEntrades = 0;
     private double tempsMigEntitatsProcessador;
     private enum estats { ATURAT, PROCESSANT };
-    private estats estat = states.IDLE;
+    private estats estat = estats.ATURAT;
     private Queue<GameObject> entitatsAEnviar = new Queue<GameObject>();
+    private Queue<GameObject> objectesRebutjats = new Queue<GameObject>();
+
 
 
     // Start is called before the first frame update
     void Start()
-    {
-        
+    {   
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (entitatsProcessant.Count > 0){
-            List<GameObject> entitats = new List<GameObject>(entitatsProcessant.Keys);
-            foreach(GameObject entitat in entitats)
-            {
-                entitatsProcessant[entitat] -= (Time.deltaTime*timeScale);
-                if (entitatsProcessant[entitat] < 0){
-                    entitatsAEnviar.Enqueue(entitat);
-                    entitatsProcessant.Remove(entitat);
+    }
+
+    public void generarEsdevenimentProces(GameObject entitat, float tempsActual){
+        Debug.Log("Es genera un esdeveniment per a un processador " + tempsActual.ToString());
+        float tempsProcessat = (float)distribuidor.getNextSample();
+        tempsMigEntitatsProcessador+=tempsProcessat;
+        entitatsProcessant.Add(entitat, tempsActual);
+        Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+(float)tempsProcessat, null, Esdeveniment.Tipus.PROCESSOS);
+        transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(e);
+    }
+
+    public void TractarEsdeveniment(Esdeveniment e){
+        Debug.Log("Una entitat s'ha processat");
+        switch (e.tipusEsdeveniment)
+        {
+            case Esdeveniment.Tipus.PROCESSOS:
+                if (estat == estats.PROCESSANT){
                     ++nEntitatsTractades;
+                    entitatsProcessant.Remove(e.ObteEntitatImplicada());
+                    if (entitatsAEnviar.Count == 0){
+                        int nDisponible = cercaDisponible();
+                        if (nDisponible != -1){
+                            SeguentsObjectes[nDisponible].GetComponent<IObjectes>().repEntitat(e.ObteEntitatImplicada(), this.gameObject);
+                        } else {
+                            entitatsAEnviar.Enqueue(e.ObteEntitatImplicada());
+                        }
+                    } else {
+                        entitatsAEnviar.Enqueue(e.ObteEntitatImplicada());
+                    }
+                    if (entitatsAEnviar.Count+1 == maxEntitatsParalel) while (objectesRebutjats.Count != 0 && !AvisaDisponibilitat());
+                    if (entitatsProcessant.Count == 0) estat = estats.ATURAT;
                 }
-            }
-            timeBusy += (Time.deltaTime * timeScale);
-            if (entitatsProcessant.Count == 0) state = states.IDLE;
-        }
-        else {
-            timeIdle += (Time.deltaTime * timeScale);
-        }
-        if (entitatsAEnviar.Count > 0){
-            sendObject();
-        }
-
-    }
-
-    private void OnValidate() {
-        if (nParameters() != parametres.Length){
-            checkNumberOfParameters();    
-        } 
-    }
-
-    private int nParameters(){
-        if (distribucio == distribucionsProbabilitat.EXPONENTIAL || distribucio == distribucionsProbabilitat.POISSON){
-            return 1;
-        }
-        else if (distribucio == distribucionsProbabilitat.NORMAL || distribucio == distribucionsProbabilitat.BINOMIAL || distribucio == distribucionsProbabilitat.DISCRETEUNIFORM){
-            return 2;
-        }
-        else {
-            return 3;
+                else if (estat == estats.ATURAT){
+                    // Si entra per aqui mostrar una exepcio
+                }
+                
+                break;
         }
     }
 
-    private void checkNumberOfParameters(){
-
-        if (distribucio == distribucionsProbabilitat.EXPONENTIAL || distribucio == distribucionsProbabilitat.POISSON){
-            parametres = new double[1];
-        }
-        else if (distribucio == distribucionsProbabilitat.NORMAL || distribucio == distribucionsProbabilitat.BINOMIAL || distribucio == distribucionsProbabilitat.DISCRETEUNIFORM){
-            parametres = new double[2];
-        }
-        else {
-            parametres = new double[3];
-        }
+    private bool AvisaDisponibilitat(){
+        GameObject objecteNou = objectesRebutjats.Dequeue();
+        return objecteNou.GetComponent<IObjectes>().notificacioDisponible(this.gameObject);
     }
 
-    public bool isAvailable(GameObject objectePropietari)
+    public bool estaDisponible(GameObject objecteLlibreria)
     {
-        if (entitatsProcessant.Count < maxEntitatsParalel) return true;
-        else return false;
-    }
-
-    public bool recieveObject(GameObject entity, float tempsActual)
-    {
-        Debug.Log("El PROCESSADOR rep un objecte");
-        entity.transform.position = transform.position + new Vector3(0,+1,0);
-        if (state == states.IDLE) state = states.BUSY;
-        ++nEntitatsEntrades;
-        double tempsTractament = distribuidor.getNextSample();
-        entitatsProcessant.Add(entity, tempsTractament);
-        tempsMigEntitatsProcessador += tempsTractament;
+        if (maxEntitatsParalel == -1 || entitatsProcessant.Count < maxEntitatsParalel) return true;
+        else {
+            if (!objectesRebutjats.Contains(objecteLlibreria)) objectesRebutjats.Enqueue(objecteLlibreria);
+        }
         return false;
     }
-    public int sendObject(){
-        IObjectes NextObjecte;
+
+    public void repEntitat(GameObject entitat, GameObject objecteLlibreria)
+    {
+        entitat.transform.position = transform.position + new Vector3(0,+1,0);
+        ++nEntitatsEntrades;
+        if (estat == estats.ATURAT){
+            estat = estats.PROCESSANT;
+        }
+        float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+        generarEsdevenimentProces(entitat, tActual);
+    }
+
+    public bool notificacioDisponible(GameObject objecteLlibreria)
+    {
+        if (entitatsAEnviar.Count != 0){
+            objecteLlibreria.GetComponent<IObjectes>().repEntitat(entitatsAEnviar.Dequeue(), this.gameObject);
+            return true;
+        }
+        return false;
+    }
+    
+    public int cercaDisponible(){   
+        IObjectes SeguentObj;
+
         // Comprovem que almenys hi ha un objecte disponible
-        if (nDisponibles() >= 1){
-            if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
-                for (int i = 0; i < SeguentsObjectes.Count; i++)
-                {
-                    NextObjecte = SeguentsObjectes[i].GetComponent<IObjectes>();
-                    if (NextObjecte.isAvailable(this.gameObject)) {
-                        return i;
-                    }
+        if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
+            for (int i = 0; i < SeguentsObjectes.Count; i++)//GameObject objecte in SeguentsObjectes)
+            {
+                SeguentObj = SeguentsObjectes[i].GetComponent<IObjectes>();
+                if (SeguentObj.estaDisponible(this.gameObject)) {
+                    return i;
                 }
             }
-            
-            else if (enrutament == politiquesEnrutament.RANDOM){
-                for (int i = 0; i < SeguentsObjectes.Count; i++){
-                    int obj = Random.Range(0, SeguentsObjectes.Count);
-                    NextObjecte = SeguentsObjectes[obj].GetComponent<IObjectes>();
-                    if (NextObjecte.isAvailable(this.gameObject)) {
-                        return i;
-                    }
+        }
+
+        else if (enrutament == politiquesEnrutament.RANDOM){
+            for (int i = 0; i < SeguentsObjectes.Count; i++){
+                int obj = Random.Range(0, SeguentsObjectes.Count);
+                SeguentObj = SeguentsObjectes[obj].GetComponent<IObjectes>();
+                if (SeguentObj.estaDisponible(this.gameObject)) {
+                    return obj;
                 }
             }
         }
         return -1;
     }
 
-    public void setTimeScale(float timeScale){
-        this.timeScale = timeScale;
-    }
-
-    private int nDisponibles(){
-        int n = 0;
-        foreach (GameObject seguent in SeguentsObjectes){
-            if (seguent.GetComponent<IObjectes>().isAvailable(this.gameObject)) ++n;
-        }
-        return n;
-    }
-
-    public int getState(){
-        return (int)state;
-    }
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //                                                                  //
+    //                           FUNCIONS UI                            //
+    //                                                                  //
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
 
     public void OnMouseDown()
     {

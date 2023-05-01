@@ -16,10 +16,6 @@ public class CuaScript : MonoBehaviour, IObjectes
     private enum states { BUIT, NOBUIT };
     private states estat = states.BUIT;
 
-    private float timeEmpty = 0;
-    private float timeNoEmpty = 0;
-    private float timeScale = 1;
-
 
     void Start()
     {
@@ -36,13 +32,14 @@ public class CuaScript : MonoBehaviour, IObjectes
             return true;
         } 
         else{
-            if (!objectesRebutjats.Contains(objectePropietari))  objectesRebutjats.Enqueue(objectePropietari);
+            if (!objectesRebutjats.Contains(objecteLlibreria))  objectesRebutjats.Enqueue(objecteLlibreria);
             return false;
         }
     }
 
     public void repEntitat(GameObject entitat, GameObject objecteLlibreria)
     {
+        entitat.transform.position = transform.position + new Vector3(0,+1,0);
         if (estat == states.NOBUIT){
             cuaObjecte.Enqueue(entitat);
             float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
@@ -95,7 +92,7 @@ public class CuaScript : MonoBehaviour, IObjectes
         else if (estat == states.NOBUIT){
             if (objecteLlibreria.GetComponent<IObjectes>().estaDisponible(this.gameObject)){
                 GameObject entitatEnviar = cuaObjecte.Dequeue();
-                float tempsCua = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - tempsObjecteCua[entitatEnviar];
+                float tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitatEnviar];
                 tempsObjecteCua.Add(entitatEnviar, tempsCua);
                 objecteLlibreria.GetComponent<IObjectes>().repEntitat(entitatEnviar, this.gameObject);
 

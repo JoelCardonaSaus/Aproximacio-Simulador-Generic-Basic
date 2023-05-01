@@ -6,44 +6,44 @@ public class SortidaScript : MonoBehaviour, IObjectes
 {
     private int nEntitatsDestruides;
     private List<double> tempsEntreEntitats = new List<double>();
-    private float timeScale = 1;
-    // Start is called before the first frame update
+
+
     void Start()
     {
-        tempsEntreEntitats.Add(0); // Creem el temps d'espera per la primera entitat
         nEntitatsDestruides = 0;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        tempsEntreEntitats[tempsEntreEntitats.Count-1] += (Time.deltaTime * timeScale);
     }
 
-    public void setTimeScale(float timeScale){
-        this.timeScale = timeScale;
-    }
-
-    public bool isAvailable(GameObject objectePropietari)
+    public bool estaDisponible(GameObject objecteLlibreria)
     {
         return true;
     }
 
-    public bool recieveObject(GameObject entity, float tempsActual)
+    public void repEntitat(GameObject entitat, GameObject objecteLlibreria)
     {
-        entity.transform.position = transform.position + new Vector3(0,+1,0);
-        Debug.Log("Temps entre entitats: " + tempsEntreEntitats[tempsEntreEntitats.Count-1]);
+        Debug.Log("Es destrueix una nova entitat");
+        entitat.transform.position = transform.position + new Vector3(0,+1,0);
         ++nEntitatsDestruides;
-        tempsEntreEntitats.Add(0);
-
-        // Recolectar estadistics de la entitat abans de destruirla!
-        Destroy(entity, 1);
-        return true;
+        float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+        if (tempsEntreEntitats.Count != 0) {
+            tempsEntreEntitats.Add(tActual-tempsEntreEntitats[tempsEntreEntitats.Count-1]);
+        } else {
+            tempsEntreEntitats.Add(tActual);
+        }
+        Destroy(entitat, 1);        
     }
 
-    public int sendObject()
-    {
+    public int cercaDisponible(){   
         return -1;
+    }
+
+    // Retorna fals si no pot enviar cap entitat al que ha avisat que esta disponible
+    public bool notificacioDisponible(GameObject objecteLlibreria)
+    {
+        return false;
     }
 
     public int getNEntitatsDestruides(){
@@ -54,6 +54,14 @@ public class SortidaScript : MonoBehaviour, IObjectes
         tempsEntreEntitats.Add(0); // Creem el temps d'espera per la primera entitat
         nEntitatsDestruides = 0;
     }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //                                                                  //
+    //                           FUNCIONS UI                            //
+    //                                                                  //
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
 
     public void OnMouseDown()
     {
