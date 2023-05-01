@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class ProcessadorScript : MonoBehaviour, IObjectes
+public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 {
     public int maxEntitatsParalel = 1;
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
@@ -18,18 +18,12 @@ public class ProcessadorScript : MonoBehaviour, IObjectes
     public List<GameObject> SeguentsObjectes = new List<GameObject>(); 
     private Dictionary<GameObject, double> entitatsProcessant = new Dictionary<GameObject, double>();
     private float timeScale = 1;
-
     //Variables per als estadistics
     private int nEntitatsTractades = 0;
     private int nEntitatsEntrades = 0;
     private double tempsMigEntitatsProcessador;
-    private enum states { IDLE, BUSY };
-
-    private states state = states.IDLE;
-
-    private double timeIdle = 0;
-    private double timeBusy = 0;
-
+    private enum estats { ATURAT, PROCESSANT };
+    private estats estat = states.IDLE;
     private Queue<GameObject> entitatsAEnviar = new Queue<GameObject>();
 
 

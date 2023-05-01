@@ -36,6 +36,11 @@ public class MotorSimuladorScript : MonoBehaviour
         
     }
 
+    public float ObteTempsActual()
+    {
+        return tempsActual;
+    }
+
     public void afegirEsdeveniment(Esdeveniment nouEsdeveminemt){
         llistaEsdevenmients.Enqueue(nouEsdeveminemt);
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
+public class CuaScript : MonoBehaviour, IObjectes
 {
     
     public int capacitatMaxima = -1; // -1 == No hi ha capacitat màxima, >0 capacitat màxima de la cua
@@ -13,9 +13,7 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     private Queue<GameObject> cuaObjecte = new Queue<GameObject>();
     private Dictionary<GameObject, double> tempsObjecteCua = new Dictionary<GameObject, double>();
     private Queue<GameObject> objectesRebutjats = new Queue<GameObject>();
-    private List<GameObject> objectesPendentsPerRebre = new List<GameObject>();
-
-    private enum states { BUIT, NOBUIT, BLOQUEJAT };
+    private enum states { BUIT, NOBUIT };
     private states estat = states.BUIT;
 
     private float timeEmpty = 0;
@@ -25,54 +23,16 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     void Start()
     {
-        
     }
 
     void Update()
     {
-
     }
 
-    public void TractarEsdeveniment(Esdeveniment e){
-        switch (e.tipusEsdeveniment)
-        {
-            // Arribades a la cua
-            case Esdeveniment.Tipus.ARRIBADES:
-                if (objectesPendentsPerRebre.Contains(e.obteProductor())){
-                    objectesPendentsPerRebre.Remove(e.obteProductor()); // Aquest objecte ja no ens te pendent per enviar cap objecte
-                    if (estat == states.BUIT)
-                    {
-                        e.ObteEntitatImplicada().transform.position = transform.position + new Vector3(0,+1,0);    
-                        int seguentObjecteEnviar = sendObject();
-                        if (seguentObjecteEnviar != -1){ // Podem enviar directament a algun dels seguents objectes
-                            tempsObjecteCua.Add(e.ObteEntitatImplicada(), 1);
-                            Esdeveniment eNou = new Esdeveniment(this.gameObject, SeguentsObjectes[seguentObjecteEnviar], e.temps+1, e.ObteEntitatImplicada(), Esdeveniment.Tipus.ARRIBADES);
-                            transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(eNou);
-                        } else {
-                            cuaObjecte.Enqueue(e.ObteEntitatImplicada());
-                            tempsObjecteCua.Add(e.ObteEntitatImplicada(), e.temps);
-                            estat = states.NOBUIT;
-                        }
-                    }       
-                    else if (estat == states.NOBUIT){
-                        cuaObjecte.Enqueue(e.ObteEntitatImplicada());
-                        tempsObjecteCua.Add(e.ObteEntitatImplicada(), e.temps);
-                    }
-                } 
-                break;
-            case Esdeveniment.Tipus.PROCESSOS:
-                break;
-        }
-    }
 
-    public void setTimeScale(float timeScale){
-        this.timeScale = timeScale;
-    }
-
-    public bool isAvailable(GameObject objectePropietari)
+    public bool estaDisponible(GameObject objecteLlibreria)
     {
-        if (objectesPendentsPerRebre.Count < capacitatMaxima && (capacitatMaxima == -1 || cuaObjecte.Count < capacitatMaxima)){
-            objectesPendentsPerRebre.Add(objectePropietari);
+        if (capacitatMaxima == -1 || cuaObjecte.Count < capacitatMaxima){
             return true;
         } 
         else{
@@ -81,62 +41,99 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         }
     }
 
-    // L'objecte (entity) del parametre ens demana que li enviem una entitat de la cua
-    public bool recieveObject(GameObject entity, float tempsActual)
+    public void repEntitat(GameObject entitat, GameObject objecteLlibreria)
     {
-        if (estat != states.BUIT && entity.GetComponent<IObjectes>().isAvailable(this.gameObject)){
-            Esdeveniment e = new Esdeveniment(this.gameObject, entity, tempsActual, cuaObjecte.Dequeue(), Esdeveniment.Tipus.ARRIBADES);
-            transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(e);
-            if (cuaObjecte.Count == 0) estat = states.BUIT;
-
-            // Busquem si alguns dels seguents objectes que hem rebutjat anteriorment ens pot enviar una entitat
-            while (objectesRebutjats.Count != 0 && !objectesRebutjats.Dequeue().GetComponent<IObjectes>().recieveObject(this.gameObject, tempsActual)) return true;                
+        if (estat == states.NOBUIT){
+            cuaObjecte.Enqueue(entitat);
+            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            tempsObjecteCua.Add(entitat, tActual);
         }
-        else if (estat == states.BUIT) return false;
-        return false;
+        else if (estat == states.BUIT){
+            int nDisponible = cercaDisponible();
+            if (nDisponible != -1){
+                SeguentsObjectes[nDisponible].GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
+                tempsObjecteCua.Add(entitat, 0);
+            } else {
+                cuaObjecte.Enqueue(entitat);
+                float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+                tempsObjecteCua.Add(entitat, tActual);
+                estat = states.NOBUIT;
+            }
+        }
     }
 
-    public int sendObject(){
-        IObjectes NextObjecte;
+    public int cercaDisponible(){   
+        IObjectes SeguentObj;
 
         // Comprovem que almenys hi ha un objecte disponible
-        if (nDisponibles() >= 1){
-            if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
-                for (int i = 0; i < SeguentsObjectes.Count; i++)
-                {
-                    NextObjecte = SeguentsObjectes[i].GetComponent<IObjectes>();
-                    if (NextObjecte.isAvailable(this.gameObject)) {
-                        if (cuaObjecte.Count == 0) estat = states.BUIT;
-                        return i;
-                    }
+        if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
+            for (int i = 0; i < SeguentsObjectes.Count; i++)//GameObject objecte in SeguentsObjectes)
+            {
+                SeguentObj = SeguentsObjectes[i].GetComponent<IObjectes>();
+                if (SeguentObj.estaDisponible(this.gameObject)) {
+                    return i;
                 }
             }
-            else if (enrutament == politiquesEnrutament.RANDOM){
-                for (int i = 0; i < SeguentsObjectes.Count; i++){
-                    int obj = Random.Range(0, SeguentsObjectes.Count);
-                    NextObjecte = SeguentsObjectes[obj].GetComponent<IObjectes>();
-                    if (NextObjecte.isAvailable(this.gameObject)) {
-                        if (cuaObjecte.Count == 0) estat = states.BUIT;
-                        return i;
-                    }
+        }
+
+        else if (enrutament == politiquesEnrutament.RANDOM){
+            for (int i = 0; i < SeguentsObjectes.Count; i++){
+                int obj = Random.Range(0, SeguentsObjectes.Count);
+                SeguentObj = SeguentsObjectes[obj].GetComponent<IObjectes>();
+                if (SeguentObj.estaDisponible(this.gameObject)) {
+                    return obj;
                 }
             }
         }
         return -1;
     }
 
-    private int nDisponibles(){
-        int n = 0;
-        foreach (GameObject seguent in SeguentsObjectes){
-            if (seguent.GetComponent<IObjectes>().isAvailable(this.gameObject)) ++n;
+    // Retorna fals si no pot enviar cap entitat al que ha avisat que esta disponible
+    public bool notificacioDisponible(GameObject objecteLlibreria)
+    {
+        if (estat == states.BUIT) return false;
+        else if (estat == states.NOBUIT){
+            if (objecteLlibreria.GetComponent<IObjectes>().estaDisponible(this.gameObject)){
+                GameObject entitatEnviar = cuaObjecte.Dequeue();
+                float tempsCua = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - tempsObjecteCua[entitatEnviar];
+                tempsObjecteCua.Add(entitatEnviar, tempsCua);
+                objecteLlibreria.GetComponent<IObjectes>().repEntitat(entitatEnviar, this.gameObject);
+
+                // Avisem als objectes rebutjats que hi ha un lloc nou disponible a la cua, quan es trova un es para de avisar.
+                while (objectesRebutjats.Count != 0 && !AvisaDisponibilitat());
+                if (cuaObjecte.Count == 0) estat = states.BUIT;
+                else estat = states.NOBUIT;
+
+                return true;
+            }
         }
-        return n;
+        return false;
     }
+
+    // Retorna cert si l'objecte a qui s'avisa pot enviar-li una nova entitat
+    private bool AvisaDisponibilitat(){
+        GameObject objecteNou = objectesRebutjats.Dequeue();
+        return objecteNou.GetComponent<IObjectes>().notificacioDisponible(this.gameObject);
+
+    }
+
 
     public int getState(){
         return (int)estat;
     }
 
+    public int ObteTipusObjecte()
+    {
+        return 1;
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //                                                                  //
+    //                           FUNCIONS UI                            //
+    //                                                                  //
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
     public void OnMouseDown()
     {
         MotorSimuladorScript motorScript = gameObject.transform.parent.GetComponent<MotorSimuladorScript>();
@@ -162,11 +159,6 @@ public class CuaScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
             return true;
         }
         return false;
-    }
-
-    public int ObteTipusObjecte()
-    {
-        return 1;
     }
 
     public void ActualitzaPropietats(politiquesEnrutament nouEnrutament, int capacitatMax){
