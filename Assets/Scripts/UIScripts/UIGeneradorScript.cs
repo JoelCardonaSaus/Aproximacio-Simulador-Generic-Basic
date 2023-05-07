@@ -21,53 +21,72 @@ public class UIGeneradorScript : MonoBehaviour
     public GeneradorScript generadorScript;
     public Button aplicar;
     public Button cancela;
+    
     public void CanviEnrutamentSeleccionat()
     {
-        cancela.interactable = true;
-        aplicar.interactable = true;
-        if (enrutament.value == 0) politicaActual = GeneradorScript.politiquesEnrutament.PRIMERDISPONIBLE;
-        else if (enrutament.value == 1) politicaActual = GeneradorScript.politiquesEnrutament.RANDOM;
+        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        {
+            cancela.interactable = true;
+            aplicar.interactable = true;
+            if (enrutament.value == 0) politicaActual = GeneradorScript.politiquesEnrutament.PRIMERDISPONIBLE;
+            else if (enrutament.value == 1) politicaActual = GeneradorScript.politiquesEnrutament.RANDOM;
+        } else {
+            aplicar.interactable = false;
+            cancela.interactable = false;
+        }
     }
 
     public void CanviDistribuidorSeleccionat()
     {
-        cancela.interactable = true;
-        aplicar.interactable = true;
-        if (distribuidor.value == 1) distribucioActual = GeneradorScript.distribucionsProbabilitat.BINOMIAL;
-        else if (distribuidor.value == 0) distribucioActual = GeneradorScript.distribucionsProbabilitat.CONSTANT;
-        else if (distribuidor.value == 2) distribucioActual = GeneradorScript.distribucionsProbabilitat.EXPONENTIAL;
-        else if (distribuidor.value == 3) distribucioActual = GeneradorScript.distribucionsProbabilitat.NORMAL;
-        else if (distribuidor.value == 4) distribucioActual = GeneradorScript.distribucionsProbabilitat.POISSON;
-        else if (distribuidor.value == 5) distribucioActual = GeneradorScript.distribucionsProbabilitat.TRIANGULAR;
-        else if (distribuidor.value == 6) distribucioActual = GeneradorScript.distribucionsProbabilitat.DISCRETEUNIFORM;
-        
-        if (distribuidor.value == 0 || distribuidor.value == 2 || distribuidor.value == 4){
-            param2.SetActive(false); param3.SetActive(false);
-        }
-        else if (distribuidor.value == 3 || distribuidor.value == 1 || distribuidor.value == 6){
-            param2.SetActive(true); param3.SetActive(false);
+        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        {
+            cancela.interactable = true;
+            aplicar.interactable = true;
+            if (distribuidor.value == 1) distribucioActual = GeneradorScript.distribucionsProbabilitat.BINOMIAL;
+            else if (distribuidor.value == 0) distribucioActual = GeneradorScript.distribucionsProbabilitat.CONSTANT;
+            else if (distribuidor.value == 2) distribucioActual = GeneradorScript.distribucionsProbabilitat.EXPONENTIAL;
+            else if (distribuidor.value == 3) distribucioActual = GeneradorScript.distribucionsProbabilitat.NORMAL;
+            else if (distribuidor.value == 4) distribucioActual = GeneradorScript.distribucionsProbabilitat.POISSON;
+            else if (distribuidor.value == 5) distribucioActual = GeneradorScript.distribucionsProbabilitat.TRIANGULAR;
+            else if (distribuidor.value == 6) distribucioActual = GeneradorScript.distribucionsProbabilitat.DISCRETEUNIFORM;
+            
+            if (distribuidor.value == 0 || distribuidor.value == 2 || distribuidor.value == 4){
+                param2.SetActive(false); param3.SetActive(false);
+            }
+            else if (distribuidor.value == 3 || distribuidor.value == 1 || distribuidor.value == 6){
+                param2.SetActive(true); param3.SetActive(false);
+            } else {
+                param2.SetActive(true); param3.SetActive(true);
+            }
         } else {
-            param2.SetActive(true); param3.SetActive(true);
+            aplicar.interactable = false;
+            cancela.interactable = false;
         }
     }
 
     public void CanviaParametres(){
-        aplicar.interactable = true;
-        cancela.interactable = true;
-        if (param2.activeSelf && param3.activeSelf){
-            parametresActuals = new double[3];
-            parametresActuals[0] = Convert.ToDouble(iParam1.text);
-            parametresActuals[1] = Convert.ToDouble(iParam2.text);
-            parametresActuals[2] = Convert.ToDouble(iParam3.text);
-        } 
-        else if (param2.activeSelf && !param3.activeSelf){
-            parametresActuals = new double[2];
-            parametresActuals[0] = Convert.ToDouble(iParam1.text);
-            parametresActuals[1] = Convert.ToDouble(iParam2.text);
-        }
-        else {
-            parametresActuals = new double[1];
-            parametresActuals[0] = Convert.ToDouble(iParam1);
+        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        {
+            aplicar.interactable = true;
+            cancela.interactable = true;
+            if (param2.activeSelf && param3.activeSelf){
+                parametresActuals = new double[3];
+                parametresActuals[0] = Convert.ToDouble(iParam1.text);
+                parametresActuals[1] = Convert.ToDouble(iParam2.text);
+                parametresActuals[2] = Convert.ToDouble(iParam3.text);
+            } 
+            else if (param2.activeSelf && !param3.activeSelf){
+                parametresActuals = new double[2];
+                parametresActuals[0] = Convert.ToDouble(iParam1.text);
+                parametresActuals[1] = Convert.ToDouble(iParam2.text);
+            }
+            else {
+                parametresActuals = new double[1];
+                parametresActuals[0] = Convert.ToDouble(iParam1);
+            }
+        } else {
+            aplicar.interactable = false;
+            cancela.interactable = false;
         }
     }
 

@@ -19,16 +19,28 @@ public class UICuaScript : MonoBehaviour
 
     public void CanviEnrutamentSeleccionat()
     {
-        cancela.interactable = true;
-        aplicar.interactable = true;
-        if (enrutament.value == 0) politicaActual = CuaScript.politiquesEnrutament.PRIMERDISPONIBLE;
-        else if (enrutament.value == 1) politicaActual = CuaScript.politiquesEnrutament.RANDOM;
+        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        {
+            cancela.interactable = true;
+            aplicar.interactable = true;
+            if (enrutament.value == 0) politicaActual = CuaScript.politiquesEnrutament.PRIMERDISPONIBLE;
+            else if (enrutament.value == 1) politicaActual = CuaScript.politiquesEnrutament.RANDOM;
+        } else {
+            aplicar.interactable = false;
+            cancela.interactable = false;
+        }
     }
 
     public void CanviCapacitat(){
-        cancela.interactable = true;
-        aplicar.interactable = true;
-        capacitatActual = Convert.ToInt32(capacitatInput.text);
+        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        {
+            cancela.interactable = true;
+            aplicar.interactable = true;
+            capacitatActual = int.Parse(capacitatInput.text);
+        } else {
+            aplicar.interactable = false;
+            cancela.interactable = false;
+        }
     }
 
     public void AplicarCanvis(){

@@ -146,6 +146,7 @@ public class CuaScript : MonoBehaviour, IObjectes
     }   
 
     public void TancaDetalls(){
+        gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.GetComponent<UICuaScript>().CancelaCanvis();
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 

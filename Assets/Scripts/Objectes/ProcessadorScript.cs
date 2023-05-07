@@ -160,6 +160,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     }   
 
     public void TancaDetalls(){
+        gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.GetComponent<UIProcessadorScript>().CancelaCanvis();
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
     }
     

@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 
 public class UIScript : MonoBehaviour
 {
+    private enum estatsSimulacio { SIMULANT, ATURAT, PAUSAT };
+    private estatsSimulacio estat;
     private enum btnSeleccionat { GENERADOR, CUA, PROCESSADOR, SORTIDA, JUNTAR, DESJUNTAR, ELIMINAR, CAP };
     private btnSeleccionat seleccionat;
     public Button generadorButton;
@@ -16,6 +18,8 @@ public class UIScript : MonoBehaviour
     public Button juntarButton;
     public Button desjuntarButton;
     public Button eliminarButton;
+    public Button comencarPausar;
+    public Button reiniciar;
 
     public GameObject motorSimulador;
     private GameObject generadorPrefab;
@@ -47,18 +51,20 @@ public class UIScript : MonoBehaviour
 
 
     [SerializeField] public Texture2D[] imatgesCursor = new Texture2D[6];
+    [SerializeField] public Texture2D[] imatgesStartPause = new Texture2D[2];
 
     // Start is called before the first frame update
     void Start()
     {
         seleccionat = btnSeleccionat.CAP;
+        estat = estatsSimulacio.ATURAT;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0)){
-            if (objecteLlibreriaSeleccionat() && !RatoliSobreBotonsUI())
+            if (estat == estatsSimulacio.ATURAT && objecteLlibreriaSeleccionat() && !RatoliSobreBotonsUI())
             {
                 instanciarObjecte();
             }  
@@ -128,18 +134,36 @@ public class UIScript : MonoBehaviour
         seleccionarOpcio(btnSeleccionat.ELIMINAR);
     }
 
-    private void seleccionarOpcio(btnSeleccionat seleccionatNou){
-        if (seleccionatNou != seleccionat){
-            deseleccionarBackground(seleccionat);
-            if (seleccionatNou != btnSeleccionat.CAP){
-                seleccionarBackground(seleccionatNou);
-            }
-            seleccionat = seleccionatNou;
+    public void botoComencarPausaClicat(){
+        if (estat == estatsSimulacio.SIMULANT) {
+            estat = estatsSimulacio.PAUSAT;
+            comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
+        } else {
+            if (estat == estatsSimulacio.PAUSAT) comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
+            else comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
+            estat = estatsSimulacio.SIMULANT;
         }
-        else if (seleccionatNou == seleccionat){
-            deseleccionarBackground(seleccionatNou);
-            seleccionat = btnSeleccionat.CAP;
-            seleccionarBackground(seleccionat);
+    }
+
+    public void botoReiniciaClicat(){
+        estat = estatsSimulacio.ATURAT;
+        comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
+    }
+
+    private void seleccionarOpcio(btnSeleccionat seleccionatNou){
+        if (estat == estatsSimulacio.ATURAT){
+            if (seleccionatNou != seleccionat){
+                deseleccionarBackground(seleccionat);
+                if (seleccionatNou != btnSeleccionat.CAP){
+                    seleccionarBackground(seleccionatNou);
+                }
+                seleccionat = seleccionatNou;
+            }
+            else if (seleccionatNou == seleccionat){
+                deseleccionarBackground(seleccionatNou);
+                seleccionat = btnSeleccionat.CAP;
+                seleccionarBackground(seleccionat);
+            }
         }
     }
 
@@ -238,5 +262,9 @@ public class UIScript : MonoBehaviour
                 seleccionarBackground(seleccionat);
                 break;
         }
+    }
+
+    public int obteEstatSimulador(){
+        return (int)estat;
     }
 }
