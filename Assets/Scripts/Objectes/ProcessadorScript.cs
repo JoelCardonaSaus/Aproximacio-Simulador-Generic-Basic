@@ -8,7 +8,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
     [SerializeField]
     public politiquesEnrutament enrutament;
-    public enum distribucionsProbabilitat { BINOMIAL, CONSTANT, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
+    public enum distribucionsProbabilitat { CONSTANT, BINOMIAL, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
     [SerializeField]
     public distribucionsProbabilitat distribucio;
     [SerializeField]
@@ -16,15 +16,15 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     public ISeguentNumero distribuidor;
     [SerializeField]
     public List<GameObject> SeguentsObjectes = new List<GameObject>(); 
-    private Dictionary<GameObject, double> entitatsProcessant = new Dictionary<GameObject, double>();
+    private Dictionary<GameObject, double> entitatsProcessant;
     //Variables per als estadistics
     private int nEntitatsTractades = 0;
     private int nEntitatsEntrades = 0;
     private double tempsMigEntitatsProcessador;
     private enum estats { ATURAT, PROCESSANT };
-    private estats estat = estats.ATURAT;
-    private Queue<GameObject> entitatsAEnviar = new Queue<GameObject>();
-    private Queue<GameObject> objectesRebutjats = new Queue<GameObject>();
+    private estats estat;
+    private Queue<GameObject> entitatsAEnviar;
+    private Queue<GameObject> objectesRebutjats;
 
 
 
@@ -36,6 +36,16 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     // Update is called once per frame
     void Update()
     {
+    }
+
+    public void IniciaSimulacio(){
+        estat = estats.ATURAT;
+        nEntitatsEntrades = 0;
+        nEntitatsTractades = 0;
+        tempsMigEntitatsProcessador = 0;
+        entitatsAEnviar = new Queue<GameObject>();
+        objectesRebutjats = new Queue<GameObject>();
+        entitatsProcessant = new Dictionary<GameObject, double>();
     }
 
     public void generarEsdevenimentProces(GameObject entitat, float tempsActual){
@@ -66,7 +76,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
                     } else {
                         entitatsAEnviar.Enqueue(e.ObteEntitatImplicada());
                     }
-                    if (entitatsAEnviar.Count+1 == maxEntitatsParalel) while (objectesRebutjats.Count != 0 && !AvisaDisponibilitat());
+                    if (entitatsAEnviar.Count == maxEntitatsParalel) while (objectesRebutjats.Count != 0 && !AvisaDisponibilitat());
                     if (entitatsProcessant.Count == 0) estat = estats.ATURAT;
                 }
                 else if (estat == estats.ATURAT){

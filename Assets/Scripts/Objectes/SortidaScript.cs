@@ -5,7 +5,7 @@ using UnityEngine;
 public class SortidaScript : MonoBehaviour, IObjectes
 {
     private int nEntitatsDestruides;
-    private List<double> tempsEntreEntitats = new List<double>();
+    private List<double> tempsEntreEntitats;
 
 
     void Start()
@@ -15,6 +15,11 @@ public class SortidaScript : MonoBehaviour, IObjectes
 
     void Update()
     {
+    }
+
+    public void IniciaSimulacio(){
+        nEntitatsDestruides = 0;
+        tempsEntreEntitats = new List<double>();
     }
 
     public bool estaDisponible(GameObject objecteLlibreria)
@@ -73,11 +78,11 @@ public class SortidaScript : MonoBehaviour, IObjectes
     }
 
     public void ObreDetalls(){
-        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        //gameObject.transform.GetChild(0).gameObject.SetActive(true);
     }   
 
     public void TancaDetalls(){
-        gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        //gameObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 
     public bool RatoliSobreDetalls(){

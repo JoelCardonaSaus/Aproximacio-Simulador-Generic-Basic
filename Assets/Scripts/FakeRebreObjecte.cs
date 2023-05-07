@@ -11,6 +11,9 @@ public class FakeRebreObjecte : MonoBehaviour, IObjectes
     private void Update() {
         
     }
+
+    public void IniciaSimulacio() {}
+
     public bool estaDisponible(GameObject objecteLlibreria)
     {
         return true;

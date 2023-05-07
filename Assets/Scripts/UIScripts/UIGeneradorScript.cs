@@ -71,18 +71,18 @@ public class UIGeneradorScript : MonoBehaviour
             cancela.interactable = true;
             if (param2.activeSelf && param3.activeSelf){
                 parametresActuals = new double[3];
-                parametresActuals[0] = Convert.ToDouble(iParam1.text);
-                parametresActuals[1] = Convert.ToDouble(iParam2.text);
-                parametresActuals[2] = Convert.ToDouble(iParam3.text);
+                parametresActuals[0] = Double.Parse(iParam1.text);
+                parametresActuals[1] = Double.Parse(iParam2.text);
+                parametresActuals[2] = Double.Parse(iParam3.text);
             } 
             else if (param2.activeSelf && !param3.activeSelf){
                 parametresActuals = new double[2];
-                parametresActuals[0] = Convert.ToDouble(iParam1.text);
-                parametresActuals[1] = Convert.ToDouble(iParam2.text);
+                parametresActuals[0] = Double.Parse(iParam1.text);
+                parametresActuals[1] = Double.Parse(iParam2.text);
             }
             else {
                 parametresActuals = new double[1];
-                parametresActuals[0] = Convert.ToDouble(iParam1);
+                parametresActuals[0] = Double.Parse(iParam1.text);
             }
         } else {
             aplicar.interactable = false;
@@ -91,12 +91,12 @@ public class UIGeneradorScript : MonoBehaviour
     }
 
     public void AplicarCanvis(){
-        generadorScript.ActualitzaPropietats(politicaActual, distribucioActual, parametresActuals);
         politicaConfirmada = politicaActual;
         distribucioConfirmada = distribucioActual;
         parametresConfirmats = parametresActuals;
         cancela.interactable = false;
         aplicar.interactable = false;
+        generadorScript.ActualitzaPropietats(politicaActual, distribucioActual, parametresActuals);
     }
 
     public void CancelaCanvis(){

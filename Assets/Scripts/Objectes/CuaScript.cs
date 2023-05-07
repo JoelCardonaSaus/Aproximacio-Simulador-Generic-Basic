@@ -10,11 +10,11 @@ public class CuaScript : MonoBehaviour, IObjectes
     public List<GameObject> SeguentsObjectes;
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
     public politiquesEnrutament enrutament;
-    private Queue<GameObject> cuaObjecte = new Queue<GameObject>();
-    private Dictionary<GameObject, double> tempsObjecteCua = new Dictionary<GameObject, double>();
-    private Queue<GameObject> objectesRebutjats = new Queue<GameObject>();
+    private Queue<GameObject> cuaObjecte;
+    private Dictionary<GameObject, double> tempsObjecteCua;
+    private Queue<GameObject> objectesRebutjats;
     private enum states { BUIT, NOBUIT };
-    private states estat = states.BUIT;
+    private states estat;
 
 
     void Start()
@@ -25,6 +25,12 @@ public class CuaScript : MonoBehaviour, IObjectes
     {
     }
 
+    public void IniciaSimulacio(){
+        estat = states.BUIT;
+        objectesRebutjats = new Queue<GameObject>();
+        tempsObjecteCua = new Dictionary<GameObject, double>();
+        cuaObjecte = new Queue<GameObject>();
+    }
 
     public bool estaDisponible(GameObject objecteLlibreria)
     {

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public interface IObjectes
 {
+    void IniciaSimulacio();
     void repEntitat(GameObject entitat, GameObject objecteLlibreria); 
     bool notificacioDisponible(GameObject objecteLlibreria);
     bool estaDisponible(GameObject objecteLlibreria);

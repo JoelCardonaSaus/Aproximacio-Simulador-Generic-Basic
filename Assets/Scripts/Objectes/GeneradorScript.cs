@@ -8,7 +8,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
     public politiquesEnrutament enrutament;
-    public enum distribucionsProbabilitat { BINOMIAL, CONSTANT, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
+    public enum distribucionsProbabilitat { CONSTANT, BINOMIAL, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
     public distribucionsProbabilitat distribucio;
     public double[] parametres = new double[] {1,1,1}; // Inicialitza per evitar problemes
     public ISeguentNumero distribuidor;
@@ -20,7 +20,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     //Variables per als estadistics
     private int nEntitatsGenerades = 0;
-    private List<double> tempsEntreEntitats = new List<double>();
+    private List<double> tempsEntreEntitats;
 
 
     void Start()
@@ -36,6 +36,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     public void IniciaSimulacio(){
         nEntitatsGenerades = 0;
         generarEsdevenimentArribada(0);
+        tempsEntreEntitats = new List<double>();
     }
 
     public void generarEsdevenimentArribada(float tempsActual){

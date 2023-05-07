@@ -36,6 +36,12 @@ public class MotorSimuladorScript : MonoBehaviour
         
     }
 
+    public void IniciaSimulacio(){
+        for (int i = 0; i < objectesLlibreria.Count; i++){
+            objectesLlibreria[i].GetComponent<IObjectes>().IniciaSimulacio();
+        }
+    }
+
     public float ObteTempsActual()
     {
         return tempsActual;
@@ -51,11 +57,9 @@ public class MotorSimuladorScript : MonoBehaviour
                 objectesLlibreria[detallsObert].GetComponent<IObjectes>().TancaDetalls();
             }
             nouObjecte.GetComponent<IObjectes>().ObreDetalls();
-            objectesLlibreria.Add(nouObjecte);
-            detallsObert = objectesLlibreria.Count-1;
         }
-        
-        if(objectesLlibreria.Count == 3) objectesLlibreria[0].GetComponent<GeneradorScript>().IniciaSimulacio();
+        objectesLlibreria.Add(nouObjecte);
+        detallsObert = objectesLlibreria.Count-1;
     }
 
     public bool AlgunDetallsObert(){

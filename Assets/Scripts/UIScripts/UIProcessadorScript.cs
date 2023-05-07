@@ -79,18 +79,18 @@ public class UIProcessadorScript : MonoBehaviour
             cancela.interactable = true;
             if (param2.activeSelf && param3.activeSelf){
                 parametresActuals = new double[3];
-                parametresActuals[0] = Convert.ToDouble(iParam1.text);
-                parametresActuals[1] = Convert.ToDouble(iParam2.text);
-                parametresActuals[2] = Convert.ToDouble(iParam3.text);
+                parametresActuals[0] = Double.Parse(iParam1.text);
+                parametresActuals[1] = Double.Parse(iParam2.text);
+                parametresActuals[2] = Double.Parse(iParam3.text);
             } 
             else if (param2.activeSelf && !param3.activeSelf){
                 parametresActuals = new double[2];
-                parametresActuals[0] = Convert.ToDouble(iParam1.text);
-                parametresActuals[1] = Convert.ToDouble(iParam2.text);
+                parametresActuals[0] = Double.Parse(iParam1.text);
+                parametresActuals[1] = Double.Parse(iParam2.text);
             }
             else {
                 parametresActuals = new double[1];
-                parametresActuals[0] = Convert.ToDouble(iParam1);
+                parametresActuals[0] = Double.Parse(iParam1.text);
             }
         } else {
             aplicar.interactable = false;
@@ -103,7 +103,7 @@ public class UIProcessadorScript : MonoBehaviour
         {
             cancela.interactable = true;
             aplicar.interactable = true;
-            capacitatActual = Convert.ToInt32(capacitatInput.text);
+            capacitatActual = int.Parse(capacitatInput.text);
         } else {
             aplicar.interactable = false;
             cancela.interactable = false;
@@ -111,13 +111,13 @@ public class UIProcessadorScript : MonoBehaviour
     }
 
     public void AplicarCanvis(){
-        processadorScript.ActualitzaPropietats(politicaActual, distribucioActual, parametresActuals, capacitatActual);
         politicaConfirmada = politicaActual;
         distribucioConfirmada = distribucioActual;
         parametresConfirmats = parametresActuals;
         capacitatConfirmada = capacitatActual;
         cancela.interactable = false;
         aplicar.interactable = false;
+        processadorScript.ActualitzaPropietats(politicaActual, distribucioActual, parametresActuals, capacitatActual);
     }
 
     public void CancelaCanvis(){

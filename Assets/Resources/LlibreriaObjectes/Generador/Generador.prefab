@@ -132,6 +132,7 @@ MonoBehaviour:
   - 10
   SeguentsObjectes: []
   entitatTemporal: {fileID: 0}
+  estat: 0
 --- !u!114 &1332961814198737861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,6 +314,14 @@ PrefabInstance:
     - target: {fileID: 6191334175442004547, guid: 207d8e9bcbf2cf54ebc7e4769c5826be, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7208442711932706660, guid: 207d8e9bcbf2cf54ebc7e4769c5826be, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[0].m_Text
+      value: Constant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7208442711932706660, guid: 207d8e9bcbf2cf54ebc7e4769c5826be, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[1].m_Text
+      value: Binomial
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 207d8e9bcbf2cf54ebc7e4769c5826be, type: 3}
