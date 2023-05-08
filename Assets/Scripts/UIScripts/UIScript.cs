@@ -52,6 +52,7 @@ public class UIScript : MonoBehaviour
 
     [SerializeField] public Texture2D[] imatgesCursor = new Texture2D[6];
     [SerializeField] public Texture2D[] imatgesStartPause = new Texture2D[2];
+    private GameObject[] ajuntar = new GameObject[2];
 
     // Start is called before the first frame update
     void Start()
@@ -154,6 +155,7 @@ public class UIScript : MonoBehaviour
 
     private void seleccionarOpcio(btnSeleccionat seleccionatNou){
         if (estat == estatsSimulacio.ATURAT){
+            if (seleccionat == btnSeleccionat.JUNTAR) ajuntar = new GameObject[2];
             if (seleccionatNou != seleccionat){
                 deseleccionarBackground(seleccionat);
                 if (seleccionatNou != btnSeleccionat.CAP){
@@ -264,6 +266,17 @@ public class UIScript : MonoBehaviour
                 seleccionarBackground(seleccionat);
                 break;
         }
+    }
+
+    public void ajuntarObjectes(GameObject objectePerJuntar){
+        if (ajuntar[0] == null) ajuntar[0] = objectePerJuntar;
+        else{
+            ajuntar[1] = objectePerJuntar;
+            ajuntar[0].GetComponent<IObjectes>().afegeixSeguentObjecte(ajuntar[1]);
+            ajuntar = new GameObject[2];
+            seleccionarOpcio(btnSeleccionat.JUNTAR);
+        }
+
     }
 
     public int obteEstatSimulador(){

@@ -54,4 +54,8 @@ public class FakeRebreObjecte : MonoBehaviour, IObjectes
     {
         return -1;
     }
+
+    public void afegeixSeguentObjecte(GameObject objecte){
+        
+    }
 }
