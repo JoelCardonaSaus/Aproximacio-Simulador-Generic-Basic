@@ -66,7 +66,7 @@ public class UIScript : MonoBehaviour
         if (Input.GetMouseButtonDown(0)){
             if (estat == estatsSimulacio.ATURAT && objecteLlibreriaSeleccionat() && !RatoliSobreBotonsUI())
             {
-                instanciarObjecte();
+                if (seleccionat == btnSeleccionat.GENERADOR || seleccionat == btnSeleccionat.CUA || seleccionat == btnSeleccionat.PROCESSADOR || seleccionat == btnSeleccionat.SORTIDA) instanciarObjecte();
             }  
             if ((motorSimulador.GetComponent<MotorSimuladorScript>().AlgunDetallsObert()) && (!RatoliSobreAlgunObjece() && !RatoliSobreDetalls())){
                 motorSimulador.GetComponent<MotorSimuladorScript>().TancaDetallsObert();
@@ -139,6 +139,7 @@ public class UIScript : MonoBehaviour
             estat = estatsSimulacio.PAUSAT;
             comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
         } else {
+            seleccionarOpcio(btnSeleccionat.CAP);
             if (estat == estatsSimulacio.PAUSAT) comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
             else comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
             estat = estatsSimulacio.SIMULANT;
@@ -267,5 +268,9 @@ public class UIScript : MonoBehaviour
 
     public int obteEstatSimulador(){
         return (int)estat;
+    }
+
+    public int obteBotoSeleccionat(){
+        return (int)seleccionat;
     }
 }

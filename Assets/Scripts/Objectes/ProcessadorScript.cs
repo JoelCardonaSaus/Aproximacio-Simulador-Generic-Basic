@@ -48,6 +48,10 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         entitatsProcessant = new Dictionary<GameObject, double>();
     }
 
+    public void intentaEliminarObjecteSeguents(GameObject objecte){
+        if (SeguentsObjectes.Contains(objecte)) SeguentsObjectes.Remove(objecte);
+    }
+
     public void generarEsdevenimentProces(GameObject entitat, float tempsActual){
         Debug.Log("Es genera un esdeveniment per a un processador " + tempsActual.ToString());
         float tempsProcessat = (float)distribuidor.getNextSample();
@@ -157,12 +161,14 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     public void OnMouseDown()
     {
+
         MotorSimuladorScript motorScript = gameObject.transform.parent.GetComponent<MotorSimuladorScript>();
         if (motorScript.AlgunDetallsObert())
         {
             motorScript.TancaDetallsObert();
         }
-        motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
     }
 
     public void ObreDetalls(){

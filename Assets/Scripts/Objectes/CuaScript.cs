@@ -32,6 +32,10 @@ public class CuaScript : MonoBehaviour, IObjectes
         cuaObjecte = new Queue<GameObject>();
     }
 
+    public void intentaEliminarObjecteSeguents(GameObject objecte){
+        if (SeguentsObjectes.Contains(objecte)) SeguentsObjectes.Remove(objecte);
+    }
+
     public bool estaDisponible(GameObject objecteLlibreria)
     {
         if (capacitatMaxima == -1 || cuaObjecte.Count < capacitatMaxima){
@@ -144,7 +148,8 @@ public class CuaScript : MonoBehaviour, IObjectes
         {
             motorScript.TancaDetallsObert();
         }
-        motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
     }
 
     public void ObreDetalls(){

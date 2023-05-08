@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2698606086798620570}
   - component: {fileID: 5944061433047683365}
   - component: {fileID: -5438141453143975378}
+  - component: {fileID: 2558714988152187920}
   m_Layer: 6
   m_Name: Sortida
   m_TagString: ObjecteLlibreria
@@ -97,3 +98,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d801f6126199d604bb8eb113034ff842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &2558714988152187920
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3614454392551653268}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.014766693, y: 0.1772039}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 7, y: 5.95}
+    newSize: {x: 7, y: 5.95}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.9580064, y: 4.532371}
+  m_EdgeRadius: 0

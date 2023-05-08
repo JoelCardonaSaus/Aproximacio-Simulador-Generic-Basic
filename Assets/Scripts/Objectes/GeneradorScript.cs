@@ -39,6 +39,10 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         tempsEntreEntitats = new List<double>();
     }
 
+    public void intentaEliminarObjecteSeguents(GameObject objecte){
+        if (SeguentsObjectes.Contains(objecte)) SeguentsObjectes.Remove(objecte);
+    }
+
     public void generarEsdevenimentArribada(float tempsActual){
         if (distribuidor==null) distribuidor = new ConstantDistribution(5);
         Debug.Log("Es genera un esdeveniment " + tempsActual.ToString());
@@ -206,7 +210,8 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         {
             motorScript.TancaDetallsObert();
         }
-        motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
     }
     
 }

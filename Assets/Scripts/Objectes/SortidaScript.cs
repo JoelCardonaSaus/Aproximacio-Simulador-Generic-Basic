@@ -22,6 +22,8 @@ public class SortidaScript : MonoBehaviour, IObjectes
         tempsEntreEntitats = new List<double>();
     }
 
+    public void intentaEliminarObjecteSeguents(GameObject objecte){    }
+
     public bool estaDisponible(GameObject objecteLlibreria)
     {
         return true;
@@ -75,6 +77,7 @@ public class SortidaScript : MonoBehaviour, IObjectes
         {
             motorScript.TancaDetallsObert();
         }
+        if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
     }
 
     public void ObreDetalls(){
