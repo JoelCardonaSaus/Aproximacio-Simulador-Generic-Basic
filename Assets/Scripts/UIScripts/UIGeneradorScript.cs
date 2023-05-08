@@ -83,15 +83,6 @@ public class UIGeneradorScript : MonoBehaviour
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mínim:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Màxim:";
             } 
-            
-            if (distribuidor.value == 0 || distribuidor.value == 2 || distribuidor.value == 4){
-                param2.SetActive(false); param3.SetActive(false);
-            }
-            else if (distribuidor.value == 3 || distribuidor.value == 1 || distribuidor.value == 6){
-                param2.SetActive(true); param3.SetActive(false);
-            } else {
-                param2.SetActive(true); param3.SetActive(true);
-            }
         } else {
             aplicar.interactable = false;
             cancela.interactable = false;
@@ -171,9 +162,10 @@ public class UIGeneradorScript : MonoBehaviour
     void Start()
     {
         generadorScript = gameObject.transform.parent.GetComponentInParent<GeneradorScript>();
-        distribucioConfirmada = GeneradorScript.distribucionsProbabilitat.BINOMIAL;
+        distribucioConfirmada = GeneradorScript.distribucionsProbabilitat.CONSTANT;
         politicaConfirmada = GeneradorScript.politiquesEnrutament.PRIMERDISPONIBLE;
-        parametresConfirmats = new double[1];
+        parametresConfirmats = new double[1]{5};
+        
     }
 
     void Update()
