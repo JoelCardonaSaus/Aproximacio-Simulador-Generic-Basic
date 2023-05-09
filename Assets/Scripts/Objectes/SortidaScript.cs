@@ -22,6 +22,8 @@ public class SortidaScript : MonoBehaviour, IObjectes
         tempsEntreEntitats = new List<double>();
     }
 
+    public void intentaEliminarObjecteSeguents(GameObject objecte){    }
+
     public bool estaDisponible(GameObject objecteLlibreria)
     {
         return true;
@@ -55,6 +57,10 @@ public class SortidaScript : MonoBehaviour, IObjectes
         return nEntitatsDestruides;
     }
 
+    public void afegeixSeguentObjecte(GameObject objecte){
+        
+    }
+
     public void inicialitzaPerFerTests(){
         tempsEntreEntitats.Add(0); // Creem el temps d'espera per la primera entitat
         nEntitatsDestruides = 0;
@@ -75,6 +81,8 @@ public class SortidaScript : MonoBehaviour, IObjectes
         {
             motorScript.TancaDetallsObert();
         }
+        if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 4) UIScript.Instancia.ajuntarObjectes(this.gameObject);
     }
 
     public void ObreDetalls(){

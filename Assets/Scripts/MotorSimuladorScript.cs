@@ -62,6 +62,14 @@ public class MotorSimuladorScript : MonoBehaviour
         detallsObert = objectesLlibreria.Count-1;
     }
 
+    public void eliminarObjecteLlista(GameObject objecte) {
+        for (int i = 0; i < objectesLlibreria.Count; i++) {
+            objectesLlibreria[i].GetComponent<IObjectes>().intentaEliminarObjecteSeguents(objecte);
+        }
+        objectesLlibreria.Remove(objecte);
+        Destroy(objecte);
+    }
+
     public bool AlgunDetallsObert(){
         return detallsObert != -1;
     }

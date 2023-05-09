@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class UIProcessadorScript : MonoBehaviour
 {
@@ -50,22 +51,46 @@ public class UIProcessadorScript : MonoBehaviour
         {
             cancela.interactable = true;
             aplicar.interactable = true;
-            if (distribuidor.value == 1) distribucioActual = ProcessadorScript.distribucionsProbabilitat.BINOMIAL;
-            else if (distribuidor.value == 0) distribucioActual = ProcessadorScript.distribucionsProbabilitat.CONSTANT;
-            else if (distribuidor.value == 2) distribucioActual = ProcessadorScript.distribucionsProbabilitat.EXPONENTIAL;
-            else if (distribuidor.value == 3) distribucioActual = ProcessadorScript.distribucionsProbabilitat.NORMAL;
-            else if (distribuidor.value == 4) distribucioActual = ProcessadorScript.distribucionsProbabilitat.POISSON;
-            else if (distribuidor.value == 5) distribucioActual = ProcessadorScript.distribucionsProbabilitat.TRIANGULAR;
-            else if (distribuidor.value == 6) distribucioActual = ProcessadorScript.distribucionsProbabilitat.DISCRETEUNIFORM;
-            
-            if (distribuidor.value == 0 || distribuidor.value == 2 || distribuidor.value == 4){
-                param2.SetActive(false); param3.SetActive(false);
-            }
-            else if (distribuidor.value == 3 || distribuidor.value == 1 || distribuidor.value == 6){
+            if (distribuidor.value == 1){
+                distribucioActual = ProcessadorScript.distribucionsProbabilitat.BINOMIAL;
                 param2.SetActive(true); param3.SetActive(false);
-            } else {
-                param2.SetActive(true); param3.SetActive(true);
+                param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Probabilitat (0, 1]:";
+                param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "# intents (int):";
+            } 
+            else if (distribuidor.value == 0){
+                distribucioActual = ProcessadorScript.distribucionsProbabilitat.CONSTANT;
+                param2.SetActive(false); param3.SetActive(false);
+                param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Temps constant:";
             }
+            else if (distribuidor.value == 2){
+                distribucioActual = ProcessadorScript.distribucionsProbabilitat.EXPONENTIAL;
+                param2.SetActive(false); param3.SetActive(false);
+                param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Temps entre arribades:";
+            } 
+            else if (distribuidor.value == 3){
+                distribucioActual = ProcessadorScript.distribucionsProbabilitat.NORMAL;
+                param2.SetActive(true); param3.SetActive(false);
+                param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mitjana:";
+                param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Desviació estàndard:";
+            } 
+            else if (distribuidor.value == 4) {
+                distribucioActual = ProcessadorScript.distribucionsProbabilitat.POISSON;
+                param2.SetActive(false); param3.SetActive(false);
+                param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "# events per unitat de temps:";
+            }
+            else if (distribuidor.value == 5){
+                distribucioActual = ProcessadorScript.distribucionsProbabilitat.TRIANGULAR;
+                param2.SetActive(true); param3.SetActive(true);
+                param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mínim:";
+                param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Màxim:";
+                param3.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mode:";                
+            } 
+            else if (distribuidor.value == 6){
+                distribucioActual = ProcessadorScript.distribucionsProbabilitat.DISCRETEUNIFORM;
+                param2.SetActive(true); param3.SetActive(false);
+                param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mínim:";
+                param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Màxim:";
+            } 
         } else {
             aplicar.interactable = false;
             cancela.interactable = false;
@@ -163,7 +188,7 @@ public class UIProcessadorScript : MonoBehaviour
         processadorScript = gameObject.transform.parent.GetComponentInParent<ProcessadorScript>();
         distribucioConfirmada = ProcessadorScript.distribucionsProbabilitat.CONSTANT;
         politicaConfirmada = ProcessadorScript.politiquesEnrutament.PRIMERDISPONIBLE;
-        parametresConfirmats = new double[1];
+        parametresConfirmats = new double[1]{5};
         capacitatConfirmada = -1;
         processadorScript.ActualitzaPropietats(politicaConfirmada, distribucioConfirmada, parametresConfirmats, capacitatConfirmada);
     }

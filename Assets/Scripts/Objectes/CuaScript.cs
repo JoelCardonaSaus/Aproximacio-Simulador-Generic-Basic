@@ -32,6 +32,10 @@ public class CuaScript : MonoBehaviour, IObjectes
         cuaObjecte = new Queue<GameObject>();
     }
 
+    public void intentaEliminarObjecteSeguents(GameObject objecte){
+        if (SeguentsObjectes.Contains(objecte)) SeguentsObjectes.Remove(objecte);
+    }
+
     public bool estaDisponible(GameObject objecteLlibreria)
     {
         if (capacitatMaxima == -1 || cuaObjecte.Count < capacitatMaxima){
@@ -113,6 +117,24 @@ public class CuaScript : MonoBehaviour, IObjectes
         return false;
     }
 
+    public void afegeixSeguentObjecte(GameObject objecte){
+        if (!SeguentsObjectes.Contains(objecte)){
+            GameObject objecteAmbLinia = new GameObject("L"+SeguentsObjectes.Count.ToString());
+            objecteAmbLinia.transform.parent = transform;
+            SeguentsObjectes.Add(objecte);
+            LineRenderer lr = objecteAmbLinia.AddComponent<LineRenderer>();
+            lr.positionCount = 2;
+            lr.startWidth = 0.1f;
+            lr.endWidth = 0.1f;
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, objecte.transform.position);
+            lr.startColor = Color.green;
+            lr.endColor = Color.green;
+            lr.material = Resources.Load<Material>("Materials/LineRendererMaterial") as Material;
+
+        }
+    }
+
     // Retorna cert si l'objecte a qui s'avisa pot enviar-li una nova entitat
     private bool AvisaDisponibilitat(){
         GameObject objecteNou = objectesRebutjats.Dequeue();
@@ -144,7 +166,9 @@ public class CuaScript : MonoBehaviour, IObjectes
         {
             motorScript.TancaDetallsObert();
         }
-        motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 4) UIScript.Instancia.ajuntarObjectes(this.gameObject);
     }
 
     public void ObreDetalls(){

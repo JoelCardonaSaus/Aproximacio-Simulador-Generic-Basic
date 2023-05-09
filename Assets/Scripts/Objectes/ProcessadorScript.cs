@@ -48,6 +48,10 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         entitatsProcessant = new Dictionary<GameObject, double>();
     }
 
+    public void intentaEliminarObjecteSeguents(GameObject objecte){
+        if (SeguentsObjectes.Contains(objecte)) SeguentsObjectes.Remove(objecte);
+    }
+
     public void generarEsdevenimentProces(GameObject entitat, float tempsActual){
         Debug.Log("Es genera un esdeveniment per a un processador " + tempsActual.ToString());
         float tempsProcessat = (float)distribuidor.getNextSample();
@@ -120,6 +124,24 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         }
         return false;
     }
+
+    public void afegeixSeguentObjecte(GameObject objecte){
+        if (!SeguentsObjectes.Contains(objecte)){
+            GameObject objecteAmbLinia = new GameObject("L"+SeguentsObjectes.Count.ToString());
+            objecteAmbLinia.transform.parent = transform;
+            SeguentsObjectes.Add(objecte);
+            LineRenderer lr = objecteAmbLinia.AddComponent<LineRenderer>();
+            lr.positionCount = 2;
+            lr.startWidth = 0.1f;
+            lr.endWidth = 0.1f;
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, objecte.transform.position);
+            lr.startColor = Color.green;
+            lr.endColor = Color.green;
+            lr.material = Resources.Load<Material>("Materials/LineRendererMaterial") as Material;
+
+        }
+    }
     
     public int cercaDisponible(){   
         IObjectes SeguentObj;
@@ -157,12 +179,15 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     public void OnMouseDown()
     {
+
         MotorSimuladorScript motorScript = gameObject.transform.parent.GetComponent<MotorSimuladorScript>();
         if (motorScript.AlgunDetallsObert())
         {
             motorScript.TancaDetallsObert();
         }
-        motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 4) UIScript.Instancia.ajuntarObjectes(this.gameObject);
     }
 
     public void ObreDetalls(){

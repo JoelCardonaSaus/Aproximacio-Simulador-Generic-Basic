@@ -14,6 +14,10 @@ public class FakeRebreObjecte : MonoBehaviour, IObjectes
 
     public void IniciaSimulacio() {}
 
+    public void intentaEliminarObjecteSeguents(GameObject objecte){
+        
+    } 
+
     public bool estaDisponible(GameObject objecteLlibreria)
     {
         return true;
@@ -49,5 +53,9 @@ public class FakeRebreObjecte : MonoBehaviour, IObjectes
     public int ObteTipusObjecte()
     {
         return -1;
+    }
+
+    public void afegeixSeguentObjecte(GameObject objecte){
+        
     }
 }

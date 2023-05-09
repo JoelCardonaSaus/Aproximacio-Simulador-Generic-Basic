@@ -52,6 +52,7 @@ public class UIScript : MonoBehaviour
 
     [SerializeField] public Texture2D[] imatgesCursor = new Texture2D[6];
     [SerializeField] public Texture2D[] imatgesStartPause = new Texture2D[2];
+    private GameObject[] ajuntar = new GameObject[2];
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +67,7 @@ public class UIScript : MonoBehaviour
         if (Input.GetMouseButtonDown(0)){
             if (estat == estatsSimulacio.ATURAT && objecteLlibreriaSeleccionat() && !RatoliSobreBotonsUI())
             {
-                instanciarObjecte();
+                if (seleccionat == btnSeleccionat.GENERADOR || seleccionat == btnSeleccionat.CUA || seleccionat == btnSeleccionat.PROCESSADOR || seleccionat == btnSeleccionat.SORTIDA) instanciarObjecte();
             }  
             if ((motorSimulador.GetComponent<MotorSimuladorScript>().AlgunDetallsObert()) && (!RatoliSobreAlgunObjece() && !RatoliSobreDetalls())){
                 motorSimulador.GetComponent<MotorSimuladorScript>().TancaDetallsObert();
@@ -139,6 +140,7 @@ public class UIScript : MonoBehaviour
             estat = estatsSimulacio.PAUSAT;
             comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
         } else {
+            seleccionarOpcio(btnSeleccionat.CAP);
             if (estat == estatsSimulacio.PAUSAT) comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
             else comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
             estat = estatsSimulacio.SIMULANT;
@@ -153,6 +155,7 @@ public class UIScript : MonoBehaviour
 
     private void seleccionarOpcio(btnSeleccionat seleccionatNou){
         if (estat == estatsSimulacio.ATURAT){
+            if (seleccionat == btnSeleccionat.JUNTAR) ajuntar = new GameObject[2];
             if (seleccionatNou != seleccionat){
                 deseleccionarBackground(seleccionat);
                 if (seleccionatNou != btnSeleccionat.CAP){
@@ -265,7 +268,22 @@ public class UIScript : MonoBehaviour
         }
     }
 
+    public void ajuntarObjectes(GameObject objectePerJuntar){
+        if (ajuntar[0] == null) ajuntar[0] = objectePerJuntar;
+        else{
+            ajuntar[1] = objectePerJuntar;
+            ajuntar[0].GetComponent<IObjectes>().afegeixSeguentObjecte(ajuntar[1]);
+            ajuntar = new GameObject[2];
+            seleccionarOpcio(btnSeleccionat.JUNTAR);
+        }
+
+    }
+
     public int obteEstatSimulador(){
         return (int)estat;
+    }
+
+    public int obteBotoSeleccionat(){
+        return (int)seleccionat;
     }
 }
