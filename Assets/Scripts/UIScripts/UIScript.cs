@@ -138,11 +138,11 @@ public class UIScript : MonoBehaviour
     public void botoComencarPausaClicat(){
         if (estat == estatsSimulacio.SIMULANT) {
             estat = estatsSimulacio.PAUSAT;
-            comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
+            comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
         } else {
             seleccionarOpcio(btnSeleccionat.CAP);
-            if (estat == estatsSimulacio.PAUSAT) comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
-            else comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
+            if (estat == estatsSimulacio.PAUSAT) comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
+            else comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
             estat = estatsSimulacio.SIMULANT;
             motorSimulador.GetComponent<MotorSimuladorScript>().IniciaSimulacio();
         }
@@ -150,7 +150,7 @@ public class UIScript : MonoBehaviour
 
     public void botoReiniciaClicat(){
         estat = estatsSimulacio.ATURAT;
-        comencarPausar.transform.GetChild(1).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
+        comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
     }
 
     private void seleccionarOpcio(btnSeleccionat seleccionatNou){
