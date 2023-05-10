@@ -8,6 +8,7 @@ TagManager:
   - MotorSimulador
   - Detalls
   - Cua
+  - EntitatsTemporals
   layers:
   - Default
   - TransparentFX

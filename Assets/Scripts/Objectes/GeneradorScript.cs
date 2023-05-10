@@ -35,7 +35,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     public void IniciaSimulacio(){
         nEntitatsGenerades = 0;
-        generarEsdevenimentArribada(0);
+        generarEsdevenimentArribada(transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
         tempsEntreEntitats = new List<double>();
     }
 
@@ -48,19 +48,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     public void afegeixSeguentObjecte(GameObject objecte){
         if (!SeguentsObjectes.Contains(objecte)){
-            GameObject objecteAmbLinia = new GameObject("L"+SeguentsObjectes.Count.ToString());
-            objecteAmbLinia.transform.parent = transform;
-            SeguentsObjectes.Add(objecte);
-            LineRenderer lr = objecteAmbLinia.AddComponent<LineRenderer>();
-            lr.positionCount = 2;
-            lr.startWidth = 0.1f;
-            lr.endWidth = 0.1f;
-            lr.SetPosition(0, transform.position);
-            lr.SetPosition(1, objecte.transform.position);
-            lr.startColor = Color.green;
-            lr.endColor = Color.green;
-            lr.material = Resources.Load<Material>("Materials/LineRendererMaterial") as Material;
-
+            DibuixaLinia(objecte);
         }
     }
 
@@ -241,4 +229,18 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         else if (UIScript.Instancia.obteBotoSeleccionat() == 5) UIScript.Instancia.desjuntarObjectes(this.gameObject);
     }
     
+    public void DibuixaLinia(GameObject objecte){
+        GameObject objecteAmbLinia = new GameObject("L"+SeguentsObjectes.Count.ToString());
+        objecteAmbLinia.transform.parent = transform;
+        SeguentsObjectes.Add(objecte);
+        LineRenderer lr = objecteAmbLinia.AddComponent<LineRenderer>();
+        lr.positionCount = 2;
+        lr.startWidth = 0.1f;
+        lr.endWidth = 0.1f;
+        lr.SetPosition(0, transform.position);
+        lr.SetPosition(1, objecte.transform.position);
+        lr.startColor = Color.green;
+        lr.endColor = Color.green;
+        lr.material = Resources.Load<Material>("Materials/LineRendererMaterial") as Material;
+    }
 }

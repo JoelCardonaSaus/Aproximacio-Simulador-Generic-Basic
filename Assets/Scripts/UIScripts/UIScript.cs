@@ -60,6 +60,8 @@ public class UIScript : MonoBehaviour
     {
         seleccionat = btnSeleccionat.CAP;
         estat = estatsSimulacio.ATURAT;
+        comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
+
     }
 
     // Update is called once per frame
@@ -139,29 +141,23 @@ public class UIScript : MonoBehaviour
     public void botoComencarPausaClicat(){
         if (estat == estatsSimulacio.SIMULANT) {
             estat = estatsSimulacio.PAUSAT;
-            comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
+            comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
         } else if (estat == estatsSimulacio.PAUSAT){
             seleccionarOpcio(btnSeleccionat.CAP);
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-            comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
+            comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
+            estat = estatsSimulacio.SIMULANT;
+        } else {  
+            comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
             estat = estatsSimulacio.SIMULANT;
             motorSimulador.GetComponent<MotorSimuladorScript>().IniciaSimulacio();
-        } else {
-            if(comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite.name.Contains("start")) {
-                comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
-                estat = estatsSimulacio.SIMULANT;
-            }
-            else {
-                comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
-                estat = estatsSimulacio.PAUSAT;
-            }
-
         }
     }
 
     public void botoReiniciaClicat(){
         estat = estatsSimulacio.ATURAT;
         comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
+        motorSimulador.GetComponent<MotorSimuladorScript>().ReiniciarSimulador();
     }
 
     private void seleccionarOpcio(btnSeleccionat seleccionatNou){

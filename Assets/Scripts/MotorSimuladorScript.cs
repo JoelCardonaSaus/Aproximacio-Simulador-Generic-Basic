@@ -43,6 +43,16 @@ public class MotorSimuladorScript : MonoBehaviour
         }
     }
 
+    public void ReiniciarSimulador(){
+        tempsActual = 0;
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("EntitatsTemporals");
+
+        foreach (GameObject gameObject in gameObjects)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     public float ObteTempsActual()
     {
         return tempsActual;
