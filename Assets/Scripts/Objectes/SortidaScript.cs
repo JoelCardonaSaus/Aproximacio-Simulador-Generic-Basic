@@ -61,6 +61,10 @@ public class SortidaScript : MonoBehaviour, IObjectes
         
     }
 
+    public void desajuntarSeguentObjecte(GameObject desjuntar){
+        
+    }
+
     public void inicialitzaPerFerTests(){
         tempsEntreEntitats.Add(0); // Creem el temps d'espera per la primera entitat
         nEntitatsDestruides = 0;
@@ -83,6 +87,7 @@ public class SortidaScript : MonoBehaviour, IObjectes
         }
         if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
         else if (UIScript.Instancia.obteBotoSeleccionat() == 4) UIScript.Instancia.ajuntarObjectes(this.gameObject);
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 5) UIScript.Instancia.desjuntarObjectes(this.gameObject);
     }
 
     public void ObreDetalls(){

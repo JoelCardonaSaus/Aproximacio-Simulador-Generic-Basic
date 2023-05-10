@@ -28,12 +28,13 @@ public class MotorSimuladorScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (llistaEsdevenmients.Count > 0){
-            Esdeveniment eActual = llistaEsdevenmients.Dequeue();
-            tempsActual = eActual.temps;
-            eActual.Executar();
+        if (UIScript.Instancia.obteEstatSimulador() == 0){
+            if (llistaEsdevenmients.Count > 0){
+                Esdeveniment eActual = llistaEsdevenmients.Dequeue();
+                tempsActual = eActual.temps;
+                eActual.Executar();
+            }
         }
-        
     }
 
     public void IniciaSimulacio(){

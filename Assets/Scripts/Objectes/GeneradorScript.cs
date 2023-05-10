@@ -40,7 +40,10 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     }
 
     public void intentaEliminarObjecteSeguents(GameObject objecte){
-        if (SeguentsObjectes.Contains(objecte)) SeguentsObjectes.Remove(objecte);
+        if (SeguentsObjectes.Contains(objecte)) {
+            Destroy(transform.GetChild(SeguentsObjectes.IndexOf(objecte)+1).gameObject);
+            SeguentsObjectes.Remove(objecte);  
+        }
     }
 
     public void afegeixSeguentObjecte(GameObject objecte){
@@ -59,6 +62,10 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
             lr.material = Resources.Load<Material>("Materials/LineRendererMaterial") as Material;
 
         }
+    }
+
+    public void desajuntarSeguentObjecte(GameObject desjuntar){
+        intentaEliminarObjecteSeguents(desjuntar);
     }
 
     public void generarEsdevenimentArribada(float tempsActual){
@@ -231,6 +238,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
         else if (UIScript.Instancia.obteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
         else if (UIScript.Instancia.obteBotoSeleccionat() == 4) UIScript.Instancia.ajuntarObjectes(this.gameObject);
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 5) UIScript.Instancia.desjuntarObjectes(this.gameObject);
     }
     
 }

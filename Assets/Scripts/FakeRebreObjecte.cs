@@ -58,4 +58,8 @@ public class FakeRebreObjecte : MonoBehaviour, IObjectes
     public void afegeixSeguentObjecte(GameObject objecte){
         
     }
+
+    public void desajuntarSeguentObjecte(GameObject desjuntar){
+        
+    }
 }

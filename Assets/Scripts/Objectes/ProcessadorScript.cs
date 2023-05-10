@@ -49,7 +49,10 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     }
 
     public void intentaEliminarObjecteSeguents(GameObject objecte){
-        if (SeguentsObjectes.Contains(objecte)) SeguentsObjectes.Remove(objecte);
+        if (SeguentsObjectes.Contains(objecte)) {
+            Destroy(transform.GetChild(SeguentsObjectes.IndexOf(objecte)+1).gameObject);
+            SeguentsObjectes.Remove(objecte);
+        }
     }
 
     public void generarEsdevenimentProces(GameObject entitat, float tempsActual){
@@ -142,6 +145,10 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
         }
     }
+
+    public void desajuntarSeguentObjecte(GameObject desjuntar){
+        intentaEliminarObjecteSeguents(desjuntar);
+    }
     
     public int cercaDisponible(){   
         IObjectes SeguentObj;
@@ -188,6 +195,8 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
         else if (UIScript.Instancia.obteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
         else if (UIScript.Instancia.obteBotoSeleccionat() == 4) UIScript.Instancia.ajuntarObjectes(this.gameObject);
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 5) UIScript.Instancia.desjuntarObjectes(this.gameObject);
+
     }
 
     public void ObreDetalls(){

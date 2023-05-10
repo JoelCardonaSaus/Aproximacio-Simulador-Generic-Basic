@@ -33,7 +33,14 @@ public class CuaScript : MonoBehaviour, IObjectes
     }
 
     public void intentaEliminarObjecteSeguents(GameObject objecte){
-        if (SeguentsObjectes.Contains(objecte)) SeguentsObjectes.Remove(objecte);
+        if (SeguentsObjectes.Contains(objecte)) {
+            Destroy(transform.GetChild(SeguentsObjectes.IndexOf(objecte)+1).gameObject);
+            SeguentsObjectes.Remove(objecte);
+        }
+    }
+
+    public void desajuntarSeguentObjecte(GameObject desjuntar){
+        intentaEliminarObjecteSeguents(desjuntar);
     }
 
     public bool estaDisponible(GameObject objecteLlibreria)
@@ -169,6 +176,7 @@ public class CuaScript : MonoBehaviour, IObjectes
         if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
         else if (UIScript.Instancia.obteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
         else if (UIScript.Instancia.obteBotoSeleccionat() == 4) UIScript.Instancia.ajuntarObjectes(this.gameObject);
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 5) UIScript.Instancia.desjuntarObjectes(this.gameObject);
     }
 
     public void ObreDetalls(){

@@ -53,6 +53,7 @@ public class UIScript : MonoBehaviour
     [SerializeField] public Texture2D[] imatgesCursor = new Texture2D[6];
     [SerializeField] public Texture2D[] imatgesStartPause = new Texture2D[2];
     private GameObject[] ajuntar = new GameObject[2];
+    private GameObject[] desjuntar = new GameObject[2];
 
     // Start is called before the first frame update
     void Start()
@@ -139,12 +140,22 @@ public class UIScript : MonoBehaviour
         if (estat == estatsSimulacio.SIMULANT) {
             estat = estatsSimulacio.PAUSAT;
             comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
-        } else {
+        } else if (estat == estatsSimulacio.PAUSAT){
             seleccionarOpcio(btnSeleccionat.CAP);
-            if (estat == estatsSimulacio.PAUSAT) comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
-            else comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
             estat = estatsSimulacio.SIMULANT;
             motorSimulador.GetComponent<MotorSimuladorScript>().IniciaSimulacio();
+        } else {
+            if(comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite.name.Contains("start")) {
+                comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
+                estat = estatsSimulacio.SIMULANT;
+            }
+            else {
+                comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
+                estat = estatsSimulacio.PAUSAT;
+            }
+
         }
     }
 
@@ -156,6 +167,7 @@ public class UIScript : MonoBehaviour
     private void seleccionarOpcio(btnSeleccionat seleccionatNou){
         if (estat == estatsSimulacio.ATURAT){
             if (seleccionat == btnSeleccionat.JUNTAR) ajuntar = new GameObject[2];
+            else if (seleccionat == btnSeleccionat.DESJUNTAR) desjuntar = new GameObject[2];
             if (seleccionatNou != seleccionat){
                 deseleccionarBackground(seleccionat);
                 if (seleccionatNou != btnSeleccionat.CAP){
@@ -276,7 +288,16 @@ public class UIScript : MonoBehaviour
             ajuntar = new GameObject[2];
             seleccionarOpcio(btnSeleccionat.JUNTAR);
         }
+    }
 
+    public void desjuntarObjectes(GameObject objectePerDesjuntar){
+        if (desjuntar[0] == null) desjuntar[0] = objectePerDesjuntar;
+        else{
+            desjuntar[1] = objectePerDesjuntar;
+            desjuntar[0].GetComponent<IObjectes>().desajuntarSeguentObjecte(desjuntar[1]);
+            desjuntar = new GameObject[2];
+            seleccionarOpcio(btnSeleccionat.DESJUNTAR);
+        }
     }
 
     public int obteEstatSimulador(){

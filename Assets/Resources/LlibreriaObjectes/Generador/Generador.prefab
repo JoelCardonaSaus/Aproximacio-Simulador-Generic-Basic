@@ -131,7 +131,7 @@ MonoBehaviour:
   parametres:
   - 10
   SeguentsObjectes: []
-  entitatTemporal: {fileID: 0}
+  entitatTemporal: {fileID: 5978900252387208746, guid: fc3559c3a304e03448ece8cdf88a8863, type: 3}
   estat: 0
 --- !u!114 &1332961814198737861
 MonoBehaviour:
