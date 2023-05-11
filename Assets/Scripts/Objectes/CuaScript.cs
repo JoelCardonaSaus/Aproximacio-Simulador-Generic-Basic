@@ -13,7 +13,7 @@ public class CuaScript : MonoBehaviour, IObjectes
     private Queue<GameObject> cuaObjecte;
     private Dictionary<GameObject, double> tempsObjecteCua;
     private Queue<GameObject> objectesRebutjats;
-    private enum states { BUIT, NOBUIT };
+    private enum states { BUIT, NOBUIT, PLE };
     private states estat;
 
 
@@ -61,6 +61,8 @@ public class CuaScript : MonoBehaviour, IObjectes
             cuaObjecte.Enqueue(entitat);
             float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
             tempsObjecteCua.Add(entitat, tActual);
+            if (capacitatMaxima != -1 && cuaObjecte.Count < capacitatMaxima) estat = states.NOBUIT;
+            else estat = states.PLE;
         }
         else if (estat == states.BUIT){
             int nDisponible = cercaDisponible();
@@ -71,7 +73,8 @@ public class CuaScript : MonoBehaviour, IObjectes
                 cuaObjecte.Enqueue(entitat);
                 float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
                 tempsObjecteCua.Add(entitat, tActual);
-                estat = states.NOBUIT;
+                if (capacitatMaxima!=-1 && capacitatMaxima > 1) estat = states.NOBUIT;
+                else estat = states.PLE;
             }
         }
     }
@@ -107,19 +110,75 @@ public class CuaScript : MonoBehaviour, IObjectes
     {
         if (estat == states.BUIT) return false;
         else if (estat == states.NOBUIT){
-            if (objecteLlibreria.GetComponent<IObjectes>().estaDisponible(this.gameObject)){
-                GameObject entitatEnviar = cuaObjecte.Dequeue();
-                float tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitatEnviar];
-                tempsObjecteCua.Add(entitatEnviar, tempsCua);
-                objecteLlibreria.GetComponent<IObjectes>().repEntitat(entitatEnviar, this.gameObject);
+            GameObject entitat = cuaObjecte.Dequeue();
+            float tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
+            tempsObjecteCua[entitat] = tempsCua;
+            objecteLlibreria.GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
 
-                // Avisem als objectes rebutjats que hi ha un lloc nou disponible a la cua, quan es trova un es para de avisar.
-                while (objectesRebutjats.Count != 0 && !AvisaDisponibilitat());
-                if (cuaObjecte.Count == 0) estat = states.BUIT;
-                else estat = states.NOBUIT;
 
-                return true;
+            if (cuaObjecte.Count != 0){
+                int nDisponible = cercaDisponible();
+                if (nDisponible != -1){
+                    entitat = cuaObjecte.Dequeue();
+                    tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
+                    tempsObjecteCua[entitat] = tempsCua;
+                    SeguentsObjectes[nDisponible].GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
+                    while (objectesRebutjats.Count != 0) {
+                        // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
+                        if (AvisaDisponibilitat()) {
+                            break;
+                        }
+                    }
+                    estat = states.NOBUIT;
+                } else {
+                    estat = states.NOBUIT;
+                }
+            } else {
+                while (objectesRebutjats.Count != 0) {
+                    // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
+                    if (AvisaDisponibilitat()) {
+                        break;
+                    }
+                }
+                estat = states.BUIT;
             }
+            return true; // En estat NOBUIT, si ens arriba una notificacioDisponibilitat sempre podrem enviar almenys una entitat
+            
+        }
+        else if (estat == states.PLE){
+            GameObject entitat = cuaObjecte.Dequeue();
+            float tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
+            tempsObjecteCua[entitat] = tempsCua;
+            objecteLlibreria.GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
+
+
+            if (cuaObjecte.Count != 0){
+                int nDisponible = cercaDisponible();
+                if (nDisponible != -1){
+                    entitat = cuaObjecte.Dequeue();
+                    tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
+                    tempsObjecteCua[entitat] = tempsCua;
+                    SeguentsObjectes[nDisponible].GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
+                    while (objectesRebutjats.Count != 0) {
+                        // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
+                        if (AvisaDisponibilitat()) {
+                            break;
+                        }
+                    }
+                    estat = states.NOBUIT;
+                } else {
+                    estat = states.NOBUIT;
+                }
+            } else {
+                while (objectesRebutjats.Count != 0) {
+                    // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
+                    if (AvisaDisponibilitat()) {
+                        break;
+                    }
+                }
+                estat = states.BUIT;
+            }
+            return true; // En estat NOBUIT, si ens arriba una notificacioDisponibilitat sempre podrem enviar almenys una entitat
         }
         return false;
     }

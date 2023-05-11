@@ -16,12 +16,12 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     public ISeguentNumero distribuidor;
     [SerializeField]
     public List<GameObject> SeguentsObjectes = new List<GameObject>(); 
-    private Dictionary<GameObject, double> entitatsProcessant;
+    private List<GameObject> entitatsProcessant;
     //Variables per als estadistics
     private int nEntitatsTractades = 0;
-    private int nEntitatsEntrades = 0;
+    private int nEntitatsEnviades = 0;
     private double tempsMigEntitatsProcessador;
-    private enum estats { ATURAT, PROCESSANT };
+    private enum estats { DISPONIBLE, PROCESSANT, BLOQUEJAT };
     private estats estat;
     private Queue<GameObject> entitatsAEnviar;
     private Queue<GameObject> objectesRebutjats;
@@ -39,13 +39,12 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     }
 
     public void IniciaSimulacio(){
-        estat = estats.ATURAT;
-        nEntitatsEntrades = 0;
+        estat = estats.DISPONIBLE;
         nEntitatsTractades = 0;
         tempsMigEntitatsProcessador = 0;
         entitatsAEnviar = new Queue<GameObject>();
         objectesRebutjats = new Queue<GameObject>();
-        entitatsProcessant = new Dictionary<GameObject, double>();
+        entitatsProcessant = new List<GameObject>();
     }
 
     public void intentaEliminarObjecteSeguents(GameObject objecte){
@@ -59,8 +58,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         Debug.Log("Es genera un esdeveniment per a un processador " + tempsActual.ToString());
         float tempsProcessat = (float)distribuidor.getNextSample();
         tempsMigEntitatsProcessador+=tempsProcessat;
-        entitatsProcessant.Add(entitat, tempsActual);
-        estat = estats.PROCESSANT;
+        entitatsProcessant.Add(entitat);
         Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+(float)tempsProcessat, entitat, Esdeveniment.Tipus.PROCESSOS);
         transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(e);
     }
@@ -72,25 +70,52 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
             case Esdeveniment.Tipus.PROCESSOS:
                 if (estat == estats.PROCESSANT){
                     ++nEntitatsTractades;
-                    entitatsProcessant.Remove(e.ObteEntitatImplicada());
-                    if (entitatsAEnviar.Count == 0){
-                        int nDisponible = cercaDisponible();
-                        if (nDisponible != -1){
-                            SeguentsObjectes[nDisponible].GetComponent<IObjectes>().repEntitat(e.ObteEntitatImplicada(), this.gameObject);
-                        } else {
-                            entitatsAEnviar.Enqueue(e.ObteEntitatImplicada());
+                    GameObject entitat = e.ObteEntitatImplicada();
+                    entitatsProcessant.Remove(entitat);
+                    int nDisponible = cercaDisponible();
+                    if (nDisponible != -1) {
+                        SeguentsObjectes[nDisponible].GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
+                        while (objectesRebutjats.Count != 0) {
+                            // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
+                            if (AvisaDisponibilitat()) {
+                                break;
+                            }
                         }
+                        if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
+                        else estat = estats.PROCESSANT;
                     } else {
-                        entitatsAEnviar.Enqueue(e.ObteEntitatImplicada());
+                        entitatsAEnviar.Enqueue(entitat);
+                        estat = estats.BLOQUEJAT;
                     }
-                    if (entitatsAEnviar.Count == maxEntitatsParalel) while (objectesRebutjats.Count != 0 && !AvisaDisponibilitat());
-                    if (entitatsProcessant.Count == 0) estat = estats.ATURAT;
-                }
-                else if (estat == estats.ATURAT){
-                    // Si entra per aqui mostrar una exepcio
                 }
                 
-                break;
+                else if (estat == estats.BLOQUEJAT){
+                    ++nEntitatsTractades;
+                    GameObject entitat = e.ObteEntitatImplicada();
+                    entitatsProcessant.Remove(entitat);
+                    if (entitatsAEnviar.Count > 0){
+                        entitatsAEnviar.Enqueue(entitat);
+                        estat = estats.BLOQUEJAT;
+                    } else {
+                        int nDisponible = cercaDisponible();
+                        if (nDisponible != -1){
+                            SeguentsObjectes[nDisponible].GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
+                            while (objectesRebutjats.Count != 0) {
+                                // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
+                                if (AvisaDisponibilitat()) {
+                                    break;
+                                }
+                            }
+
+                            if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
+                            else estat = estats.PROCESSANT;
+                        } else {
+                            entitatsAEnviar.Enqueue(entitat);
+                            estat = estats.BLOQUEJAT;
+                        }
+                    }
+                }
+                break;            
         }
     }
 
@@ -101,7 +126,7 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     public bool estaDisponible(GameObject objecteLlibreria)
     {
-        if (maxEntitatsParalel == -1 || entitatsProcessant.Count < maxEntitatsParalel) return true;
+        if (estat != estats.BLOQUEJAT) return true;
         else {
             if (!objectesRebutjats.Contains(objecteLlibreria)) objectesRebutjats.Enqueue(objecteLlibreria);
         }
@@ -111,19 +136,61 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     public void repEntitat(GameObject entitat, GameObject objecteLlibreria)
     {
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
-        ++nEntitatsEntrades;
-        if (estat == estats.ATURAT){
-            estat = estats.PROCESSANT;
+        if (estat == estats.DISPONIBLE){
+            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            generarEsdevenimentProces(entitat, tActual);
+            if (maxEntitatsParalel == 1) estat = estats.BLOQUEJAT;
+            else estat = estats.PROCESSANT;
         }
-        float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
-        generarEsdevenimentProces(entitat, tActual);
+        else if (estat == estats.PROCESSANT){
+            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            generarEsdevenimentProces(entitat, tActual);
+            if (maxEntitatsParalel != -1 && maxEntitatsParalel > entitatsProcessant.Count) estat = estats.PROCESSANT;
+            else estat = estats.BLOQUEJAT;
+        }
     }
 
     public bool notificacioDisponible(GameObject objecteLlibreria)
     {
-        if (entitatsAEnviar.Count != 0){
-            objecteLlibreria.GetComponent<IObjectes>().repEntitat(entitatsAEnviar.Dequeue(), this.gameObject);
-            return true;
+        if (estat == estats.DISPONIBLE || estat == estats.PROCESSANT) return false;
+        else if (estat == estats.BLOQUEJAT){
+            if (entitatsAEnviar.Count > 0){
+                ++nEntitatsEnviades;
+                GameObject entitat = entitatsAEnviar.Dequeue();
+                objecteLlibreria.GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
+                if (entitatsAEnviar.Count != 0) {
+                    int nDisponible = cercaDisponible();
+                    if (nDisponible != -1){
+                        entitat = entitatsAEnviar.Dequeue();
+                        SeguentsObjectes[nDisponible].GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
+                        while (objectesRebutjats.Count != 0) {
+                            // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
+                            if (AvisaDisponibilitat()) {
+                                break;
+                            }
+                        }
+
+                        if (entitatsAEnviar.Count == 0){
+                            if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
+                            else estat = estats.PROCESSANT;
+                        } else {
+                            estat = estats.BLOQUEJAT;
+                        }
+                    } else {
+                        estat = estats.BLOQUEJAT;
+                    }
+                } else {
+                    while (objectesRebutjats.Count != 0) {
+                        // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
+                        if (AvisaDisponibilitat()) {
+                            break;
+                        }
+                    }
+                    if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
+                    else estat = estats.PROCESSANT;
+                }
+                return true;
+            }
         }
         return false;
     }
