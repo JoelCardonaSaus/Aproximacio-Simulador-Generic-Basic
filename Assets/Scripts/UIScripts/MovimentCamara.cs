@@ -1,15 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MovimentCamara : MonoBehaviour
 {
     public float velocitatCamara = 10f;
     private Vector3 ultimaPosicio;
 
+    public Camera camara;
+    public Slider zoomSlider;
+    public float minZoom = 5f;
+    public float maxZoom = 12.5f;
+
     void Start()
     {
-        
+        zoomSlider.onValueChanged.AddListener(SliderCanvia);
     }
 
     void Update()
@@ -27,5 +33,11 @@ public class MovimentCamara : MonoBehaviour
 
             ultimaPosicio = Input.mousePosition;
         }
+    }
+
+     private void SliderCanvia(float value)
+    {
+        float zoom = Mathf.Lerp(minZoom, maxZoom, value);
+        camara.orthographicSize = zoom;
     }
 }
