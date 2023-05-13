@@ -45,6 +45,7 @@ public class MotorSimuladorScript : MonoBehaviour
 
     public void ReiniciarSimulador(){
         tempsActual = 0;
+        llistaEsdevenmients = new PriorityQueue<Esdeveniment>((a, b) => a.temps.CompareTo(b.temps));
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("EntitatsTemporals");
 
         foreach (GameObject gameObject in gameObjects)

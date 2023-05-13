@@ -160,6 +160,7 @@ public class UIScript : MonoBehaviour
         estat = estatsSimulacio.ATURAT;
         comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
         motorSimulador.GetComponent<MotorSimuladorScript>().ReiniciarSimulador();
+        seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (u.t.): 0";
     }
 
     public void botoStepClicat(){

@@ -31,6 +31,12 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     void Update()
     {   
+        if (estat == estats.GENERANT){
+            GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        if (estat == estats.BLOQUEJAT){
+            GetComponent<SpriteRenderer>().color = Color.red;
+        }
     }
 
     public void IniciaSimulacio(){
