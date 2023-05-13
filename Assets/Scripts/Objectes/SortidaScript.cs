@@ -40,7 +40,7 @@ public class SortidaScript : MonoBehaviour, IObjectes
         } else {
             tempsEntreEntitats.Add(tActual);
         }
-        Destroy(entitat, 1);        
+        Destroy(entitat);        
     }
 
     public int cercaDisponible(){   

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
+using TMPro;
 
 public class UIScript : MonoBehaviour
 {
@@ -20,6 +20,8 @@ public class UIScript : MonoBehaviour
     public Button eliminarButton;
     public Button comencarPausar;
     public Button reiniciar;
+
+    public Button seguentEsdev;
 
     public GameObject motorSimulador;
     private GameObject generadorPrefab;
@@ -158,6 +160,14 @@ public class UIScript : MonoBehaviour
         estat = estatsSimulacio.ATURAT;
         comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
         motorSimulador.GetComponent<MotorSimuladorScript>().ReiniciarSimulador();
+    }
+
+    public void botoStepClicat(){
+        if (estat != estatsSimulacio.SIMULANT){
+            motorSimulador.GetComponent<MotorSimuladorScript>().ExecutarSeguentEsdeveniment();
+            float tempsSegEsdv = motorSimulador.GetComponent<MotorSimuladorScript>().ObteTempsSeguentEsdeveniment();
+            seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (u.t.): " + tempsSegEsdv.ToString();
+        }
     }
 
     private void seleccionarOpcio(btnSeleccionat seleccionatNou){

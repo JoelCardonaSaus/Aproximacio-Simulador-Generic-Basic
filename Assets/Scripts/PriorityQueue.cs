@@ -53,6 +53,10 @@ public class PriorityQueue<T>
         return frontItem;
     }
 
+    public T FirstElement(){
+        return heap[0];
+    }
+
     public T Peek() => heap[0];
 
     public bool Contains(T item) => heap.Contains(item);

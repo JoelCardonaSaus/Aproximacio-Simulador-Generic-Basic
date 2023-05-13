@@ -58,6 +58,19 @@ public class MotorSimuladorScript : MonoBehaviour
         return tempsActual;
     }
 
+    public void ExecutarSeguentEsdeveniment(){
+        if (llistaEsdevenmients.Count == 0) IniciaSimulacio();
+        else {
+            Esdeveniment eActual = llistaEsdevenmients.Dequeue();
+            tempsActual = eActual.temps;
+            eActual.Executar();
+        }
+    }
+
+    public float ObteTempsSeguentEsdeveniment(){
+        return llistaEsdevenmients.FirstElement().temps;
+    }
+
     public void afegirEsdeveniment(Esdeveniment nouEsdeveminemt){
         llistaEsdevenmients.Enqueue(nouEsdeveminemt);
     }

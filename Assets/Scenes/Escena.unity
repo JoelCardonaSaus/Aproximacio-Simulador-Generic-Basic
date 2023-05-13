@@ -613,6 +613,7 @@ MonoBehaviour:
   eliminarButton: {fileID: 653016445}
   comencarPausar: {fileID: 2110188062}
   reiniciar: {fileID: 752604190}
+  seguentEsdev: {fileID: 1626606859}
   motorSimulador: {fileID: 343814978}
   imatgesCursor:
   - {fileID: 2800000, guid: a729e3c312662f64185aa07bf61177ef, type: 3}
@@ -3324,7 +3325,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoReiniciaClicat
+        m_MethodName: botoStepClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
