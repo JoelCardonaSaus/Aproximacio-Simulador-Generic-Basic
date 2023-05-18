@@ -70,6 +70,10 @@ public class SortidaScript : MonoBehaviour, IObjectes
         nEntitatsDestruides = 0;
     }
 
+    public void GenerarPlots(){
+        // Per implementar
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //                                                                  //

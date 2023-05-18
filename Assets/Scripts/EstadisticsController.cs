@@ -4,14 +4,13 @@ using UnityEngine.Networking;
 using UnityEngine;
 using UnityEngine.Windows;
 
-public class CridesAPIEstadistics : MonoBehaviour
+public class EstadisticsController : MonoBehaviour
 { 
     //public double[] timeInStates = { 20, 30, 5 }; // FREE, BUSY, BROKEN
-    //public string[] labels = { "FREE", "BUSY", "BROKEN" };
+    //public string[] etiquetes = { "FREE", "BUSY", "BROKEN" };
 
     private void Start()
     {
-        //generatePlots(0, timeInStates, labels, "Test");
     }
 
 
@@ -20,18 +19,18 @@ public class CridesAPIEstadistics : MonoBehaviour
        
     }
 
-    public void generatePlots(int graphType, double[] stats, string[] labels, string imageTag)
+    public void GeneraEstadistic(int tipus, double[] estadistics, string[] etiquetes, string estadistic,string nomImatge)
     {
-        StartCoroutine(GetTexture(graphType, stats, labels, imageTag));
+        StartCoroutine(GetTexture(tipus, estadistics, etiquetes, estadistic, nomImatge));
     }
 
-    IEnumerator GetTexture(int graphType, double[] stats, string[] labels, string imageTag)
+    IEnumerator GetTexture(int tipus, double[] estadistics, string[] etiquetes, string estadistic,string nomImatge)
     {
-        //Prepare data for the API CALL:
+        
         string type = "";
-        string dataLabels = "[";
+        string dataetiquetes = "[";
         string data = "[";
-        switch (graphType)
+        switch (tipus)
         {
             case 0:
                 type = "bar";
@@ -47,24 +46,24 @@ public class CridesAPIEstadistics : MonoBehaviour
                 break;
         }
 
-        for (int i = 0; i < stats.Length; i++)
+        for (int i = 0; i < estadistics.Length; i++)
         {
             if (i == 0)
             {
-                dataLabels += "'" + labels[i] + "'";
-                data += "'" + stats[i] + "'";
+                dataetiquetes += "'" + etiquetes[i] + "'";
+                data += "'" + estadistics[i] + "'";
             }
             else
             {
-                dataLabels += ", '" + labels[i] + "'";
-                data += ", '" + stats[i] + "'";
+                dataetiquetes += ", '" + etiquetes[i] + "'";
+                data += ", '" + estadistics[i] + "'";
             }
         }
 
-        dataLabels += "]";
+        dataetiquetes += "]";
         data  += "]";
 
-        string URI = "https://quickchart.io/chart?c={type:'"+ type +"',data:{labels:"+dataLabels+",datasets:[{label:'State',data:"+data+"}]}}";
+        string URI = "https://quickchart.io/chart?c={type:'"+ type +"',data:{labels:"+dataetiquetes+",datasets:[{label:'"+estadistic+"',data:"+data+"}]}}";
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(URI);
         yield return www.SendWebRequest();
 
@@ -75,13 +74,13 @@ public class CridesAPIEstadistics : MonoBehaviour
         else
         {
             Texture2D myTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
-            saveTexture(myTexture, imageTag);
+            saveTexture(myTexture, nomImatge);
         }
 
      
     }
 
-    private void saveTexture(Texture2D texture, string imageTag)
+    private void saveTexture(Texture2D texture, string nomImatge)
     {
         byte[] bytesTexture = texture.EncodeToPNG();
         var dirPath = Application.dataPath + "/../SaveImages/";
@@ -90,7 +89,7 @@ public class CridesAPIEstadistics : MonoBehaviour
         {
             Directory.CreateDirectory(dirPath);
         }
-        File.WriteAllBytes(dirPath + imageTag + ".png", bytesTexture);
+        File.WriteAllBytes(dirPath + nomImatge + ".png", bytesTexture);
     }
 
 }

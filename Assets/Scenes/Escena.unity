@@ -787,6 +787,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   escalaTemps: 1
+--- !u!114 &343814982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343814978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b24a12d27a06b445826f345d5b88efd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &362829715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,7 +1108,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Aturar
+  m_text: Reiniciar
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1123,8 +1135,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29.15
-  m_fontSizeBase: 29.15
+  m_fontSize: 29
+  m_fontSizeBase: 29
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1601,7 +1613,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.9339623, g: 0.09954518, b: 0.083704144, a: 1}
+    m_NormalColor: {r: 1, g: 0, b: 0.019191265, a: 1}
     m_HighlightedColor: {r: 0.9294118, g: 0.098039225, b: 0.08235294, a: 1}
     m_PressedColor: {r: 0.8941177, g: 0.09411766, b: 0.078431375, a: 1}
     m_SelectedColor: {r: 0.9333334, g: 0.098039225, b: 0.08235294, a: 1}

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 // Fer-ho singleton
@@ -44,7 +43,6 @@ public class MotorSimuladorScript : MonoBehaviour
     }
 
     public void ReiniciarSimulador(){
-        tempsActual = 0;
         llistaEsdevenmients = new PriorityQueue<Esdeveniment>((a, b) => a.temps.CompareTo(b.temps));
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("EntitatsTemporals");
 
@@ -52,6 +50,12 @@ public class MotorSimuladorScript : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        for (int i = 0; i < objectesLlibreria.Count; i++){
+            objectesLlibreria[i].GetComponent<IObjectes>().GenerarPlots();
+        }
+
+        tempsActual = 0;
     }
 
     public float ObteTempsActual()
@@ -60,7 +64,7 @@ public class MotorSimuladorScript : MonoBehaviour
     }
 
     public void ExecutarSeguentEsdeveniment(){
-        if (llistaEsdevenmients.Count == 0) IniciaSimulacio();
+        if (llistaEsdevenmients.Count == 0 && tempsActual == 0) IniciaSimulacio();
         else {
             Esdeveniment eActual = llistaEsdevenmients.Dequeue();
             tempsActual = eActual.temps;
@@ -69,7 +73,8 @@ public class MotorSimuladorScript : MonoBehaviour
     }
 
     public float ObteTempsSeguentEsdeveniment(){
-        return llistaEsdevenmients.FirstElement().temps;
+        if (llistaEsdevenmients.Count > 0) return llistaEsdevenmients.FirstElement().temps;
+        else return tempsActual;
     }
 
     public void afegirEsdeveniment(Esdeveniment nouEsdeveminemt){

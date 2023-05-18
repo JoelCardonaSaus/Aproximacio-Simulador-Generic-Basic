@@ -20,7 +20,10 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
 
     //Variables per als estadistics
     private int nEntitatsGenerades = 0;
-    private List<double> tempsEntreEntitats;
+    private float tempsGenerant = 0;
+    private float tempsBloquejat = 0;
+    private float ultimTemps = 0;
+    private List<double> tempsEntreEntitats = new List<double>();
 
 
     void Start()
@@ -40,7 +43,11 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     }
 
     public void IniciaSimulacio(){
+        estat = estats.GENERANT;
         nEntitatsGenerades = 0;
+        tempsGenerant = 0;
+        tempsBloquejat = 0;
+        ultimTemps = 0;
         generarEsdevenimentArribada(transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
         tempsEntreEntitats = new List<double>();
     }
@@ -76,6 +83,8 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
             case Esdeveniment.Tipus.ARRIBADES:
                 if (estat == estats.GENERANT){
                     int objecteAEnviar = cercaDisponible();
+                    tempsGenerant += (e.temps - ultimTemps);
+                    ultimTemps = e.temps;
                     if (objecteAEnviar != -1) { // Si hi ha algun dels seguents objectes disponible, aleshores s'instancia una nova entitat temporal i s'envia l'entitat al objecte disponible
                         GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
                         SeguentsObjectes[objecteAEnviar].GetComponent<IObjectes>().repEntitat(novaEntitat, this.gameObject);
@@ -92,6 +101,8 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
                 }
                 else if (estat == estats.BLOQUEJAT){
                     // Si esta bloquejat espera que algú li demani un objecte
+                    tempsBloquejat += (e.temps - ultimTemps);
+                    ultimTemps = e.temps;
                 }
                 
                 break;
@@ -127,13 +138,15 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
      // Per parametre es passa el gameobject de la llibreria que avisa de la seva disponibilitat
     public bool notificacioDisponible(GameObject objecteLlibreria){
         if (estat == estats.GENERANT) return false;
-        else if (estat == estats.BLOQUEJAT && objecteLlibreria.GetComponent<IObjectes>().estaDisponible(this.gameObject))
+        else if (estat == estats.BLOQUEJAT)
         {
             estat = estats.GENERANT;
             ++nEntitatsGenerades;
             GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
             objecteLlibreria.GetComponent<IObjectes>().repEntitat(novaEntitat, this.gameObject);
             float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            tempsBloquejat += (tActual - ultimTemps);
+            ultimTemps = tActual;
             generarEsdevenimentArribada(tActual); // Es programa un nou esdeveniment d'arribada
             if (tempsEntreEntitats.Count != 0) {
                 tempsEntreEntitats.Add(tActual-tempsEntreEntitats[tempsEntreEntitats.Count-1]);
@@ -158,6 +171,25 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     public int ObteTipusObjecte()
     {
         return 0;
+    }
+
+    public void GenerarPlots(){
+        EstadisticsController eC = transform.parent.GetComponent<EstadisticsController>();
+        double[] nEntitatsEstadistic = new double[1] { nEntitatsGenerades };
+        string [] etiquetes = new string[1] { gameObject.transform.name };
+        string nomImatge = "Output"+gameObject.transform.name;
+        eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
+        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+
+        if (estat == estats.BLOQUEJAT) tempsBloquejat += (tempsActual - ultimTemps); 
+        else tempsGenerant += (tempsActual - ultimTemps);
+        double[] tempsEstats = new double[2] { tempsGenerant, tempsBloquejat };
+        etiquetes = new string[2] { "Generant", "Bloquejat" };
+        nomImatge = "TempsEstats"+gameObject.transform.name;
+        eC.GeneraEstadistic(0, tempsEstats, etiquetes, "Temps", nomImatge);
+
+        nomImatge = "PercentatgeEstats"+gameObject.transform.name;
+        eC.GeneraEstadistic(2, tempsEstats, etiquetes, "Percentatge", nomImatge);
     }
 
     //////////////////////////////////////////////////////////////////////

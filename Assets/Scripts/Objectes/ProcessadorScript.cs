@@ -243,6 +243,10 @@ public class ProcessadorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         return -1;
     }
 
+    public void GenerarPlots(){
+        // Per implementar
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //                                                                  //

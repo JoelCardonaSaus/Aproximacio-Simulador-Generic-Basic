@@ -218,6 +218,10 @@ public class CuaScript : MonoBehaviour, IObjectes
         return 1;
     }
 
+    public void GenerarPlots(){
+        // Per implementar
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //                                                                  //
