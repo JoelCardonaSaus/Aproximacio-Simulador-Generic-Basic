@@ -65,7 +65,7 @@ public class MotorSimuladorScript : MonoBehaviour
 
     public void ExecutarSeguentEsdeveniment(){
         if (llistaEsdevenmients.Count == 0 && tempsActual == 0) IniciaSimulacio();
-        else {
+        else if (llistaEsdevenmients.Count > 0){
             Esdeveniment eActual = llistaEsdevenmients.Dequeue();
             tempsActual = eActual.temps;
             eActual.Executar();

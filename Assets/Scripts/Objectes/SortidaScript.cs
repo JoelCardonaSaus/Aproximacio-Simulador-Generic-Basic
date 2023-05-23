@@ -71,7 +71,11 @@ public class SortidaScript : MonoBehaviour, IObjectes
     }
 
     public void GenerarPlots(){
-        // Per implementar
+        EstadisticsController eC = transform.parent.GetComponent<EstadisticsController>();
+        double[] nEntitatsEstadistic = new double[1] { nEntitatsDestruides };
+        string [] etiquetes = new string[1] { gameObject.transform.name };
+        string nomImatge = "Output"+gameObject.transform.name;
+        eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
     }
 
     //////////////////////////////////////////////////////////////////////

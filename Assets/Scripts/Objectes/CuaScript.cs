@@ -16,6 +16,12 @@ public class CuaScript : MonoBehaviour, IObjectes
     private enum states { BUIT, NOBUIT, PLE };
     private states estat;
 
+    private float tempsBuit = 0;
+    private float tempsNoBuit = 0;
+    private float tempsPle = 0;
+    private float ultimTemps = 0;
+    private int entitatsEnviades = 0;
+
 
     void Start()
     {
@@ -30,6 +36,11 @@ public class CuaScript : MonoBehaviour, IObjectes
         objectesRebutjats = new Queue<GameObject>();
         tempsObjecteCua = new Dictionary<GameObject, double>();
         cuaObjecte = new Queue<GameObject>();
+        tempsBuit = 0;
+        tempsNoBuit = 0;
+        tempsPle = 0;
+        ultimTemps = 0;
+        entitatsEnviades = 0;
     }
 
     public void intentaEliminarObjecteSeguents(GameObject objecte){
@@ -46,9 +57,16 @@ public class CuaScript : MonoBehaviour, IObjectes
     public bool estaDisponible(GameObject objecteLlibreria)
     {
         if (capacitatMaxima == -1 || cuaObjecte.Count < capacitatMaxima){
+            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            if (estat == states.BUIT) tempsBuit += (tActual-ultimTemps);
+            else if (estat == states.NOBUIT) tempsNoBuit += (tActual-ultimTemps);
+            ultimTemps = tActual;
             return true;
         } 
         else{
+            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            tempsPle += (tActual-ultimTemps);
+            ultimTemps = tActual;
             if (!objectesRebutjats.Contains(objecteLlibreria))  objectesRebutjats.Enqueue(objecteLlibreria);
             return false;
         }
@@ -61,17 +79,22 @@ public class CuaScript : MonoBehaviour, IObjectes
             cuaObjecte.Enqueue(entitat);
             float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
             tempsObjecteCua.Add(entitat, tActual);
+            tempsNoBuit += (tActual - ultimTemps);
+            ultimTemps = tActual;
             if (capacitatMaxima != -1 && cuaObjecte.Count < capacitatMaxima) estat = states.NOBUIT;
             else estat = states.PLE;
         }
         else if (estat == states.BUIT){
+            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
             int nDisponible = cercaDisponible();
+            tempsBuit += (tActual - ultimTemps);
+            ultimTemps = tActual;
             if (nDisponible != -1){
                 SeguentsObjectes[nDisponible].GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
                 tempsObjecteCua.Add(entitat, 0);
+                ++entitatsEnviades;
             } else {
                 cuaObjecte.Enqueue(entitat);
-                float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
                 tempsObjecteCua.Add(entitat, tActual);
                 if (capacitatMaxima!=-1 && capacitatMaxima > 1) estat = states.NOBUIT;
                 else estat = states.PLE;
@@ -108,11 +131,19 @@ public class CuaScript : MonoBehaviour, IObjectes
     // Retorna fals si no pot enviar cap entitat al que ha avisat que esta disponible
     public bool notificacioDisponible(GameObject objecteLlibreria)
     {
-        if (estat == states.BUIT) return false;
+        float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+        if (estat == states.BUIT){
+            tempsBuit += (tActual - ultimTemps);
+            ultimTemps = tActual;
+            return false;
+        }
         else if (estat == states.NOBUIT){
+            tempsNoBuit += (tActual - ultimTemps);
+            ultimTemps = tActual;
             GameObject entitat = cuaObjecte.Dequeue();
             float tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
             tempsObjecteCua[entitat] = tempsCua;
+            ++entitatsEnviades;
             objecteLlibreria.GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
 
 
@@ -146,9 +177,12 @@ public class CuaScript : MonoBehaviour, IObjectes
             
         }
         else if (estat == states.PLE){
+            tempsPle += (tActual - ultimTemps);
+            ultimTemps = tActual;
             GameObject entitat = cuaObjecte.Dequeue();
             float tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
             tempsObjecteCua[entitat] = tempsCua;
+            ++entitatsEnviades;
             objecteLlibreria.GetComponent<IObjectes>().repEntitat(entitat, this.gameObject);
 
 
@@ -219,7 +253,24 @@ public class CuaScript : MonoBehaviour, IObjectes
     }
 
     public void GenerarPlots(){
-        // Per implementar
+        EstadisticsController eC = transform.parent.GetComponent<EstadisticsController>();
+
+        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        if (estat == states.BUIT) tempsBuit += (tempsActual - ultimTemps); 
+        else if (estat == states.NOBUIT) tempsNoBuit += (tempsActual - ultimTemps);
+        else tempsPle = (tempsActual - ultimTemps);
+        double[] tempsEstats = new double[3] { tempsBuit, tempsNoBuit, tempsPle };
+        string[] etiquetes = new string[3] { "Buit", "NoBuit", "Ple" };
+        string nomImatge = "TempsEstats"+gameObject.transform.name;
+        eC.GeneraEstadistic(0, tempsEstats, etiquetes, "Temps", nomImatge);
+
+        nomImatge = "PercentatgeEstats"+gameObject.transform.name;
+        eC.GeneraEstadistic(2, tempsEstats, etiquetes, "Percentatge", nomImatge);
+
+        double[] nEntitatsEstadistic = new double[1] { entitatsEnviades };
+        etiquetes = new string[1] { gameObject.transform.name };
+        nomImatge = "Output"+gameObject.transform.name;
+        eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
     }
 
     //////////////////////////////////////////////////////////////////////
