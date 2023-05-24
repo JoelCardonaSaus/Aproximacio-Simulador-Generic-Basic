@@ -9,7 +9,7 @@ public class UIScript : MonoBehaviour
 {
     private enum estatsSimulacio { SIMULANT, ATURAT, PAUSAT };
     private estatsSimulacio estat;
-    private enum btnSeleccionat { GENERADOR, CUA, PROCESSADOR, SORTIDA, JUNTAR, DESJUNTAR, ELIMINAR, CAP };
+    private enum btnSeleccionat { GENERADOR, CUA, PROCESSADOR, SORTIDA, JUNTAR, DESJUNTAR, ELIMINAR, CAP, ENTITATSTEMPORALS };
     private btnSeleccionat seleccionat;
     public Button generadorButton;
     public Button cuaButton;
@@ -20,7 +20,7 @@ public class UIScript : MonoBehaviour
     public Button eliminarButton;
     public Button comencarPausar;
     public Button reiniciar;
-
+    public Button entitatsTemporals;
     public Button seguentEsdev;
 
     public GameObject motorSimulador;
@@ -77,6 +77,12 @@ public class UIScript : MonoBehaviour
             if ((motorSimulador.GetComponent<MotorSimuladorScript>().AlgunDetallsObert()) && (!RatoliSobreAlgunObjece() && !RatoliSobreDetalls())){
                 motorSimulador.GetComponent<MotorSimuladorScript>().TancaDetallsObert();
             }
+            if (estat == estatsSimulacio.ATURAT && seleccionat == btnSeleccionat.ENTITATSTEMPORALS){
+                if (!RatoliSobreDetallsEntitats()){
+                    entitatsTemporals.gameObject.transform.parent.transform.GetChild(1).gameObject.SetActive(false);
+                    seleccionarOpcio(btnSeleccionat.CAP);
+                }
+            }
         }
     }
 
@@ -88,7 +94,18 @@ public class UIScript : MonoBehaviour
             RectTransformUtility.RectangleContainsScreenPoint(sortidaButton.GetComponent<RectTransform>(), Input.mousePosition) ||
             RectTransformUtility.RectangleContainsScreenPoint(juntarButton.GetComponent<RectTransform>(), Input.mousePosition) ||
             RectTransformUtility.RectangleContainsScreenPoint(desjuntarButton.GetComponent<RectTransform>(), Input.mousePosition) ||
-            RectTransformUtility.RectangleContainsScreenPoint(eliminarButton.GetComponent<RectTransform>(), Input.mousePosition);
+            RectTransformUtility.RectangleContainsScreenPoint(eliminarButton.GetComponent<RectTransform>(), Input.mousePosition) ||
+            RectTransformUtility.RectangleContainsScreenPoint(entitatsTemporals.GetComponent<RectTransform>(), Input.mousePosition);
+    }
+
+    public bool RatoliSobreDetallsEntitats(){
+
+        var image = entitatsTemporals.gameObject.transform.parent.transform.GetChild(1).gameObject.transform.GetChild(0).GetComponent<Image>();
+        if (RectTransformUtility.RectangleContainsScreenPoint(image.rectTransform, Input.mousePosition))
+        {
+            return true;
+        }
+        return false;
     }
 
     public bool objecteLlibreriaSeleccionat(){
@@ -138,6 +155,11 @@ public class UIScript : MonoBehaviour
 
     public void botoEliminarClicat(){
         seleccionarOpcio(btnSeleccionat.ELIMINAR);
+    }
+
+    public void botoEntitatsTemporalsClicat(){
+        seleccionarOpcio(btnSeleccionat.ENTITATSTEMPORALS);
+        entitatsTemporals.gameObject.transform.parent.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     public void botoComencarPausaClicat(){
@@ -214,7 +236,7 @@ public class UIScript : MonoBehaviour
             case btnSeleccionat.ELIMINAR:
                 eliminarButton.GetComponent<Image>().color = Color.white;
                 break;
-            case btnSeleccionat.CAP:
+            default:
                 break;
         }
     }
@@ -249,7 +271,7 @@ public class UIScript : MonoBehaviour
                 eliminarButton.GetComponent<Image>().color = Color.red;
                 Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 break;
-            case btnSeleccionat.CAP:
+            default:
                 Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 break;
         }

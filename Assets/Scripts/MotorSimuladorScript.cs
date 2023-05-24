@@ -6,7 +6,7 @@ using UnityEngine;
 public class MotorSimuladorScript : MonoBehaviour
 {
     public float escalaTemps;
-
+    private int entitatsTemporals = 0;
     private GameObject generadorPrefab;
     private GameObject cuaPrefab;
     private GameObject processadorPrefab;
@@ -150,5 +150,13 @@ public class MotorSimuladorScript : MonoBehaviour
                 break;
             
         }
+    }
+
+    public void CanviaEntitatsTemporals(int entitatsSeleccionades){
+        entitatsTemporals = entitatsSeleccionades;
+    }
+
+    public int ObteEntitatsSeleccionades(){
+        return entitatsTemporals;
     }
 }

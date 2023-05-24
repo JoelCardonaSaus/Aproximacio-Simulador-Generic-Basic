@@ -13,6 +13,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     public double[] parametres = new double[] {1,1,1}; // Inicialitza per evitar problemes
     public ISeguentNumero distribuidor;
     public List<GameObject> SeguentsObjectes;
+    public GameObject[] entitatsTemporals = new GameObject[3];
     public GameObject entitatTemporal;
     private double tempsSeguentEntitat;
     public enum estats { GENERANT, BLOQUEJAT };
@@ -50,6 +51,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         ultimTemps = 0;
         generarEsdevenimentArribada(transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
         tempsEntreEntitats = new List<double>();
+        entitatTemporal = entitatsTemporals[transform.parent.GetComponent<MotorSimuladorScript>().ObteEntitatsSeleccionades()];
     }
 
     public void intentaEliminarObjecteSeguents(GameObject objecte){
@@ -262,7 +264,9 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
             motorScript.TancaDetallsObert();
         }
         if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
-        else if (UIScript.Instancia.obteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        else if (UIScript.Instancia.obteBotoSeleccionat() == 7){
+            motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        }
         else if (UIScript.Instancia.obteBotoSeleccionat() == 4) UIScript.Instancia.ajuntarObjectes(this.gameObject);
         else if (UIScript.Instancia.obteBotoSeleccionat() == 5) UIScript.Instancia.desjuntarObjectes(this.gameObject);
     }
