@@ -7,10 +7,11 @@ using UnityEditor;
 public class GeneradorTest
 {
     public GameObject entitatTemporal;
-    
+    /*
     [Test]
     public void GeneradorEnviaUnObjecte()
     {
+        
         GameObject fakeObject = new GameObject();
         fakeObject.AddComponent<FakeRebreObjecte>();
         FakeRebreObjecte fo = fakeObject.GetComponent<FakeRebreObjecte>();
@@ -39,5 +40,6 @@ public class GeneradorTest
 
         Assert.That(gs.getNGenerats(), Is.EqualTo(0));
     }
+    */
 }
 

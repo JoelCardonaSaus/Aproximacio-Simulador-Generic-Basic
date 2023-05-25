@@ -887,7 +887,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoEntitatsTemporalsClicat
+        m_MethodName: BotoEntitatsTemporalsClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1609,7 +1609,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoEliminarClicat
+        m_MethodName: BotoEliminarClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1960,7 +1960,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoReiniciaClicat
+        m_MethodName: BotoReiniciaClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2446,7 +2446,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoDesjuntarClicat
+        m_MethodName: BotoDesjuntarClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3169,7 +3169,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoCuaClicat
+        m_MethodName: BotoCuaClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3380,7 +3380,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoGeneradorClicat
+        m_MethodName: BotoGeneradorClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3828,7 +3828,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoStepClicat
+        m_MethodName: BotoStepClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4115,7 +4115,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoJuntarClicat
+        m_MethodName: BotoJuntarClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4250,7 +4250,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoProcessadorClicat
+        m_MethodName: BotoProcessadorClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4829,7 +4829,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoSortidaClicat
+        m_MethodName: BotoSortidaClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5040,7 +5040,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: botoComencarPausaClicat
+        m_MethodName: BotoComencarPausaClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

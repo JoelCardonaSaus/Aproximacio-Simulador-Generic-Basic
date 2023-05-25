@@ -19,7 +19,7 @@ public class UICuaScript : MonoBehaviour
 
     public void CanviEnrutamentSeleccionat()
     {
-        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
             cancela.interactable = true;
             aplicar.interactable = true;
@@ -32,7 +32,7 @@ public class UICuaScript : MonoBehaviour
     }
 
     public void CanviCapacitat(){
-        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
             cancela.interactable = true;
             aplicar.interactable = true;

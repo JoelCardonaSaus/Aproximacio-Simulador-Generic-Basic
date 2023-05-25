@@ -16,7 +16,7 @@ public class UIEntitatsScript : MonoBehaviour
 
     public void CanviEntitatsSeleccionat()
     {
-        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
             cancela.interactable = true;
             aplicar.interactable = true;

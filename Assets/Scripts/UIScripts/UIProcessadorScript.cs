@@ -33,7 +33,7 @@ public class UIProcessadorScript : MonoBehaviour
 
     public void CanviEnrutamentSeleccionat()
     {
-        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
             cancela.interactable = true;
             aplicar.interactable = true;
@@ -47,7 +47,7 @@ public class UIProcessadorScript : MonoBehaviour
 
     public void CanviDistribuidorSeleccionat()
     {
-        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
             cancela.interactable = true;
             aplicar.interactable = true;
@@ -98,7 +98,7 @@ public class UIProcessadorScript : MonoBehaviour
     }
 
     public void CanviaParametres(){
-        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
             aplicar.interactable = true;
             cancela.interactable = true;
@@ -124,7 +124,7 @@ public class UIProcessadorScript : MonoBehaviour
     }
 
     public void CanviCapacitat(){
-        if (UIScript.Instancia.obteEstatSimulador() == 1)
+        if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
             cancela.interactable = true;
             aplicar.interactable = true;

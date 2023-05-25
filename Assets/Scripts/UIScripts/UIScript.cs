@@ -70,9 +70,9 @@ public class UIScript : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButtonDown(0)){
-            if (estat == estatsSimulacio.ATURAT && objecteLlibreriaSeleccionat() && !RatoliSobreBotonsUI())
+            if (estat == estatsSimulacio.ATURAT && ObjecteLlibreriaSeleccionat() && !RatoliSobreBotonsUI())
             {
-                if (seleccionat == btnSeleccionat.GENERADOR || seleccionat == btnSeleccionat.CUA || seleccionat == btnSeleccionat.PROCESSADOR || seleccionat == btnSeleccionat.SORTIDA) instanciarObjecte();
+                if (seleccionat == btnSeleccionat.GENERADOR || seleccionat == btnSeleccionat.CUA || seleccionat == btnSeleccionat.PROCESSADOR || seleccionat == btnSeleccionat.SORTIDA) InstanciarObjecte();
             }  
             if ((motorSimulador.GetComponent<MotorSimuladorScript>().AlgunDetallsObert()) && (!RatoliSobreAlgunObjece() && !RatoliSobreDetalls())){
                 motorSimulador.GetComponent<MotorSimuladorScript>().TancaDetallsObert();
@@ -80,7 +80,7 @@ public class UIScript : MonoBehaviour
             if (estat == estatsSimulacio.ATURAT && seleccionat == btnSeleccionat.ENTITATSTEMPORALS){
                 if (!RatoliSobreDetallsEntitats()){
                     entitatsTemporals.gameObject.transform.parent.transform.GetChild(1).gameObject.SetActive(false);
-                    seleccionarOpcio(btnSeleccionat.CAP);
+                    SeleccionarOpcio(btnSeleccionat.CAP);
                 }
             }
         }
@@ -108,7 +108,7 @@ public class UIScript : MonoBehaviour
         return false;
     }
 
-    public bool objecteLlibreriaSeleccionat(){
+    public bool ObjecteLlibreriaSeleccionat(){
         return seleccionat == btnSeleccionat.GENERADOR || seleccionat == btnSeleccionat.CUA || seleccionat == btnSeleccionat.PROCESSADOR || seleccionat == btnSeleccionat.SORTIDA;   
     }
 
@@ -129,45 +129,45 @@ public class UIScript : MonoBehaviour
         return false;
     }
 
-    public void botoGeneradorClicat(){
-        seleccionarOpcio(btnSeleccionat.GENERADOR);
+    public void BotoGeneradorClicat(){
+        SeleccionarOpcio(btnSeleccionat.GENERADOR);
     }
 
-    public void botoCuaClicat(){
-        seleccionarOpcio(btnSeleccionat.CUA);
+    public void BotoCuaClicat(){
+        SeleccionarOpcio(btnSeleccionat.CUA);
     }
 
-    public void botoProcessadorClicat(){
-        seleccionarOpcio(btnSeleccionat.PROCESSADOR);
+    public void BotoProcessadorClicat(){
+        SeleccionarOpcio(btnSeleccionat.PROCESSADOR);
     }
 
-    public void botoSortidaClicat(){
-        seleccionarOpcio(btnSeleccionat.SORTIDA);
+    public void BotoSortidaClicat(){
+        SeleccionarOpcio(btnSeleccionat.SORTIDA);
     }
 
-    public void botoJuntarClicat(){
-        seleccionarOpcio(btnSeleccionat.JUNTAR);
+    public void BotoJuntarClicat(){
+        SeleccionarOpcio(btnSeleccionat.JUNTAR);
     }
 
-    public void botoDesjuntarClicat(){
-        seleccionarOpcio(btnSeleccionat.DESJUNTAR);
+    public void BotoDesjuntarClicat(){
+        SeleccionarOpcio(btnSeleccionat.DESJUNTAR);
     }
 
-    public void botoEliminarClicat(){
-        seleccionarOpcio(btnSeleccionat.ELIMINAR);
+    public void BotoEliminarClicat(){
+        SeleccionarOpcio(btnSeleccionat.ELIMINAR);
     }
 
-    public void botoEntitatsTemporalsClicat(){
-        seleccionarOpcio(btnSeleccionat.ENTITATSTEMPORALS);
+    public void BotoEntitatsTemporalsClicat(){
+        SeleccionarOpcio(btnSeleccionat.ENTITATSTEMPORALS);
         entitatsTemporals.gameObject.transform.parent.transform.GetChild(1).gameObject.SetActive(true);
     }
 
-    public void botoComencarPausaClicat(){
+    public void BotoComencarPausaClicat(){
         if (estat == estatsSimulacio.SIMULANT) {
             estat = estatsSimulacio.PAUSAT;
             comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
         } else if (estat == estatsSimulacio.PAUSAT){
-            seleccionarOpcio(btnSeleccionat.CAP);
+            SeleccionarOpcio(btnSeleccionat.CAP);
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
             comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
             estat = estatsSimulacio.SIMULANT;
@@ -178,14 +178,14 @@ public class UIScript : MonoBehaviour
         }
     }
 
-    public void botoReiniciaClicat(){
+    public void BotoReiniciaClicat(){
         estat = estatsSimulacio.ATURAT;
         comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
         motorSimulador.GetComponent<MotorSimuladorScript>().ReiniciarSimulador();
         seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (u.t.): 0";
     }
 
-    public void botoStepClicat(){
+    public void BotoStepClicat(){
         if (estat != estatsSimulacio.SIMULANT){
             motorSimulador.GetComponent<MotorSimuladorScript>().ExecutarSeguentEsdeveniment();
             float tempsSegEsdv = motorSimulador.GetComponent<MotorSimuladorScript>().ObteTempsSeguentEsdeveniment();
@@ -193,26 +193,26 @@ public class UIScript : MonoBehaviour
         }
     }
 
-    private void seleccionarOpcio(btnSeleccionat seleccionatNou){
+    private void SeleccionarOpcio(btnSeleccionat seleccionatNou){
         if (estat == estatsSimulacio.ATURAT){
             if (seleccionat == btnSeleccionat.JUNTAR) ajuntar = new GameObject[2];
             else if (seleccionat == btnSeleccionat.DESJUNTAR) desjuntar = new GameObject[2];
             if (seleccionatNou != seleccionat){
-                deseleccionarBackground(seleccionat);
+                DeseleccionarBackground(seleccionat);
                 if (seleccionatNou != btnSeleccionat.CAP){
-                    seleccionarBackground(seleccionatNou);
+                    SeleccionarBackground(seleccionatNou);
                 }
                 seleccionat = seleccionatNou;
             }
             else if (seleccionatNou == seleccionat){
-                deseleccionarBackground(seleccionatNou);
+                DeseleccionarBackground(seleccionatNou);
                 seleccionat = btnSeleccionat.CAP;
-                seleccionarBackground(seleccionat);
+                SeleccionarBackground(seleccionat);
             }
         }
     }
 
-    private void deseleccionarBackground(btnSeleccionat deseleccionar){
+    private void DeseleccionarBackground(btnSeleccionat deseleccionar){
         // Afegir canvi d'imatge
         switch (deseleccionar){
             case btnSeleccionat.GENERADOR:
@@ -241,7 +241,7 @@ public class UIScript : MonoBehaviour
         }
     }
 
-    private void seleccionarBackground(btnSeleccionat seleccionatNou){
+    private void SeleccionarBackground(btnSeleccionat seleccionatNou){
         switch (seleccionatNou){
             case btnSeleccionat.GENERADOR:
                 generadorButton.GetComponent<Image>().color = Color.green;
@@ -277,63 +277,61 @@ public class UIScript : MonoBehaviour
         }
     }
 
-    private void instanciarObjecte(){
+    private void InstanciarObjecte(){
         Vector3 mousePosition = Input.mousePosition;
-        // Convert the mouse position to a world position relative to the camera
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Camera.main.nearClipPlane));
+        int objecteId;
         switch (seleccionat){
             case btnSeleccionat.GENERADOR:
-                motorSimulador.GetComponent<MotorSimuladorScript>().creaObjecteFill(0, worldPosition);
-                deseleccionarBackground(seleccionat);
-                seleccionat = btnSeleccionat.CAP;
-                seleccionarBackground(seleccionat);
+                objecteId = 0;
                 break;
             case btnSeleccionat.CUA:
-                motorSimulador.GetComponent<MotorSimuladorScript>().creaObjecteFill(1, worldPosition);
-                deseleccionarBackground(seleccionat);
-                seleccionat = btnSeleccionat.CAP;
-                seleccionarBackground(seleccionat);
+                objecteId = 1;
                 break;
             case btnSeleccionat.PROCESSADOR:
-                motorSimulador.GetComponent<MotorSimuladorScript>().creaObjecteFill(2, worldPosition);
-                deseleccionarBackground(seleccionat);
-                seleccionat = btnSeleccionat.CAP;
-                seleccionarBackground(seleccionat);
+                objecteId = 2;
                 break;
             case btnSeleccionat.SORTIDA:
-                motorSimulador.GetComponent<MotorSimuladorScript>().creaObjecteFill(3, worldPosition);
-                deseleccionarBackground(seleccionat);
-                seleccionat = btnSeleccionat.CAP;
-                seleccionarBackground(seleccionat);
+                objecteId = 3;                
                 break;
+            default:
+                objecteId = -1;
+                break;
+        }
+
+        if (objecteId != -1){
+            motorSimulador.GetComponent<MotorSimuladorScript>().CreaObjecteFill(objecteId, worldPosition);
+            DeseleccionarBackground(seleccionat);
+            seleccionat = btnSeleccionat.CAP;
+            SeleccionarBackground(seleccionat);
         }
     }
 
-    public void ajuntarObjectes(GameObject objectePerJuntar){
+    public void AjuntarObjectes(GameObject objectePerJuntar){
         if (ajuntar[0] == null) ajuntar[0] = objectePerJuntar;
         else{
             ajuntar[1] = objectePerJuntar;
             ajuntar[0].GetComponent<LlibreriaObjectes>().AfegeixSeguentObjecte(ajuntar[1]);
             ajuntar = new GameObject[2];
-            seleccionarOpcio(btnSeleccionat.JUNTAR);
+            SeleccionarOpcio(btnSeleccionat.JUNTAR);
         }
     }
 
-    public void desjuntarObjectes(GameObject objectePerDesjuntar){
+    public void DesjuntarObjectes(GameObject objectePerDesjuntar){
         if (desjuntar[0] == null) desjuntar[0] = objectePerDesjuntar;
         else{
             desjuntar[1] = objectePerDesjuntar;
             desjuntar[0].GetComponent<LlibreriaObjectes>().DesajuntarSeguentObjecte(desjuntar[1]);
             desjuntar = new GameObject[2];
-            seleccionarOpcio(btnSeleccionat.DESJUNTAR);
+            SeleccionarOpcio(btnSeleccionat.DESJUNTAR);
         }
     }
 
-    public int obteEstatSimulador(){
+    public int ObteEstatSimulador(){
         return (int)estat;
     }
 
-    public int obteBotoSeleccionat(){
+    public int ObteBotoSeleccionat(){
         return (int)seleccionat;
     }
 }

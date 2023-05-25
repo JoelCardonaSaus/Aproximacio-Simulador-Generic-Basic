@@ -13,7 +13,7 @@ public class BinomialDistribution : ISeguentNumero
         binomialDist = new Binomial(p, Mathf.RoundToInt((float)n));    
     }
 
-    public double getNextSample(){
+    public double ObteSeguentNumero(){
         return binomialDist.Sample();
     }
 }

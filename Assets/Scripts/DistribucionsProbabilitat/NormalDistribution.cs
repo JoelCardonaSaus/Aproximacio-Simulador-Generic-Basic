@@ -13,7 +13,7 @@ public class NormalDistribution : ISeguentNumero
         normalDist = new Normal(m, sdev);    
     }
 
-    public double getNextSample(){
+    public double ObteSeguentNumero(){
         return normalDist.Sample();
     }
 }

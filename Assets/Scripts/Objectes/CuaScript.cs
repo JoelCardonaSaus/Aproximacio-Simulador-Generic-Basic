@@ -7,9 +7,6 @@ public class CuaScript : LlibreriaObjectes
 {
     
     public int capacitatMaxima = -1; // -1 == No hi ha capacitat màxima, >0 capacitat màxima de la cua
-    //public List<GameObject> SeguentsObjectes;
-    //public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
-    //public politiquesEnrutament enrutament;
     private Queue<GameObject> cuaObjecte;
     private Dictionary<GameObject, double> tempsObjecteCua;
     private Queue<GameObject> objectesRebutjats;
@@ -266,7 +263,7 @@ public class CuaScript : LlibreriaObjectes
         float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
         if (estat == states.BUIT) tempsBuit += (tempsActual - ultimTemps); 
         else if (estat == states.NOBUIT) tempsNoBuit += (tempsActual - ultimTemps);
-        else tempsPle = (tempsActual - ultimTemps);
+        else tempsPle += (tempsActual - ultimTemps);
         double[] tempsEstats = new double[3] { tempsBuit, tempsNoBuit, tempsPle };
         string[] etiquetes = new string[3] { "Buit", "NoBuit", "Ple" };
         string nomImatge = "TempsEstats"+gameObject.transform.name;
@@ -295,10 +292,10 @@ public class CuaScript : LlibreriaObjectes
         {
             motorScript.TancaDetallsObert();
         }
-        if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
-        else if (UIScript.Instancia.obteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
-        else if (UIScript.Instancia.obteBotoSeleccionat() == 4) UIScript.Instancia.ajuntarObjectes(this.gameObject);
-        else if (UIScript.Instancia.obteBotoSeleccionat() == 5) UIScript.Instancia.desjuntarObjectes(this.gameObject);
+        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) motorScript.EliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.ObteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        else if (UIScript.Instancia.ObteBotoSeleccionat() == 4) UIScript.Instancia.AjuntarObjectes(this.gameObject);
+        else if (UIScript.Instancia.ObteBotoSeleccionat() == 5) UIScript.Instancia.DesjuntarObjectes(this.gameObject);
     }
 
     public override void ObreDetalls(){

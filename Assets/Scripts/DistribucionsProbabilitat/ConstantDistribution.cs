@@ -13,7 +13,7 @@ public class ConstantDistribution : ISeguentNumero
         constant = n; 
     }
 
-    public double getNextSample(){
+    public double ObteSeguentNumero(){
         return constant;
     }
 }

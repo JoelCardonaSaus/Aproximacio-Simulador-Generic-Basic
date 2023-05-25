@@ -12,7 +12,7 @@ public class ExponentialDistribution : ISeguentNumero
         exponentialDist = new Exponential(rate);    
     }
 
-    public double getNextSample(){
+    public double ObteSeguentNumero(){
         return exponentialDist.Sample();
     }
 }

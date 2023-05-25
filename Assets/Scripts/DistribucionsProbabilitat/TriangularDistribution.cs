@@ -13,7 +13,7 @@ public class TriangularDistribution : ISeguentNumero
         triangularDist = new Triangular(lower, upper, middle);    
     }
 
-    public double getNextSample(){
+    public double ObteSeguentNumero(){
         return triangularDist.Sample();
     }
 }

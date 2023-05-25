@@ -5,13 +5,10 @@ using UnityEngine.UI;
 public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
 {
     public int maxEntitatsParalel = 1;
-   // public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
-    //public politiquesEnrutament enrutament;
     public enum distribucionsProbabilitat { CONSTANT, BINOMIAL, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
     public distribucionsProbabilitat distribucio;
     public double[] parametres;
     public ISeguentNumero distribuidor;
-    //public List<GameObject> SeguentsObjectes = new List<GameObject>(); 
     private List<GameObject> entitatsProcessant;
     //Variables per als estadistics
     private int nEntitatsEnviades = 0;
@@ -57,7 +54,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
             float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
             tempsDisponible += (tActual-ultimTemps);
             ultimTemps = tActual;
-            generarEsdevenimentProces(entitat, tActual);
+            GenerarEsdevenimentProces(entitat, tActual);
             if (maxEntitatsParalel == 1) estat = estats.BLOQUEJAT;
             else estat = estats.PROCESSANT;
         }
@@ -65,8 +62,8 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
             float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
             tempsProcessat += (tActual-ultimTemps);
             ultimTemps = tActual;
-            generarEsdevenimentProces(entitat, tActual);
-            if (maxEntitatsParalel != -1 && maxEntitatsParalel > entitatsProcessant.Count) estat = estats.PROCESSANT;
+            GenerarEsdevenimentProces(entitat, tActual);
+            if (maxEntitatsParalel == -1 || (maxEntitatsParalel > entitatsProcessant.Count)) estat = estats.PROCESSANT;
             else estat = estats.BLOQUEJAT;
         }
     }
@@ -152,13 +149,13 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     }
 
 
-    public void generarEsdevenimentProces(GameObject entitat, float tempsActual){
+    public void GenerarEsdevenimentProces(GameObject entitat, float tempsActual){
         Debug.Log("Es genera un esdeveniment per a un processador " + tempsActual.ToString());
-        float tempsProcessat = (float)distribuidor.getNextSample();
+        float tempsProcessat = (float)distribuidor.ObteSeguentNumero();
         tempsMigEntitatsProcessador+=tempsProcessat;
         entitatsProcessant.Add(entitat);
         Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+(float)tempsProcessat, entitat, Esdeveniment.Tipus.PROCESSOS);
-        transform.parent.GetComponent<MotorSimuladorScript>().afegirEsdeveniment(e);
+        transform.parent.GetComponent<MotorSimuladorScript>().AfegirEsdeveniment(e);
     }
 
     public void TractarEsdeveniment(Esdeveniment e){
@@ -226,70 +223,13 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         return objecteNou.GetComponent<LlibreriaObjectes>().NotificacioDisponible(this.gameObject);
     }
 
-    /*
-    public override void IntentaEliminarObjecteSeguents(GameObject objecte){
-        if (SeguentsObjectes.Contains(objecte)) {
-            Destroy(transform.GetChild(SeguentsObjectes.IndexOf(objecte)+1).gameObject);
-            SeguentsObjectes.Remove(objecte);
-        }
-    }
-
-    public void afegeixSeguentObjecte(GameObject objecte){
-        if (!SeguentsObjectes.Contains(objecte)){
-            GameObject objecteAmbLinia = new GameObject("L"+SeguentsObjectes.Count.ToString());
-            objecteAmbLinia.transform.parent = transform;
-            SeguentsObjectes.Add(objecte);
-            LineRenderer lr = objecteAmbLinia.AddComponent<LineRenderer>();
-            lr.positionCount = 2;
-            lr.startWidth = 0.1f;
-            lr.endWidth = 0.1f;
-            lr.SetPosition(0, transform.position);
-            lr.SetPosition(1, objecte.transform.position);
-            lr.startColor = Color.green;
-            lr.endColor = Color.green;
-            lr.material = Resources.Load<Material>("Materials/LineRendererMaterial") as Material;
-
-        }
-    }
-    
-    public void desajuntarSeguentObjecte(GameObject desjuntar){
-        intentaEliminarObjecteSeguents(desjuntar);
-    }
-    
-    public int CercaDisponible(){   
-        LlibreriaObjectes SeguentObj;
-
-        // Comprovem que almenys hi ha un objecte disponible
-        if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
-            for (int i = 0; i < SeguentsObjectes.Count; i++)//GameObject objecte in SeguentsObjectes)
-            {
-                SeguentObj = SeguentsObjectes[i].GetComponent<LlibreriaObjectes>();
-                if (SeguentObj.estaDisponible(this.gameObject)) {
-                    return i;
-                }
-            }
-        }
-
-        else if (enrutament == politiquesEnrutament.RANDOM){
-            for (int i = 0; i < SeguentsObjectes.Count; i++){
-                int obj = Random.Range(0, SeguentsObjectes.Count);
-                SeguentObj = SeguentsObjectes[obj].GetComponent<LlibreriaObjectes>();
-                if (SeguentObj.estaDisponible(this.gameObject)) {
-                    return obj;
-                }
-            }
-        }
-        return -1;
-    }
-    */
-
     public override void GenerarPlots(){
         EstadisticsController eC = transform.parent.GetComponent<EstadisticsController>();
 
         float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
         if (estat == estats.DISPONIBLE) tempsDisponible += (tempsActual - ultimTemps); 
         else if (estat == estats.PROCESSANT) tempsProcessat += (tempsActual - ultimTemps);
-        else tempsBloquejat = (tempsActual - ultimTemps);
+        else tempsBloquejat += (tempsActual - ultimTemps);
         double[] tempsEstats = new double[3] { tempsDisponible, tempsProcessat, tempsBloquejat };
         string[] etiquetes = new string[3] { "Disponible", "Processant", "Bloquejat" };
         string nomImatge = "TempsEstats"+gameObject.transform.name;
@@ -320,10 +260,10 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         {
             motorScript.TancaDetallsObert();
         }
-        if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
-        else if (UIScript.Instancia.obteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
-        else if (UIScript.Instancia.obteBotoSeleccionat() == 4) UIScript.Instancia.ajuntarObjectes(this.gameObject);
-        else if (UIScript.Instancia.obteBotoSeleccionat() == 5) UIScript.Instancia.desjuntarObjectes(this.gameObject);
+        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) motorScript.EliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.ObteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        else if (UIScript.Instancia.ObteBotoSeleccionat() == 4) UIScript.Instancia.AjuntarObjectes(this.gameObject);
+        else if (UIScript.Instancia.ObteBotoSeleccionat() == 5) UIScript.Instancia.DesjuntarObjectes(this.gameObject);
 
     }
 

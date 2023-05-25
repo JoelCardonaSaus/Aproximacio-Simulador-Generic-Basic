@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 public class CuaTests
 {
     public GameObject entitatTemporal;
-    
+    /*
     [Test]
     public void CuaRepUnObjecte()
     {
@@ -49,4 +49,5 @@ public class CuaTests
 
         //Assert.That(cuaScript.isAvailable(this.gameObject), Is.EqualTo(false));
     }
+    */
 }

@@ -72,7 +72,7 @@ public class SortidaScript : LlibreriaObjectes
     }
 
 
-    public void inicialitzaPerFerTests(){
+    public void InicialitzaPerFerTests(){
         tempsEntreEntitats.Add(0); // Creem el temps d'espera per la primera entitat
         nEntitatsDestruides = 0;
     }
@@ -100,9 +100,9 @@ public class SortidaScript : LlibreriaObjectes
         {
             motorScript.TancaDetallsObert();
         }
-        if (UIScript.Instancia.obteBotoSeleccionat() == 6) motorScript.eliminarObjecteLlista(this.gameObject);
-        else if (UIScript.Instancia.obteBotoSeleccionat() == 4) UIScript.Instancia.ajuntarObjectes(this.gameObject);
-        else if (UIScript.Instancia.obteBotoSeleccionat() == 5) UIScript.Instancia.desjuntarObjectes(this.gameObject);
+        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) motorScript.EliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.ObteBotoSeleccionat() == 4) UIScript.Instancia.AjuntarObjectes(this.gameObject);
+        else if (UIScript.Instancia.ObteBotoSeleccionat() == 5) UIScript.Instancia.DesjuntarObjectes(this.gameObject);
     }
 
     public override void ObreDetalls(){

@@ -13,7 +13,7 @@ public class DiscreteUniformDistribution : ISeguentNumero
         uniformDist = new DiscreteUniform(Mathf.RoundToInt((float)lower), Mathf.RoundToInt((float)upper));    
     }
 
-    public double getNextSample(){
+    public double ObteSeguentNumero(){
         return uniformDist.Sample();
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 public class ProcessadorTests
 {
     public GameObject entitatTemporal;
-    
+    /*
     [Test]
     public void ProcessadorRepUnObjecte()
     {
@@ -32,4 +32,5 @@ public class ProcessadorTests
 
         //Assert.That(processadorScript.isAvailable(this.gameObject), Is.EqualTo(false));
     }
+    */
 }

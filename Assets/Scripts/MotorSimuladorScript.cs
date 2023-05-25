@@ -27,7 +27,7 @@ public class MotorSimuladorScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (UIScript.Instancia.obteEstatSimulador() == 0){
+        if (UIScript.Instancia.ObteEstatSimulador() == 0){
             if (llistaEsdevenmients.Count > 0){
                 Esdeveniment eActual = llistaEsdevenmients.Dequeue();
                 tempsActual = eActual.temps;
@@ -77,11 +77,11 @@ public class MotorSimuladorScript : MonoBehaviour
         else return tempsActual;
     }
 
-    public void afegirEsdeveniment(Esdeveniment nouEsdeveminemt){
+    public void AfegirEsdeveniment(Esdeveniment nouEsdeveminemt){
         llistaEsdevenmients.Enqueue(nouEsdeveminemt);
     }
 
-    public void afegirObjecteLlista(GameObject nouObjecte){
+    public void AfegirObjecteLlista(GameObject nouObjecte){
         if (!nouObjecte.name.Contains("Sortida")){
             if (detallsObert != -1) {
                 objectesLlibreria[detallsObert].GetComponent<LlibreriaObjectes>().TancaDetalls();
@@ -92,7 +92,7 @@ public class MotorSimuladorScript : MonoBehaviour
         detallsObert = objectesLlibreria.Count-1;
     }
 
-    public void eliminarObjecteLlista(GameObject objecte) {
+    public void EliminarObjecteLlista(GameObject objecte) {
         for (int i = 0; i < objectesLlibreria.Count; i++) {
             objectesLlibreria[i].GetComponent<LlibreriaObjectes>().IntentaEliminarObjecteSeguents(objecte);
         }
@@ -125,31 +125,27 @@ public class MotorSimuladorScript : MonoBehaviour
         else if (escalaTemps > 10f) escalaTemps = 10f;     
     }
 
-    public void creaObjecteFill(int obj, Vector3 posicio){
+    public void CreaObjecteFill(int obj, Vector3 posicio){
         GameObject objecteNou;
         switch(obj){
             case 0:
-                objecteNou = Instantiate(generadorPrefab, new Vector3(posicio.x, posicio.y,0), Quaternion.identity);
-                objecteNou.transform.parent = gameObject.transform;
-                afegirObjecteLlista(objecteNou);
+                objecteNou = Instantiate(generadorPrefab, new Vector3(posicio.x, posicio.y,0), Quaternion.identity);        
                 break;
             case 1:
                 objecteNou = Instantiate(cuaPrefab, new Vector3(posicio.x, posicio.y,0) , Quaternion.identity);
-                objecteNou.transform.parent = gameObject.transform;
-                afegirObjecteLlista(objecteNou);
                 break;
             case 2:
                 objecteNou = Instantiate(processadorPrefab, new Vector3(posicio.x, posicio.y,0) , Quaternion.identity);
-                objecteNou.transform.parent = gameObject.transform;
-                afegirObjecteLlista(objecteNou);
                 break;
             case 3:
                 objecteNou = Instantiate(sortidaPrefab, new Vector3(posicio.x, posicio.y,0), Quaternion.identity);
-                objecteNou.transform.parent = gameObject.transform;
-                afegirObjecteLlista(objecteNou);
                 break;
-            
+            default:
+                objecteNou = Instantiate(generadorPrefab, new Vector3(posicio.x, posicio.y,0), Quaternion.identity);
+                break;
         }
+        objecteNou.transform.parent = gameObject.transform;
+        AfegirObjecteLlista(objecteNou);
     }
 
     public void CanviaEntitatsTemporals(int entitatsSeleccionades){

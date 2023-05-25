@@ -13,7 +13,7 @@ public class PoissonDistribution : ISeguentNumero
         poissonDist = new Poisson(lambda);    
     }
 
-    public double getNextSample(){
+    public double ObteSeguentNumero(){
         return poissonDist.Sample();
     }
 }

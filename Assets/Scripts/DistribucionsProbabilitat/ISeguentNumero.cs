@@ -6,5 +6,5 @@ using MathNet.Numerics.Random;
 
 public interface ISeguentNumero
 {
-    double getNextSample();
+    double ObteSeguentNumero();
 } 
