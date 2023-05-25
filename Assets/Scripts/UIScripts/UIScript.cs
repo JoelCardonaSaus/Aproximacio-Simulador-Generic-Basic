@@ -313,7 +313,7 @@ public class UIScript : MonoBehaviour
         if (ajuntar[0] == null) ajuntar[0] = objectePerJuntar;
         else{
             ajuntar[1] = objectePerJuntar;
-            ajuntar[0].GetComponent<IObjectes>().afegeixSeguentObjecte(ajuntar[1]);
+            ajuntar[0].GetComponent<LlibreriaObjectes>().AfegeixSeguentObjecte(ajuntar[1]);
             ajuntar = new GameObject[2];
             seleccionarOpcio(btnSeleccionat.JUNTAR);
         }
@@ -323,7 +323,7 @@ public class UIScript : MonoBehaviour
         if (desjuntar[0] == null) desjuntar[0] = objectePerDesjuntar;
         else{
             desjuntar[1] = objectePerDesjuntar;
-            desjuntar[0].GetComponent<IObjectes>().desajuntarSeguentObjecte(desjuntar[1]);
+            desjuntar[0].GetComponent<LlibreriaObjectes>().DesajuntarSeguentObjecte(desjuntar[1]);
             desjuntar = new GameObject[2];
             seleccionarOpcio(btnSeleccionat.DESJUNTAR);
         }

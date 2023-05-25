@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SortidaScript : MonoBehaviour, IObjectes
+public class SortidaScript : LlibreriaObjectes
 {
     private int nEntitatsDestruides;
     private List<double> tempsEntreEntitats;
@@ -17,19 +17,12 @@ public class SortidaScript : MonoBehaviour, IObjectes
     {
     }
 
-    public void IniciaSimulacio(){
+    public override void IniciaSimulacio(){
         nEntitatsDestruides = 0;
         tempsEntreEntitats = new List<double>();
     }
 
-    public void intentaEliminarObjecteSeguents(GameObject objecte){    }
-
-    public bool estaDisponible(GameObject objecteLlibreria)
-    {
-        return true;
-    }
-
-    public void repEntitat(GameObject entitat, GameObject objecteLlibreria)
+    public override void RepEntitat(GameObject entitat, GameObject objecteLlibreria)
     {
         Debug.Log("Es destrueix una nova entitat");
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
@@ -43,34 +36,48 @@ public class SortidaScript : MonoBehaviour, IObjectes
         Destroy(entitat);        
     }
 
-    public int cercaDisponible(){   
-        return -1;
-    }
-
     // Retorna fals si no pot enviar cap entitat al que ha avisat que esta disponible
-    public bool notificacioDisponible(GameObject objecteLlibreria)
+    public override bool NotificacioDisponible(GameObject objecteLlibreria)
     {
         return false;
     }
+
+    public override bool EstaDisponible(GameObject objecteLlibreria)
+    {
+        return true;
+    } 
+
+    new public int CercaDisponible(){   
+        return -1;
+    }
+
+    new public void AfegeixSeguentObjecte(GameObject objecte){
+        
+    }
+
+    new public void IntentaEliminarObjecteSeguents(GameObject objecte){    }
+
+    new public void DesajuntarSeguentObjecte(GameObject desjuntar){
+        
+    }
+
+    public override int ObteTipusObjecte()
+    {
+        return 3;
+    }
+    
 
     public int getNEntitatsDestruides(){
         return nEntitatsDestruides;
     }
 
-    public void afegeixSeguentObjecte(GameObject objecte){
-        
-    }
-
-    public void desajuntarSeguentObjecte(GameObject desjuntar){
-        
-    }
 
     public void inicialitzaPerFerTests(){
         tempsEntreEntitats.Add(0); // Creem el temps d'espera per la primera entitat
         nEntitatsDestruides = 0;
     }
 
-    public void GenerarPlots(){
+    public override void GenerarPlots(){
         EstadisticsController eC = transform.parent.GetComponent<EstadisticsController>();
         double[] nEntitatsEstadistic = new double[1] { nEntitatsDestruides };
         string [] etiquetes = new string[1] { gameObject.transform.name };
@@ -98,20 +105,15 @@ public class SortidaScript : MonoBehaviour, IObjectes
         else if (UIScript.Instancia.obteBotoSeleccionat() == 5) UIScript.Instancia.desjuntarObjectes(this.gameObject);
     }
 
-    public void ObreDetalls(){
+    public override void ObreDetalls(){
         //gameObject.transform.GetChild(0).gameObject.SetActive(true);
     }   
 
-    public void TancaDetalls(){
+    public override void TancaDetalls(){
         //gameObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 
-    public bool RatoliSobreDetalls(){
+    public override bool RatoliSobreDetalls(){
         return false;
-    }
-
-    public int ObteTipusObjecte()
-    {
-        return 3;
     }
 }

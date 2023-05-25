@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
+public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
 {
 
-    public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
-    public politiquesEnrutament enrutament;
+    //public enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
+    //public politiquesEnrutament enrutament;
     public enum distribucionsProbabilitat { CONSTANT, BINOMIAL, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
     public distribucionsProbabilitat distribucio;
     public double[] parametres = new double[] {1,1,1}; // Inicialitza per evitar problemes
     public ISeguentNumero distribuidor;
-    public List<GameObject> SeguentsObjectes;
+    //public List<GameObject> SeguentsObjectes;
     public GameObject[] entitatsTemporals = new GameObject[3];
     public GameObject entitatTemporal;
     private double tempsSeguentEntitat;
@@ -43,7 +43,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         }
     }
 
-    public void IniciaSimulacio(){
+    public override void IniciaSimulacio(){
         estat = estats.GENERANT;
         nEntitatsGenerades = 0;
         tempsGenerant = 0;
@@ -53,24 +53,56 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         tempsEntreEntitats = new List<double>();
         entitatTemporal = entitatsTemporals[transform.parent.GetComponent<MotorSimuladorScript>().ObteEntitatsSeleccionades()];
     }
+    
+    public override void RepEntitat(GameObject entitat, GameObject objecteLlibreria){} // El generador mai rebra una entitat
 
-    public void intentaEliminarObjecteSeguents(GameObject objecte){
+    // Per parametre es passa el gameobject de la llibreria que avisa de la seva disponibilitat
+    public override bool NotificacioDisponible(GameObject objecteLlibreria){
+        if (estat == estats.GENERANT) return false;
+        else if (estat == estats.BLOQUEJAT)
+        {
+            estat = estats.GENERANT;
+            ++nEntitatsGenerades;
+            GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
+            objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(novaEntitat, this.gameObject);
+            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            tempsBloquejat += (tActual - ultimTemps);
+            ultimTemps = tActual;
+            generarEsdevenimentArribada(tActual); // Es programa un nou esdeveniment d'arribada
+            if (tempsEntreEntitats.Count != 0) {
+                tempsEntreEntitats.Add(tActual-tempsEntreEntitats[tempsEntreEntitats.Count-1]);
+            } else {
+                tempsEntreEntitats.Add(tActual);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public override bool EstaDisponible(GameObject objectePropietari){
+        return false;
+    }
+    
+    /*
+    public override void IntentaEliminarObjecteSeguents(GameObject objecte){
         if (SeguentsObjectes.Contains(objecte)) {
             Destroy(transform.GetChild(SeguentsObjectes.IndexOf(objecte)+1).gameObject);
             SeguentsObjectes.Remove(objecte);  
         }
     }
 
-    public void afegeixSeguentObjecte(GameObject objecte){
+    /*
+    public override void AfegeixSeguentObjecte(GameObject objecte){
         if (!SeguentsObjectes.Contains(objecte)){
             DibuixaLinia(objecte);
         }
     }
 
+
     public void desajuntarSeguentObjecte(GameObject desjuntar){
         intentaEliminarObjecteSeguents(desjuntar);
     }
-
+    */
     public void generarEsdevenimentArribada(float tempsActual){
         if (distribuidor==null) distribuidor = new ConstantDistribution(5);
         Debug.Log("Es genera un esdeveniment " + tempsActual.ToString());
@@ -84,12 +116,12 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         {
             case Esdeveniment.Tipus.ARRIBADES:
                 if (estat == estats.GENERANT){
-                    int objecteAEnviar = cercaDisponible();
+                    int objecteAEnviar = CercaDisponible();
                     tempsGenerant += (e.temps - ultimTemps);
                     ultimTemps = e.temps;
                     if (objecteAEnviar != -1) { // Si hi ha algun dels seguents objectes disponible, aleshores s'instancia una nova entitat temporal i s'envia l'entitat al objecte disponible
                         GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
-                        SeguentsObjectes[objecteAEnviar].GetComponent<IObjectes>().repEntitat(novaEntitat, this.gameObject);
+                        SeguentsObjectes[objecteAEnviar].GetComponent<LlibreriaObjectes>().RepEntitat(novaEntitat, this.gameObject);
                         ++nEntitatsGenerades;
                         if (tempsEntreEntitats.Count != 0) {
                             tempsEntreEntitats.Add(e.temps-tempsEntreEntitats[tempsEntreEntitats.Count-1]);
@@ -111,7 +143,8 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         }
     }
 
-    public int cercaDisponible(){
+    /*
+    public int CercaDisponible(){
         IObjectes SeguentObj;
 
         // Comprovem que almenys hi ha un objecte disponible
@@ -136,46 +169,20 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         }
         return -1;
     }
+    */
 
-     // Per parametre es passa el gameobject de la llibreria que avisa de la seva disponibilitat
-    public bool notificacioDisponible(GameObject objecteLlibreria){
-        if (estat == estats.GENERANT) return false;
-        else if (estat == estats.BLOQUEJAT)
-        {
-            estat = estats.GENERANT;
-            ++nEntitatsGenerades;
-            GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
-            objecteLlibreria.GetComponent<IObjectes>().repEntitat(novaEntitat, this.gameObject);
-            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
-            tempsBloquejat += (tActual - ultimTemps);
-            ultimTemps = tActual;
-            generarEsdevenimentArribada(tActual); // Es programa un nou esdeveniment d'arribada
-            if (tempsEntreEntitats.Count != 0) {
-                tempsEntreEntitats.Add(tActual-tempsEntreEntitats[tempsEntreEntitats.Count-1]);
-            } else {
-                tempsEntreEntitats.Add(tActual);
-            }
-            return true;
-        }
-        return false;
+    public override int ObteTipusObjecte()
+    {
+        return 0;
     }
 
-    public bool estaDisponible(GameObject objectePropietari){
-        return false;
-    }
-
-    public void repEntitat(GameObject entitat, GameObject objecteLlibreria){} // El generador mai rebra una entitat
 
     public int getNGenerats(){
         return nEntitatsGenerades;
     }
 
-    public int ObteTipusObjecte()
-    {
-        return 0;
-    }
 
-    public void GenerarPlots(){
+    public override void GenerarPlots(){
         EstadisticsController eC = transform.parent.GetComponent<EstadisticsController>();
         double[] nEntitatsEstadistic = new double[1] { nEntitatsGenerades };
         string [] etiquetes = new string[1] { gameObject.transform.name };
@@ -201,16 +208,16 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
     //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-    public void ObreDetalls(){
+    public override void ObreDetalls(){
         gameObject.transform.GetChild(0).gameObject.SetActive(true);
     }   
 
-    public void TancaDetalls(){
+    public override void TancaDetalls(){
         gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.GetComponent<UIGeneradorScript>().CancelaCanvis();
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 
-    public bool RatoliSobreDetalls(){
+    public override bool RatoliSobreDetalls(){
         var image = transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
         if (RectTransformUtility.RectangleContainsScreenPoint(image.rectTransform, Input.mousePosition))
         {
@@ -271,6 +278,7 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         else if (UIScript.Instancia.obteBotoSeleccionat() == 5) UIScript.Instancia.desjuntarObjectes(this.gameObject);
     }
     
+    /*
     public void DibuixaLinia(GameObject objecte){
         GameObject objecteAmbLinia = new GameObject("L"+SeguentsObjectes.Count.ToString());
         objecteAmbLinia.transform.parent = transform;
@@ -285,4 +293,5 @@ public class GeneradorScript : MonoBehaviour, IObjectes, ITractarEsdeveniment
         lr.endColor = Color.green;
         lr.material = Resources.Load<Material>("Materials/LineRendererMaterial") as Material;
     }
+    */
 }

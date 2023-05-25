@@ -38,7 +38,7 @@ public class MotorSimuladorScript : MonoBehaviour
 
     public void IniciaSimulacio(){
         for (int i = 0; i < objectesLlibreria.Count; i++){
-            objectesLlibreria[i].GetComponent<IObjectes>().IniciaSimulacio();
+            objectesLlibreria[i].GetComponent<LlibreriaObjectes>().IniciaSimulacio();
         }
     }
 
@@ -52,7 +52,7 @@ public class MotorSimuladorScript : MonoBehaviour
         }
 
         for (int i = 0; i < objectesLlibreria.Count; i++){
-            objectesLlibreria[i].GetComponent<IObjectes>().GenerarPlots();
+            objectesLlibreria[i].GetComponent<LlibreriaObjectes>().GenerarPlots();
         }
 
         tempsActual = 0;
@@ -84,9 +84,9 @@ public class MotorSimuladorScript : MonoBehaviour
     public void afegirObjecteLlista(GameObject nouObjecte){
         if (!nouObjecte.name.Contains("Sortida")){
             if (detallsObert != -1) {
-                objectesLlibreria[detallsObert].GetComponent<IObjectes>().TancaDetalls();
+                objectesLlibreria[detallsObert].GetComponent<LlibreriaObjectes>().TancaDetalls();
             }
-            nouObjecte.GetComponent<IObjectes>().ObreDetalls();
+            nouObjecte.GetComponent<LlibreriaObjectes>().ObreDetalls();
         }
         objectesLlibreria.Add(nouObjecte);
         detallsObert = objectesLlibreria.Count-1;
@@ -94,7 +94,7 @@ public class MotorSimuladorScript : MonoBehaviour
 
     public void eliminarObjecteLlista(GameObject objecte) {
         for (int i = 0; i < objectesLlibreria.Count; i++) {
-            objectesLlibreria[i].GetComponent<IObjectes>().intentaEliminarObjecteSeguents(objecte);
+            objectesLlibreria[i].GetComponent<LlibreriaObjectes>().IntentaEliminarObjecteSeguents(objecte);
         }
         objectesLlibreria.Remove(objecte);
         Destroy(objecte);
@@ -106,19 +106,19 @@ public class MotorSimuladorScript : MonoBehaviour
 
     public void TancaDetallsObert(){
         if (AlgunDetallsObert()){
-            objectesLlibreria[detallsObert].GetComponent<IObjectes>().TancaDetalls();
+            objectesLlibreria[detallsObert].GetComponent<LlibreriaObjectes>().TancaDetalls();
             detallsObert = -1;
         }
     }
 
     public void ObreDetallsFill(int nFill){
-        objectesLlibreria[nFill].GetComponent<IObjectes>().ObreDetalls();
+        objectesLlibreria[nFill].GetComponent<LlibreriaObjectes>().ObreDetalls();
         detallsObert = nFill;
     }
 
     public bool RatoliSobreDetalls(){
         if (detallsObert == -1) return false;
-        return objectesLlibreria[detallsObert].GetComponent<IObjectes>().RatoliSobreDetalls();
+        return objectesLlibreria[detallsObert].GetComponent<LlibreriaObjectes>().RatoliSobreDetalls();
     }
     private void OnValidate() {
         if (escalaTemps < 0.5f) escalaTemps = 0.5f;
