@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SortidaScript : LlibreriaObjectes
 {
@@ -102,19 +103,33 @@ public class SortidaScript : LlibreriaObjectes
             motorScript.TancaDetallsObert();
         }
         if (UIScript.Instancia.ObteBotoSeleccionat() == 6) motorScript.EliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.ObteBotoSeleccionat() == 7){
+            motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        }
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 4) UIScript.Instancia.AjuntarObjectes(this.gameObject);
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 5) UIScript.Instancia.DesjuntarObjectes(this.gameObject);
     }
 
     public override void ObreDetalls(){
-        //gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
     }   
 
     public override void TancaDetalls(){
-        //gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.GetComponent<UISortidaScript>().CancelaCanvis();
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
     }
 
     public override bool RatoliSobreDetalls(){
+        var image = transform.GetChild(0).transform.GetChild(0).GetComponent<Image>();
+        if (RectTransformUtility.RectangleContainsScreenPoint(image.rectTransform, Input.mousePosition))
+        {
+            return true;
+        }
         return false;
+    }
+
+    public void ActualitzaPropietats(string nom){
+        transform.name = nom;
+
     }
 }
