@@ -27,6 +27,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     // Start is called before the first frame update
     void Start()
     {   
+        transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
     }
 
     // Update is called once per frame
@@ -285,7 +286,8 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         return false;
     }
 
-    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, double[] nousParametres, int nEntitatsParalelMax){
+    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, double[] nousParametres, int nEntitatsParalelMax, string nom){
+        transform.name = nom;
         enrutament = novaPolitica;
         distribucio = d;
         parametres = nousParametres;

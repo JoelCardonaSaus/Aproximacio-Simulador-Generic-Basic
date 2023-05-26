@@ -9,8 +9,11 @@ public class UIGeneradorScript : MonoBehaviour
     private GeneradorScript.politiquesEnrutament politicaConfirmada;
     private GeneradorScript.distribucionsProbabilitat distribucioActual;
     private GeneradorScript.distribucionsProbabilitat distribucioConfirmada;
+    private string nomActual;
+    private string nomConfirmat;
     private double[] parametresActuals;
     private double[] parametresConfirmats;
+    public InputField nomObjecte;
     public Dropdown enrutament; 
     public Dropdown distribuidor;
     public InputField iParam1;
@@ -23,14 +26,27 @@ public class UIGeneradorScript : MonoBehaviour
     public Button aplicar;
     public Button cancela;
     
+    public void CanviaNom()
+    {
+        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        {
+            cancela.interactable = true;
+            aplicar.interactable = true;
+            nomActual = nomObjecte.text;
+            
+        } else {
+            aplicar.interactable = false;
+            cancela.interactable = false;
+        }
+    }
+    
     public void CanviEnrutamentSeleccionat()
     {
         if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
             cancela.interactable = true;
             aplicar.interactable = true;
-            if (enrutament.value == 0) politicaActual = GeneradorScript.politiquesEnrutament.PRIMERDISPONIBLE;
-            else if (enrutament.value == 1) politicaActual = GeneradorScript.politiquesEnrutament.RANDOM;
+            nomActual = nomObjecte.text;
         } else {
             aplicar.interactable = false;
             cancela.interactable = false;
@@ -119,9 +135,10 @@ public class UIGeneradorScript : MonoBehaviour
         politicaConfirmada = politicaActual;
         distribucioConfirmada = distribucioActual;
         parametresConfirmats = parametresActuals;
+        nomConfirmat = nomActual;
         cancela.interactable = false;
         aplicar.interactable = false;
-        generadorScript.ActualitzaPropietats(politicaActual, distribucioActual, parametresActuals);
+        generadorScript.ActualitzaPropietats(politicaActual, distribucioActual, parametresActuals, nomActual);
     }
 
     public void CancelaCanvis(){
@@ -130,6 +147,7 @@ public class UIGeneradorScript : MonoBehaviour
         politicaActual = politicaConfirmada;
         distribucioActual = distribucioConfirmada;
         parametresActuals = parametresConfirmats;
+        nomActual = nomConfirmat;
 
         if (politicaConfirmada == GeneradorScript.politiquesEnrutament.PRIMERDISPONIBLE) enrutament.value = 0;
         else if (politicaConfirmada == GeneradorScript.politiquesEnrutament.RANDOM) enrutament.value = 1;
@@ -165,7 +183,8 @@ public class UIGeneradorScript : MonoBehaviour
         distribucioConfirmada = GeneradorScript.distribucionsProbabilitat.CONSTANT;
         politicaConfirmada = GeneradorScript.politiquesEnrutament.PRIMERDISPONIBLE;
         parametresConfirmats = new double[1]{5};
-        
+        nomObjecte.text = gameObject.transform.parent.transform.parent.name;
+        nomConfirmat = gameObject.transform.parent.transform.parent.name;
     }
 
     void Update()

@@ -11,11 +11,28 @@ public class UICuaScript : MonoBehaviour
     private CuaScript.politiquesEnrutament politicaConfirmada;
     private int capacitatActual;
     private int capacitatConfirmada;
+    private string nomActual;
+    private string nomConfirmat;
+    public InputField nomObjecte;
+
     public Dropdown enrutament; 
     public InputField capacitatInput;
     public Button cancela;
     public Button aplicar;
 
+    public void CanviaNom()
+    {
+        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        {
+            cancela.interactable = true;
+            aplicar.interactable = true;
+            nomActual = nomObjecte.text;
+            
+        } else {
+            aplicar.interactable = false;
+            cancela.interactable = false;
+        }
+    }
 
     public void CanviEnrutamentSeleccionat()
     {
@@ -44,9 +61,10 @@ public class UICuaScript : MonoBehaviour
     }
 
     public void AplicarCanvis(){
-        cuaScript.ActualitzaPropietats(politicaActual, capacitatActual);
+        cuaScript.ActualitzaPropietats(politicaActual, capacitatActual, nomActual);
         politicaConfirmada = politicaActual;
         capacitatConfirmada = capacitatActual;
+        nomConfirmat = nomActual;
         cancela.interactable = false;
         aplicar.interactable = false;
     }
@@ -56,6 +74,7 @@ public class UICuaScript : MonoBehaviour
         cancela.interactable = false;
         politicaActual = politicaConfirmada;
         capacitatActual = capacitatConfirmada;
+        nomActual = nomConfirmat;
 
         if (politicaConfirmada == CuaScript.politiquesEnrutament.PRIMERDISPONIBLE) enrutament.value = 0;
         else if (politicaConfirmada == CuaScript.politiquesEnrutament.RANDOM) enrutament.value = 1;
@@ -69,6 +88,8 @@ public class UICuaScript : MonoBehaviour
         cuaScript = gameObject.transform.parent.GetComponentInParent<CuaScript>();
         politicaConfirmada = CuaScript.politiquesEnrutament.PRIMERDISPONIBLE;
         capacitatConfirmada = -1;
+        nomObjecte.text = gameObject.transform.parent.transform.parent.name;
+        nomConfirmat = gameObject.transform.parent.transform.parent.name;
         cancela.interactable = false;
         aplicar.interactable = false;
     }

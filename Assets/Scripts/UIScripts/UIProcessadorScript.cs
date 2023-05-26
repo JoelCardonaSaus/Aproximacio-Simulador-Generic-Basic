@@ -11,8 +11,11 @@ public class UIProcessadorScript : MonoBehaviour
     private ProcessadorScript.politiquesEnrutament politicaConfirmada;
     private ProcessadorScript.distribucionsProbabilitat distribucioActual;
     private ProcessadorScript.distribucionsProbabilitat distribucioConfirmada;
+    private string nomActual;
+    private string nomConfirmat;
     private double[] parametresActuals;
     private double[] parametresConfirmats;
+    public InputField nomObjecte;
     public Dropdown enrutament; 
     public Dropdown distribuidor;
     public InputField iParam1;
@@ -24,12 +27,23 @@ public class UIProcessadorScript : MonoBehaviour
     private int capacitatActual;
     private int capacitatConfirmada;
     public InputField capacitatInput;
-
     private ProcessadorScript processadorScript;
-
-
     public Button aplicar;
     public Button cancela;
+
+    public void CanviaNom()
+    {
+        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        {
+            cancela.interactable = true;
+            aplicar.interactable = true;
+            nomActual = nomObjecte.text;
+            
+        } else {
+            aplicar.interactable = false;
+            cancela.interactable = false;
+        }
+    }
 
     public void CanviEnrutamentSeleccionat()
     {
@@ -140,9 +154,10 @@ public class UIProcessadorScript : MonoBehaviour
         distribucioConfirmada = distribucioActual;
         parametresConfirmats = parametresActuals;
         capacitatConfirmada = capacitatActual;
+        nomConfirmat = nomActual;
         cancela.interactable = false;
         aplicar.interactable = false;
-        processadorScript.ActualitzaPropietats(politicaActual, distribucioActual, parametresActuals, capacitatActual);
+        processadorScript.ActualitzaPropietats(politicaActual, distribucioActual, parametresActuals, capacitatActual, nomActual);
     }
 
     public void CancelaCanvis(){
@@ -152,6 +167,7 @@ public class UIProcessadorScript : MonoBehaviour
         distribucioActual = distribucioConfirmada;
         parametresActuals = parametresConfirmats;
         capacitatActual = capacitatConfirmada;
+        nomActual = nomConfirmat;
 
         if (politicaConfirmada == ProcessadorScript.politiquesEnrutament.PRIMERDISPONIBLE) enrutament.value = 0;
         else if (politicaConfirmada == ProcessadorScript.politiquesEnrutament.RANDOM) enrutament.value = 1;
@@ -187,10 +203,14 @@ public class UIProcessadorScript : MonoBehaviour
     {
         processadorScript = gameObject.transform.parent.GetComponentInParent<ProcessadorScript>();
         distribucioConfirmada = ProcessadorScript.distribucionsProbabilitat.CONSTANT;
+        distribucioActual = distribucioConfirmada;
         politicaConfirmada = ProcessadorScript.politiquesEnrutament.PRIMERDISPONIBLE;
         parametresConfirmats = new double[1]{5};
+        parametresActuals = parametresConfirmats;
         capacitatConfirmada = -1;
-        processadorScript.ActualitzaPropietats(politicaConfirmada, distribucioConfirmada, parametresConfirmats, capacitatConfirmada);
+        nomObjecte.text = gameObject.transform.parent.transform.parent.name;
+        nomConfirmat = gameObject.transform.parent.transform.parent.name;
+        processadorScript.ActualitzaPropietats(politicaConfirmada, distribucioConfirmada, parametresConfirmats, capacitatConfirmada, nomConfirmat);
     }
 
     void Update()

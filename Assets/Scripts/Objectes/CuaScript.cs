@@ -22,6 +22,7 @@ public class CuaScript : LlibreriaObjectes
 
     void Start()
     {
+        transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
     }
 
     void Update()
@@ -182,68 +183,6 @@ public class CuaScript : LlibreriaObjectes
         return 1;
     }
 
-    /*
-    public override void IntentaEliminarObjecteSeguents(GameObject objecte){
-        if (SeguentsObjectes.Contains(objecte)) {
-            Destroy(transform.GetChild(SeguentsObjectes.IndexOf(objecte)+1).gameObject);
-            SeguentsObjectes.Remove(objecte);
-        }
-    }
-
-    public override void AfegeixSeguentObjecte(GameObject objecte){
-        if (!SeguentsObjectes.Contains(objecte)){
-            GameObject objecteAmbLinia = new GameObject("L"+SeguentsObjectes.Count.ToString());
-            objecteAmbLinia.transform.parent = transform;
-            SeguentsObjectes.Add(objecte);
-            LineRenderer lr = objecteAmbLinia.AddComponent<LineRenderer>();
-            lr.positionCount = 2;
-            lr.startWidth = 0.1f;
-            lr.endWidth = 0.1f;
-            lr.SetPosition(0, transform.position);
-            lr.SetPosition(1, objecte.transform.position);
-            lr.startColor = Color.green;
-            lr.endColor = Color.green;
-            lr.material = Resources.Load<Material>("Materials/LineRendererMaterial") as Material;
-
-        }
-    }
-    
-    public void desajuntarSeguentObjecte(GameObject desjuntar){
-        intentaEliminarObjecteSeguents(desjuntar);
-    }
-    */
-
-    
-
-
-    /*
-    public int CercaDisponible(){   
-        LlibreriaObjectess SeguentObj;
-
-        // Comprovem que almenys hi ha un objecte disponible
-        if (enrutament == politiquesEnrutament.PRIMERDISPONIBLE){
-            for (int i = 0; i < SeguentsObjectes.Count; i++)//GameObject objecte in SeguentsObjectes)
-            {
-                SeguentObj = SeguentsObjectes[i].GetComponent<LlibreriaObjectess>();
-                if (SeguentObj.estaDisponible(this.gameObject)) {
-                    return i;
-                }
-            }
-        }
-
-        else if (enrutament == politiquesEnrutament.RANDOM){
-            for (int i = 0; i < SeguentsObjectes.Count; i++){
-                int obj = Random.Range(0, SeguentsObjectes.Count);
-                SeguentObj = SeguentsObjectes[obj].GetComponent<LlibreriaObjectess>();
-                if (SeguentObj.estaDisponible(this.gameObject)) {
-                    return obj;
-                }
-            }
-        }
-        return -1;
-    }
-    */
-
     // Retorna cert si l'objecte a qui s'avisa pot enviar-li una nova entitat
     private bool AvisaDisponibilitat(){
         GameObject objecteNou = objectesRebutjats.Dequeue();
@@ -316,7 +255,8 @@ public class CuaScript : LlibreriaObjectes
         return false;
     }
 
-    public void ActualitzaPropietats(politiquesEnrutament nouEnrutament, int capacitatMax){
+    public void ActualitzaPropietats(politiquesEnrutament nouEnrutament, int capacitatMax, string nom){
+        transform.name = nom;
         enrutament = nouEnrutament;
         capacitatMaxima = capacitatMax;
     }

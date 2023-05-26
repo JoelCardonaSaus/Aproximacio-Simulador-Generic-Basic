@@ -11,6 +11,7 @@ public class SortidaScript : LlibreriaObjectes
     void Start()
     {
         nEntitatsDestruides = 0;
+        transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
     }
 
     void Update()

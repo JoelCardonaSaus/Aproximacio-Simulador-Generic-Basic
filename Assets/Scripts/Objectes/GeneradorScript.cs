@@ -28,6 +28,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
     {
         distribuidor = new ConstantDistribution(5);
         estat = estats.GENERANT;
+        transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
     }
 
     void Update()
@@ -176,7 +177,8 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         return false;
     }
 
-    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, double[] nousParametres){
+    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, double[] nousParametres, string nom){
+        transform.name = nom;
         enrutament = novaPolitica;
         distribucio = d;
         parametres = nousParametres;

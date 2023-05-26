@@ -5,6 +5,7 @@ using UnityEngine;
 // Fer-ho singleton
 public class MotorSimuladorScript : MonoBehaviour
 {
+    private int idSeguentObjecte;
     public float escalaTemps;
     private int entitatsTemporals = 0;
     private GameObject generadorPrefab;
@@ -22,6 +23,7 @@ public class MotorSimuladorScript : MonoBehaviour
         cuaPrefab = Resources.Load("LlibreriaObjectes/Cua/Cua") as GameObject;
         processadorPrefab = Resources.Load("LlibreriaObjectes/Processador/Processador") as GameObject;
         sortidaPrefab = Resources.Load("LlibreriaObjectes/Sortida/Sortida") as GameObject;
+        idSeguentObjecte = 0;
     }
 
     // Update is called once per frame
@@ -154,5 +156,10 @@ public class MotorSimuladorScript : MonoBehaviour
 
     public int ObteEntitatsSeleccionades(){
         return entitatsTemporals;
+    }
+
+    public int ObteIdSeguentObjecte(){
+        ++idSeguentObjecte;
+        return idSeguentObjecte-1;
     }
 }
