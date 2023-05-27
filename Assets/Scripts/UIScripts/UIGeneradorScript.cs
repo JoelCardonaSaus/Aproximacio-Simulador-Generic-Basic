@@ -181,10 +181,13 @@ public class UIGeneradorScript : MonoBehaviour
     {
         generadorScript = gameObject.transform.parent.GetComponentInParent<GeneradorScript>();
         distribucioConfirmada = GeneradorScript.distribucionsProbabilitat.CONSTANT;
+        distribucioActual = distribucioConfirmada;
         politicaConfirmada = GeneradorScript.politiquesEnrutament.PRIMERDISPONIBLE;
         parametresConfirmats = new double[1]{5};
+        parametresActuals = parametresConfirmats;
         nomObjecte.text = gameObject.transform.parent.transform.parent.name;
         nomConfirmat = gameObject.transform.parent.transform.parent.name;
+        nomActual = nomConfirmat;
     }
 
     void Update()

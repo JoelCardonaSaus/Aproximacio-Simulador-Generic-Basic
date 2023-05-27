@@ -47,7 +47,13 @@ public class SortidaScript : LlibreriaObjectes
     public override bool EstaDisponible(GameObject objecteLlibreria)
     {
         return true;
-    } 
+    }
+
+    public override void ReiniciaSimulador()
+    {
+        nEntitatsDestruides = 0;
+        tempsEntreEntitats = new List<double>();
+    }
 
     new public int CercaDisponible(){   
         return -1;

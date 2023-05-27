@@ -24,6 +24,7 @@ public abstract class LlibreriaObjectes : MonoBehaviour
     public abstract bool EstaDisponible(GameObject objecteLlibreria);
     public abstract int ObteTipusObjecte();
     public abstract void GenerarPlots();
+    public abstract void ReiniciaSimulador();
     
     // Funcions per la UI
     public abstract bool RatoliSobreDetalls();

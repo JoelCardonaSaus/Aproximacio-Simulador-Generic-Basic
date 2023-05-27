@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
 {
-
+    public TMP_Text etiquetes;
     public enum distribucionsProbabilitat { CONSTANT, BINOMIAL, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
     public distribucionsProbabilitat distribucio;
     public double[] parametres = new double[] {1,1,1}; // Inicialitza per evitar problemes
@@ -29,6 +30,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         distribuidor = new ConstantDistribution(5);
         estat = estats.GENERANT;
         transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
+        etiquetes.text = "0/1\n"+transform.name;
     }
 
     void Update()
@@ -47,6 +49,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         tempsGenerant = 0;
         tempsBloquejat = 0;
         ultimTemps = 0;
+        etiquetes.text = "0/1\n"+transform.name;
         GenerarEsdevenimentArribada(transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
         tempsEntreEntitats = new List<double>();
         entitatTemporal = entitatsTemporals[transform.parent.GetComponent<MotorSimuladorScript>().ObteEntitatsSeleccionades()];
@@ -59,6 +62,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         if (estat == estats.GENERANT) return false;
         else if (estat == estats.BLOQUEJAT)
         {
+            etiquetes.text = "0/1\n"+transform.name;
             estat = estats.GENERANT;
             ++nEntitatsGenerades;
             GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
@@ -80,6 +84,16 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
 
     public override bool EstaDisponible(GameObject objectePropietari){
         return false;
+    }
+
+    public override void ReiniciaSimulador(){
+        estat = estats.GENERANT;
+        nEntitatsGenerades = 0;
+        tempsGenerant = 0;
+        tempsBloquejat = 0;
+        ultimTemps = 0;
+        etiquetes.text = "0/1\n"+transform.name;
+        tempsEntreEntitats = new List<double>();
     }
     
     public void GenerarEsdevenimentArribada(float tempsActual){
@@ -110,6 +124,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
                         GenerarEsdevenimentArribada(e.temps); // Es programa la seguent arribada
                     } else { // Si no hi ha cap disponible, alehores el generador es bloqueja fins que algun objecte li demana una entitat
                         estat = estats.BLOQUEJAT;
+                        etiquetes.text = "1/1\n"+transform.name;
                     }
                 }
                 else if (estat == estats.BLOQUEJAT){
@@ -179,6 +194,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
 
     public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, double[] nousParametres, string nom){
         transform.name = nom;
+        etiquetes.text = "0/1\n"+transform.name;
         enrutament = novaPolitica;
         distribucio = d;
         parametres = nousParametres;

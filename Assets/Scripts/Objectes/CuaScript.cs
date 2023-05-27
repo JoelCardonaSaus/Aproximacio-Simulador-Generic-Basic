@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CuaScript : LlibreriaObjectes
 {
-    
+    public TMP_Text etiquetes;
     public int capacitatMaxima = -1; // -1 == No hi ha capacitat màxima, >0 capacitat màxima de la cua
     private Queue<GameObject> cuaObjecte;
     private Dictionary<GameObject, double> tempsObjecteCua;
@@ -23,6 +24,11 @@ public class CuaScript : LlibreriaObjectes
     void Start()
     {
         transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
+        cuaObjecte = new Queue<GameObject>();
+        string capacitat;
+        if (capacitatMaxima == -1) capacitat = "∞";
+        else capacitat = capacitatMaxima.ToString();
+        etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
     }
 
     void Update()
@@ -39,6 +45,10 @@ public class CuaScript : LlibreriaObjectes
         tempsPle = 0;
         ultimTemps = 0;
         entitatsEnviades = 0;
+        string capacitat;
+        if (capacitatMaxima == -1) capacitat = "∞";
+        else capacitat = capacitatMaxima.ToString();
+        etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
     }
 
     public override void RepEntitat(GameObject entitat, GameObject objecteLlibreria)
@@ -69,6 +79,10 @@ public class CuaScript : LlibreriaObjectes
                 else estat = states.PLE;
             }
         }
+        string capacitat;
+        if (capacitatMaxima == -1) capacitat = "∞";
+        else capacitat = capacitatMaxima.ToString();
+        etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
     }
 
     // Retorna fals si no pot enviar cap entitat al que ha avisat que esta disponible
@@ -88,7 +102,10 @@ public class CuaScript : LlibreriaObjectes
             tempsObjecteCua[entitat] = tempsCua;
             ++entitatsEnviades;
             objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
-
+            string capacitat;
+            if (capacitatMaxima == -1) capacitat = "∞";
+            else capacitat = capacitatMaxima.ToString();
+            etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
 
             if (cuaObjecte.Count != 0){
                 int nDisponible = CercaDisponible();
@@ -97,7 +114,10 @@ public class CuaScript : LlibreriaObjectes
                     tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
                     tempsObjecteCua[entitat] = tempsCua;
                     SeguentsObjectes[nDisponible].GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
-                    while (objectesRebutjats.Count != 0) {
+                    if (capacitatMaxima == -1) capacitat = "∞";
+                    else capacitat = capacitatMaxima.ToString();
+                    etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
+                                while (objectesRebutjats.Count != 0) {
                         // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
                         if (AvisaDisponibilitat()) {
                             break;
@@ -127,7 +147,10 @@ public class CuaScript : LlibreriaObjectes
             tempsObjecteCua[entitat] = tempsCua;
             ++entitatsEnviades;
             objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
-
+            string capacitat;
+            if (capacitatMaxima == -1) capacitat = "∞";
+            else capacitat = capacitatMaxima.ToString();
+            etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
 
             if (cuaObjecte.Count != 0){
                 int nDisponible = CercaDisponible();
@@ -136,6 +159,9 @@ public class CuaScript : LlibreriaObjectes
                     tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
                     tempsObjecteCua[entitat] = tempsCua;
                     SeguentsObjectes[nDisponible].GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
+                    if (capacitatMaxima == -1) capacitat = "∞";
+                    else capacitat = capacitatMaxima.ToString();
+                    etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
                     while (objectesRebutjats.Count != 0) {
                         // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
                         if (AvisaDisponibilitat()) {
@@ -176,6 +202,22 @@ public class CuaScript : LlibreriaObjectes
             if (!objectesRebutjats.Contains(objecteLlibreria))  objectesRebutjats.Enqueue(objecteLlibreria);
             return false;
         }
+    }
+
+    public override void ReiniciaSimulador(){
+        estat = states.BUIT;
+        objectesRebutjats = new Queue<GameObject>();
+        tempsObjecteCua = new Dictionary<GameObject, double>();
+        cuaObjecte = new Queue<GameObject>();
+        tempsBuit = 0;
+        tempsNoBuit = 0;
+        tempsPle = 0;
+        ultimTemps = 0;
+        entitatsEnviades = 0;
+        string capacitat;
+        if (capacitatMaxima == -1) capacitat = "∞";
+        else capacitat = capacitatMaxima.ToString();
+        etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
     }
     
     public override int ObteTipusObjecte()
@@ -259,5 +301,9 @@ public class CuaScript : LlibreriaObjectes
         transform.name = nom;
         enrutament = nouEnrutament;
         capacitatMaxima = capacitatMax;
+        string capacitat;
+        if (capacitatMaxima == -1) capacitat = "∞";
+        else capacitat = capacitatMaxima.ToString();
+        etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
     }
 }

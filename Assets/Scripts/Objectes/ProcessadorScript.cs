@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
 {
-    public int maxEntitatsParalel = 1;
+    public TMP_Text etiquetes;
+    public int maxEntitatsParalel = -1;
     public enum distribucionsProbabilitat { CONSTANT, BINOMIAL, DISCRETEUNIFORM, EXPONENTIAL, NORMAL, POISSON, TRIANGULAR };
     public distribucionsProbabilitat distribucio;
     public double[] parametres;
@@ -28,6 +31,12 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     void Start()
     {   
         transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
+        entitatsProcessant = new List<GameObject>();
+        entitatsAEnviar = new Queue<GameObject>();
+        string capacitat;
+        if (maxEntitatsParalel == -1) capacitat = "∞";
+        else capacitat = maxEntitatsParalel.ToString();
+        etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
     }
 
     // Update is called once per frame
@@ -46,6 +55,10 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         tempsProcessat = 0;
         tempsBloquejat = 0;
         ultimTemps = 0;
+        string capacitat;
+        if (maxEntitatsParalel == -1) capacitat = "∞";
+        else capacitat = maxEntitatsParalel.ToString();
+        etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
     }
 
     public override void RepEntitat(GameObject entitat, GameObject objecteLlibreria)
@@ -58,6 +71,10 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
             GenerarEsdevenimentProces(entitat, tActual);
             if (maxEntitatsParalel == 1) estat = estats.BLOQUEJAT;
             else estat = estats.PROCESSANT;
+            string capacitat;
+            if (maxEntitatsParalel == -1) capacitat = "∞";
+            else capacitat = maxEntitatsParalel.ToString();
+            etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
         }
         else if (estat == estats.PROCESSANT){
             float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
@@ -66,6 +83,11 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
             GenerarEsdevenimentProces(entitat, tActual);
             if (maxEntitatsParalel == -1 || (maxEntitatsParalel > entitatsProcessant.Count)) estat = estats.PROCESSANT;
             else estat = estats.BLOQUEJAT;
+            string capacitat;
+            if (maxEntitatsParalel == -1) capacitat = "∞";
+            else capacitat = maxEntitatsParalel.ToString();
+            etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
+            
         }
     }
 
@@ -89,11 +111,18 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                 ++nEntitatsEnviades;
                 GameObject entitat = entitatsAEnviar.Dequeue();
                 objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
+                string capacitat;
+                if (maxEntitatsParalel == -1) capacitat = "∞";
+                else capacitat = maxEntitatsParalel.ToString();
+                etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
                 if (entitatsAEnviar.Count != 0) {
                     int nDisponible = CercaDisponible();
                     if (nDisponible != -1){
                         entitat = entitatsAEnviar.Dequeue();
                         SeguentsObjectes[nDisponible].GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
+                        if (maxEntitatsParalel == -1) capacitat = "∞";
+                        else capacitat = maxEntitatsParalel.ToString();
+                        etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
                         while (objectesRebutjats.Count != 0) {
                             // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
                             if (AvisaDisponibilitat()) {
@@ -144,6 +173,23 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         return false;
     }
 
+    public override void ReiniciaSimulador(){
+        estat = estats.DISPONIBLE;
+        nEntitatsEnviades = 0;
+        tempsMigEntitatsProcessador = 0;
+        entitatsAEnviar = new Queue<GameObject>();
+        objectesRebutjats = new Queue<GameObject>();
+        entitatsProcessant = new List<GameObject>();
+        tempsDisponible = 0;
+        tempsProcessat = 0;
+        tempsBloquejat = 0;
+        ultimTemps = 0;
+        string capacitat;
+        if (maxEntitatsParalel == -1) capacitat = "∞";
+        else capacitat = maxEntitatsParalel.ToString();
+        etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
+    }
+
     public override int ObteTipusObjecte()
     {
         return 2;
@@ -185,6 +231,10 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                         entitatsAEnviar.Enqueue(entitat);
                         estat = estats.BLOQUEJAT;
                     }
+                    string capacitat;
+                    if (maxEntitatsParalel == -1) capacitat = "∞";
+                    else capacitat = maxEntitatsParalel.ToString();
+                    etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
                 }
                 
                 else if (estat == estats.BLOQUEJAT){
@@ -214,6 +264,10 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                             estat = estats.BLOQUEJAT;
                         }
                     }
+                    string capacitat;
+                    if (maxEntitatsParalel == -1) capacitat = "∞";
+                    else capacitat = maxEntitatsParalel.ToString();
+                    etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
                 }
                 break;            
         }
@@ -292,6 +346,10 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         distribucio = d;
         parametres = nousParametres;
         maxEntitatsParalel = nEntitatsParalelMax;
+        string capacitat;
+        if (maxEntitatsParalel == -1) capacitat = "∞";
+        else capacitat = maxEntitatsParalel.ToString();
+        etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
         ActualitzaDistribuidor();
     }
 

@@ -55,6 +55,7 @@ public class MotorSimuladorScript : MonoBehaviour
 
         for (int i = 0; i < objectesLlibreria.Count; i++){
             objectesLlibreria[i].GetComponent<LlibreriaObjectes>().GenerarPlots();
+            objectesLlibreria[i].GetComponent<LlibreriaObjectes>().ReiniciaSimulador();
         }
 
         tempsActual = 0;

@@ -87,9 +87,15 @@ public class UICuaScript : MonoBehaviour
     {
         cuaScript = gameObject.transform.parent.GetComponentInParent<CuaScript>();
         politicaConfirmada = CuaScript.politiquesEnrutament.PRIMERDISPONIBLE;
+        politicaActual = politicaConfirmada;
+
         capacitatConfirmada = -1;
+        capacitatActual = capacitatConfirmada;
+
         nomObjecte.text = gameObject.transform.parent.transform.parent.name;
         nomConfirmat = gameObject.transform.parent.transform.parent.name;
+        nomActual = nomConfirmat;
+        
         cancela.interactable = false;
         aplicar.interactable = false;
     }

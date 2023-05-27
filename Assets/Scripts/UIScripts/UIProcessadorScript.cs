@@ -202,14 +202,23 @@ public class UIProcessadorScript : MonoBehaviour
     void Start()
     {
         processadorScript = gameObject.transform.parent.GetComponentInParent<ProcessadorScript>();
+        
         distribucioConfirmada = ProcessadorScript.distribucionsProbabilitat.CONSTANT;
         distribucioActual = distribucioConfirmada;
+
         politicaConfirmada = ProcessadorScript.politiquesEnrutament.PRIMERDISPONIBLE;
+        politicaActual = politicaConfirmada;
+
         parametresConfirmats = new double[1]{5};
         parametresActuals = parametresConfirmats;
+
         capacitatConfirmada = -1;
+        capacitatActual = capacitatConfirmada;
+
         nomObjecte.text = gameObject.transform.parent.transform.parent.name;
         nomConfirmat = gameObject.transform.parent.transform.parent.name;
+        nomActual = nomConfirmat;
+        
         processadorScript.ActualitzaPropietats(politicaConfirmada, distribucioConfirmada, parametresConfirmats, capacitatConfirmada, nomConfirmat);
     }
 

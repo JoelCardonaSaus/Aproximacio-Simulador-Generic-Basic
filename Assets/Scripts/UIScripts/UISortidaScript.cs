@@ -47,6 +47,9 @@ public class UISortidaScript : MonoBehaviour
         sortidaScript = gameObject.transform.parent.GetComponentInParent<SortidaScript>();
         nomObjecte.text = gameObject.transform.parent.transform.parent.name;
         nomConfirmat = gameObject.transform.parent.transform.parent.name;
+        nomActual = nomConfirmat;
+
+        sortidaScript.ActualitzaPropietats(nomConfirmat);
     }
 
     // Update is called once per frame
