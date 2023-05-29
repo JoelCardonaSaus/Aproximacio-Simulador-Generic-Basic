@@ -613,7 +613,7 @@ MonoBehaviour:
   eliminarButton: {fileID: 653016445}
   comencarPausar: {fileID: 2110188062}
   reiniciar: {fileID: 752604190}
-  entitatsTemporals: {fileID: 344077943}
+  configuracio: {fileID: 344077943}
   seguentEsdev: {fileID: 1626606859}
   motorSimulador: {fileID: 343814978}
   contentView: {fileID: 1922379763}
@@ -983,7 +983,7 @@ GameObject:
   - component: {fileID: 344077944}
   - component: {fileID: 344077943}
   m_Layer: 5
-  m_Name: BotoEntitatsTemporals
+  m_Name: BotoConfigruacio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1057,7 +1057,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 120226783}
         m_TargetAssemblyTypeName: UIScript, Scripts
-        m_MethodName: BotoEntitatsTemporalsClicat
+        m_MethodName: BotoConfiguracioClicat
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1959,7 +1959,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3595a7b365317d44e9fc12c78ef5db60, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0589b56bc91329145bd2fed9deab1d2e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2565,7 +2565,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Entitats Temporals
+  m_text: "Configuraci\xF3"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2787,7 +2787,7 @@ GameObject:
   m_Component:
   - component: {fileID: 963451115}
   m_Layer: 0
-  m_Name: EntitatsTemporals
+  m_Name: Configuracio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

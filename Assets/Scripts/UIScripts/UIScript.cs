@@ -9,7 +9,7 @@ public class UIScript : MonoBehaviour
 {
     private enum estatsSimulacio { SIMULANT, ATURAT, PAUSAT };
     private estatsSimulacio estat;
-    private enum btnSeleccionat { GENERADOR, CUA, PROCESSADOR, SORTIDA, JUNTAR, DESJUNTAR, ELIMINAR, CAP, ENTITATSTEMPORALS };
+    private enum btnSeleccionat { GENERADOR, CUA, PROCESSADOR, SORTIDA, JUNTAR, DESJUNTAR, ELIMINAR, CAP, CONFIG };
     private btnSeleccionat seleccionat;
     public Button generadorButton;
     public Button cuaButton;
@@ -20,7 +20,7 @@ public class UIScript : MonoBehaviour
     public Button eliminarButton;
     public Button comencarPausar;
     public Button reiniciar;
-    public Button entitatsTemporals;
+    public Button configuracio;
     public Button seguentEsdev;
 
     public GameObject motorSimulador;
@@ -81,9 +81,9 @@ public class UIScript : MonoBehaviour
             if ((motorSimulador.GetComponent<MotorSimuladorScript>().AlgunDetallsObert()) && (!RatoliSobreAlgunObjece() && !RatoliSobreDetalls())){
                 motorSimulador.GetComponent<MotorSimuladorScript>().TancaDetallsObert();
             }
-            if (estat == estatsSimulacio.ATURAT && seleccionat == btnSeleccionat.ENTITATSTEMPORALS){
-                if (!RatoliSobreDetallsEntitats()){
-                    entitatsTemporals.gameObject.transform.parent.transform.GetChild(1).gameObject.SetActive(false);
+            if (estat == estatsSimulacio.ATURAT && seleccionat == btnSeleccionat.CONFIG){
+                if (!RatoliSobreDetallsConfiguracio()){
+                    configuracio.gameObject.transform.parent.transform.GetChild(1).gameObject.SetActive(false);
                     SeleccionarOpcio(btnSeleccionat.CAP);
                 }
             }
@@ -99,12 +99,12 @@ public class UIScript : MonoBehaviour
             RectTransformUtility.RectangleContainsScreenPoint(juntarButton.GetComponent<RectTransform>(), Input.mousePosition) ||
             RectTransformUtility.RectangleContainsScreenPoint(desjuntarButton.GetComponent<RectTransform>(), Input.mousePosition) ||
             RectTransformUtility.RectangleContainsScreenPoint(eliminarButton.GetComponent<RectTransform>(), Input.mousePosition) ||
-            RectTransformUtility.RectangleContainsScreenPoint(entitatsTemporals.GetComponent<RectTransform>(), Input.mousePosition);
+            RectTransformUtility.RectangleContainsScreenPoint(configuracio.GetComponent<RectTransform>(), Input.mousePosition);
     }
 
-    public bool RatoliSobreDetallsEntitats(){
+    public bool RatoliSobreDetallsConfiguracio(){
 
-        var image = entitatsTemporals.gameObject.transform.parent.transform.GetChild(1).gameObject.transform.GetChild(0).GetComponent<Image>();
+        var image = configuracio.gameObject.transform.parent.transform.GetChild(1).gameObject.transform.GetChild(0).GetComponent<Image>();
         if (RectTransformUtility.RectangleContainsScreenPoint(image.rectTransform, Input.mousePosition))
         {
             return true;
@@ -161,9 +161,9 @@ public class UIScript : MonoBehaviour
         SeleccionarOpcio(btnSeleccionat.ELIMINAR);
     }
 
-    public void BotoEntitatsTemporalsClicat(){
-        SeleccionarOpcio(btnSeleccionat.ENTITATSTEMPORALS);
-        entitatsTemporals.gameObject.transform.parent.transform.GetChild(1).gameObject.SetActive(true);
+    public void BotoConfiguracioClicat(){
+        SeleccionarOpcio(btnSeleccionat.CONFIG);
+        configuracio.gameObject.transform.parent.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     public void BotoComencarPausaClicat(){

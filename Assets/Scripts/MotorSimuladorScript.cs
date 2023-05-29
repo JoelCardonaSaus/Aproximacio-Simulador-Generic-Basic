@@ -16,6 +16,7 @@ public class MotorSimuladorScript : MonoBehaviour
     private int detallsObert = -1;
     private PriorityQueue<Esdeveniment> llistaEsdevenmients = new PriorityQueue<Esdeveniment>((a, b) => a.temps.CompareTo(b.temps));
     private float tempsActual;
+    private float tempsMaxim;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,7 @@ public class MotorSimuladorScript : MonoBehaviour
         processadorPrefab = Resources.Load("LlibreriaObjectes/Processador/Processador") as GameObject;
         sortidaPrefab = Resources.Load("LlibreriaObjectes/Sortida/Sortida") as GameObject;
         idSeguentObjecte = 0;
+        tempsMaxim = 86400;
     }
 
     // Update is called once per frame
@@ -36,6 +38,9 @@ public class MotorSimuladorScript : MonoBehaviour
                 eActual.Executar();
                 UIScript.Instancia.UltimEsdeveniment(eActual);
             }
+            if (llistaEsdevenmients.Count == 0 && tempsMaxim > tempsActual) {
+                tempsActual = tempsMaxim;
+            }   
         }
     }
 
@@ -76,6 +81,9 @@ public class MotorSimuladorScript : MonoBehaviour
             eActual.Executar();
             UIScript.Instancia.UltimEsdeveniment(eActual);
         }
+        if (llistaEsdevenmients.Count == 0 && tempsMaxim > tempsActual) {
+            tempsActual = tempsMaxim;
+        }
     }
 
     public float ObteTempsSeguentEsdeveniment(){
@@ -84,7 +92,7 @@ public class MotorSimuladorScript : MonoBehaviour
     }
 
     public void AfegirEsdeveniment(Esdeveniment nouEsdeveminemt){
-        llistaEsdevenmients.Enqueue(nouEsdeveminemt);
+        if (nouEsdeveminemt.temps <= tempsMaxim) llistaEsdevenmients.Enqueue(nouEsdeveminemt);
     }
 
     public void AfegirObjecteLlista(GameObject nouObjecte){
@@ -156,6 +164,10 @@ public class MotorSimuladorScript : MonoBehaviour
 
     public void CanviaEntitatsTemporals(int entitatsSeleccionades){
         entitatsTemporals = entitatsSeleccionades;
+    }
+
+    public void CanviaTempsMaxim(float tMax){
+        tempsMaxim = tMax;
     }
 
     public int ObteEntitatsSeleccionades(){
