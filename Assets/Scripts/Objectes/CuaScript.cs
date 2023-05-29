@@ -60,7 +60,7 @@ public class CuaScript : LlibreriaObjectes
             tempsObjecteCua.Add(entitat, tActual);
             tempsNoBuit += (tActual - ultimTemps);
             ultimTemps = tActual;
-            if (capacitatMaxima != -1 && cuaObjecte.Count < capacitatMaxima) estat = states.NOBUIT;
+            if (capacitatMaxima == -1 || capacitatMaxima > cuaObjecte.Count) estat = states.NOBUIT;
             else estat = states.PLE;
         }
         else if (estat == states.BUIT){
@@ -75,7 +75,7 @@ public class CuaScript : LlibreriaObjectes
             } else {
                 cuaObjecte.Enqueue(entitat);
                 tempsObjecteCua.Add(entitat, tActual);
-                if (capacitatMaxima!=-1 && capacitatMaxima > 1) estat = states.NOBUIT;
+                if (capacitatMaxima == -1 || capacitatMaxima > cuaObjecte.Count) estat = states.NOBUIT;
                 else estat = states.PLE;
             }
         }

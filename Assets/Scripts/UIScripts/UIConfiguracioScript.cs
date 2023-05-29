@@ -59,7 +59,6 @@ public class UIConfiguracioScript : MonoBehaviour
         else if (entitatsConfirmades == entitats.CERCLES) entitat.value = 2;
         aplicar.interactable = false;
         cancela.interactable = false;
-        
     }
 
     void Start()

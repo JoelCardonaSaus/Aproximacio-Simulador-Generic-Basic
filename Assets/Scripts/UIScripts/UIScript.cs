@@ -187,6 +187,11 @@ public class UIScript : MonoBehaviour
         comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
         motorSimulador.GetComponent<MotorSimuladorScript>().ReiniciarSimulador();
         seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (s): 0";
+        foreach (Transform child in contentView.transform) {
+            Destroy(child.gameObject);
+        }
+
+        ReiniciarBarra();
     }
 
     public void BotoStepClicat(){
@@ -359,5 +364,15 @@ public class UIScript : MonoBehaviour
             pos.y = mida.y-200;
             contentView.GetComponent<RectTransform>().anchoredPosition = pos;
         }
+    }
+
+    public void ReiniciarBarra(){
+        Vector2 mida = contentView.GetComponent<RectTransform>().sizeDelta;
+        mida.y = 0;
+        contentView.GetComponent<RectTransform>().sizeDelta = mida;
+    
+        Vector3 pos = contentView.GetComponent<RectTransform>().anchoredPosition;
+        pos.y = 0;
+        contentView.GetComponent<RectTransform>().anchoredPosition = pos;
     }
 }
