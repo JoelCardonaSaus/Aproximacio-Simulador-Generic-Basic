@@ -85,7 +85,7 @@ public abstract class LlibreriaObjectes : MonoBehaviour
 
     public void IntentaEliminarObjecteSeguents(GameObject objecte){
         if (SeguentsObjectes.Contains(objecte)) {
-            Destroy(transform.GetChild(SeguentsObjectes.IndexOf(objecte)+1).gameObject);
+            Destroy(transform.GetChild(SeguentsObjectes.IndexOf(objecte)+2).gameObject);
             SeguentsObjectes.Remove(objecte);  
         }
     }

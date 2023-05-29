@@ -10,8 +10,8 @@ public class MovimentCamara : MonoBehaviour
 
     public Camera camara;
     public Slider zoomSlider;
-    public float minZoom = 5f;
-    public float maxZoom = 12.5f;
+    public float minZoom = 6f;
+    public float maxZoom = 13f;
 
     void Start()
     {

@@ -29,6 +29,10 @@ public class UIScript : MonoBehaviour
 
     private GameObject processadorPrefab;
     private GameObject sortidaPrefab;
+    public GameObject contentView;
+    public TMP_Text prefabLogs;
+    public Scrollbar barra;
+
     private static UIScript instancia;
 
     private UIScript() { }
@@ -182,14 +186,14 @@ public class UIScript : MonoBehaviour
         estat = estatsSimulacio.ATURAT;
         comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
         motorSimulador.GetComponent<MotorSimuladorScript>().ReiniciarSimulador();
-        seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (u.t.): 0";
+        seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (s): 0";
     }
 
     public void BotoStepClicat(){
         if (estat != estatsSimulacio.SIMULANT){
             motorSimulador.GetComponent<MotorSimuladorScript>().ExecutarSeguentEsdeveniment();
             float tempsSegEsdv = motorSimulador.GetComponent<MotorSimuladorScript>().ObteTempsSeguentEsdeveniment();
-            seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (u.t.): " + tempsSegEsdv.ToString();
+            seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (s): " + tempsSegEsdv.ToString();
         }
     }
 
@@ -333,5 +337,27 @@ public class UIScript : MonoBehaviour
 
     public int ObteBotoSeleccionat(){
         return (int)seleccionat;
+    }
+
+    public void UltimEsdeveniment(Esdeveniment e){
+        var nouText = Instantiate(prefabLogs);
+        nouText.text = "Línia " + contentView.transform.childCount+"; Objecte:" + e.obteProductor().transform.name+", Temps:"+e.temps;
+        nouText.color = Color.green;
+        nouText.transform.SetParent(contentView.transform);
+        if (contentView.transform.childCount > 1){
+            contentView.transform.GetChild(contentView.transform.childCount-2).GetComponent<TMP_Text>().color = Color.black;
+        }
+        ActualitzaBarra();
+    }
+
+    public void ActualitzaBarra(){
+        Vector2 mida = contentView.GetComponent<RectTransform>().sizeDelta;
+        mida.y += 50;
+        contentView.GetComponent<RectTransform>().sizeDelta = mida;
+        if (contentView.transform.childCount > 4){
+            Vector3 pos = contentView.GetComponent<RectTransform>().anchoredPosition;
+            pos.y = mida.y-200;
+            contentView.GetComponent<RectTransform>().anchoredPosition = pos;
+        }
     }
 }

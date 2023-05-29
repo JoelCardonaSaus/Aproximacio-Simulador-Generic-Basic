@@ -34,6 +34,7 @@ public class MotorSimuladorScript : MonoBehaviour
                 Esdeveniment eActual = llistaEsdevenmients.Dequeue();
                 tempsActual = eActual.temps;
                 eActual.Executar();
+                UIScript.Instancia.UltimEsdeveniment(eActual);
             }
         }
     }
@@ -42,6 +43,7 @@ public class MotorSimuladorScript : MonoBehaviour
         for (int i = 0; i < objectesLlibreria.Count; i++){
             objectesLlibreria[i].GetComponent<LlibreriaObjectes>().IniciaSimulacio();
         }
+        UIScript.Instancia.UltimEsdeveniment(llistaEsdevenmients.FirstElement());
     }
 
     public void ReiniciarSimulador(){
@@ -72,6 +74,7 @@ public class MotorSimuladorScript : MonoBehaviour
             Esdeveniment eActual = llistaEsdevenmients.Dequeue();
             tempsActual = eActual.temps;
             eActual.Executar();
+            UIScript.Instancia.UltimEsdeveniment(eActual);
         }
     }
 
