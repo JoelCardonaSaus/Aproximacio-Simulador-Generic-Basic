@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SortidaScript : LlibreriaObjectes
 {
     private int nEntitatsDestruides;
     private List<double> tempsEntreEntitats;
+    public TMP_Text etiqueta;
 
 
     void Start()
     {
         nEntitatsDestruides = 0;
         transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
+        etiqueta.text = transform.name;
     }
 
     void Update()
@@ -136,6 +139,6 @@ public class SortidaScript : LlibreriaObjectes
 
     public void ActualitzaPropietats(string nom){
         transform.name = nom;
-
+        etiqueta.text = nom;
     }
 }

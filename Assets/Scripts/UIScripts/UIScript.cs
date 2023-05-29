@@ -270,11 +270,11 @@ public class UIScript : MonoBehaviour
                 break;
             case btnSeleccionat.JUNTAR:
                 juntarButton.GetComponent<Image>().color = Color.green;
-                Cursor.SetCursor(imatgesCursor[4], Vector2.zero, CursorMode.Auto);
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 break;
             case btnSeleccionat.DESJUNTAR:
                 desjuntarButton.GetComponent<Image>().color = Color.green;
-                Cursor.SetCursor(imatgesCursor[5], Vector2.zero, CursorMode.Auto);
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 break;
             case btnSeleccionat.ELIMINAR:
                 eliminarButton.GetComponent<Image>().color = Color.red;

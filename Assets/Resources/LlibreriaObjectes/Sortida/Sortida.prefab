@@ -203,6 +203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SeguentsObjectes: []
   enrutament: 0
+  etiqueta: {fileID: 2062080463041962696}
 --- !u!61 &2558714988152187920
 BoxCollider2D:
   m_ObjectHideFlags: 0

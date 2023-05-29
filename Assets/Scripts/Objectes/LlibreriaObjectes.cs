@@ -74,7 +74,7 @@ public abstract class LlibreriaObjectes : MonoBehaviour
         lr.endWidth = 0.1f;
         lr.SetPosition(0, transform.position);
         lr.SetPosition(1, objecte.transform.position);
-        lr.startColor = Color.green;
+        lr.startColor = Color.white;
         lr.endColor = Color.green;
         lr.material = Resources.Load<Material>("Materials/LineRendererMaterial") as Material;
     }
