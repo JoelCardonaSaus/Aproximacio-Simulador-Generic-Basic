@@ -161,7 +161,7 @@ RectTransform:
   m_GameObject: {fileID: 1358349365050138029}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1683499376177376713}
@@ -170,7 +170,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: -3.5}
+  m_AnchoredPosition: {x: 0.5, y: -3.5}
   m_SizeDelta: {x: 6, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5418657498893717815
@@ -209,9 +209,9 @@ MonoBehaviour:
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -376,6 +376,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1011311160876340947}
     m_Modifications:
+    - target: {fileID: 7710305053227131687, guid: 3b09111703dcc3041b13c6466a5f6f28, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7710305053227131687, guid: 3b09111703dcc3041b13c6466a5f6f28, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7710305053227131687, guid: 3b09111703dcc3041b13c6466a5f6f28, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -221.57861
+      objectReference: {fileID: 0}
+    - target: {fileID: 7710305053522466233, guid: 3b09111703dcc3041b13c6466a5f6f28, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7710305053522466233, guid: 3b09111703dcc3041b13c6466a5f6f28, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7710305053522466233, guid: 3b09111703dcc3041b13c6466a5f6f28, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 7710305053522466233, guid: 3b09111703dcc3041b13c6466a5f6f28, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 7710305053522466234, guid: 3b09111703dcc3041b13c6466a5f6f28, type: 3}
       propertyPath: m_Name
       value: detallsProcessador
@@ -479,6 +507,10 @@ PrefabInstance:
     - target: {fileID: 7710305053522466235, guid: 3b09111703dcc3041b13c6466a5f6f28, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7710305053522466238, guid: 3b09111703dcc3041b13c6466a5f6f28, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b09111703dcc3041b13c6466a5f6f28, type: 3}
