@@ -70,13 +70,14 @@ public abstract class LlibreriaObjectes : MonoBehaviour
         SeguentsObjectes.Add(objecte);
         LineRenderer lr = objecteAmbLinia.AddComponent<LineRenderer>();
         lr.positionCount = 2;
-        lr.startWidth = 0.1f;
-        lr.endWidth = 0.1f;
+        lr.startWidth = 0.8f;
+        lr.endWidth = 0.8f;
         lr.SetPosition(0, transform.position);
         lr.SetPosition(1, objecte.transform.position);
-        lr.startColor = Color.white;
+        lr.textureMode = LineTextureMode.Tile;
+        lr.startColor = Color.green;
         lr.endColor = Color.green;
-        lr.material = Resources.Load<Material>("Materials/LineRendererMaterial") as Material;
+        lr.material = Resources.Load<Material>("Materials/Fletxa") as Material;
     }
 
     public void DesajuntarSeguentObjecte(GameObject desjuntar){
