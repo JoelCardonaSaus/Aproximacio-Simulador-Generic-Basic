@@ -33,6 +33,8 @@ public class UIScript : MonoBehaviour
     public TMP_Text prefabLogs;
     public Scrollbar barra;
 
+    public GameObject logs;
+
     private static UIScript instancia;
 
     private UIScript() { }
@@ -88,6 +90,9 @@ public class UIScript : MonoBehaviour
                 }
             }
         }
+
+        
+        
     }
 
     public bool RatoliSobreBotonsUI(){
@@ -175,10 +180,12 @@ public class UIScript : MonoBehaviour
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
             comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
             estat = estatsSimulacio.SIMULANT;
+            logs.SetActive(true);
         } else {  
             comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
             estat = estatsSimulacio.SIMULANT;
             motorSimulador.GetComponent<MotorSimuladorScript>().IniciaSimulacio();
+            logs.SetActive(true);
         }
     }
 
@@ -186,6 +193,7 @@ public class UIScript : MonoBehaviour
         estat = estatsSimulacio.ATURAT;
         comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
         motorSimulador.GetComponent<MotorSimuladorScript>().ReiniciarSimulador();
+        logs.SetActive(false);
         seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (s): 0";
         foreach (Transform child in contentView.transform) {
             Destroy(child.gameObject);
@@ -196,6 +204,8 @@ public class UIScript : MonoBehaviour
 
     public void BotoStepClicat(){
         if (estat != estatsSimulacio.SIMULANT){
+            //estat = estatsSimulacio.SIMULANT;
+            logs.SetActive(true);
             motorSimulador.GetComponent<MotorSimuladorScript>().ExecutarSeguentEsdeveniment();
             float tempsSegEsdv = motorSimulador.GetComponent<MotorSimuladorScript>().ObteTempsSeguentEsdeveniment();
             seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (s): " + tempsSegEsdv.ToString();
