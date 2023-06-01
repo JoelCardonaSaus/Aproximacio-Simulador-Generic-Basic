@@ -47,7 +47,7 @@ public abstract class LlibreriaObjectes : MonoBehaviour
         }
 
         else if (enrutament == politiquesEnrutament.RANDOM){
-            for (int i = 0; i < SeguentsObjectes.Count; i++){
+            for (int i = 0; i < 2*SeguentsObjectes.Count; i++){
                 int obj = Random.Range(0, SeguentsObjectes.Count);
                 SeguentObj = SeguentsObjectes[obj].GetComponent<LlibreriaObjectes>();
                 if (SeguentObj.EstaDisponible(this.gameObject)) {

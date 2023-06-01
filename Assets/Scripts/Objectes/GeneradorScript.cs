@@ -31,15 +31,18 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         estat = estats.GENERANT;
         transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
         etiquetes.text = "0/1\n"+transform.name;
+        GetComponent<SpriteRenderer>().material.shader = Shader.Find("GUI/Text Shader");
     }
 
     void Update()
     {   
         if (estat == estats.GENERANT){
-            GetComponent<SpriteRenderer>().color = Color.white;
+            GetComponent<SpriteRenderer>().color = Color.green;
+            GetComponent<SpriteRenderer>().material.color = Color.green;
         }
         if (estat == estats.BLOQUEJAT){
             GetComponent<SpriteRenderer>().color = Color.red;
+            GetComponent<SpriteRenderer>().material.color = Color.red;
         }
     }
 
@@ -98,7 +101,6 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
     
     public void GenerarEsdevenimentArribada(float tempsActual){
         if (distribuidor==null) distribuidor = new ConstantDistribution(5);
-        Debug.Log("Es genera un esdeveniment " + tempsActual.ToString());
         tempsSeguentEntitat = distribuidor.ObteSeguentNumero();
         Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+(float)tempsSeguentEntitat, null, Esdeveniment.Tipus.ARRIBADES);
         transform.parent.GetComponent<MotorSimuladorScript>().AfegirEsdeveniment(e);
@@ -112,6 +114,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
                     int objecteAEnviar = CercaDisponible();
                     tempsGenerant += (e.temps - ultimTemps);
                     ultimTemps = e.temps;
+                    Debug.Log(objecteAEnviar);
                     if (objecteAEnviar != -1) { // Si hi ha algun dels seguents objectes disponible, aleshores s'instancia una nova entitat temporal i s'envia l'entitat al objecte disponible
                         GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
                         SeguentsObjectes[objecteAEnviar].GetComponent<LlibreriaObjectes>().RepEntitat(novaEntitat, this.gameObject);

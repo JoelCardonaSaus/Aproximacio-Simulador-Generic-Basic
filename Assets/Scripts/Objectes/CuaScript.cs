@@ -29,10 +29,23 @@ public class CuaScript : LlibreriaObjectes
         if (capacitatMaxima == -1) capacitat = "∞";
         else capacitat = capacitatMaxima.ToString();
         etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
+        GetComponent<SpriteRenderer>().material.shader = Shader.Find("GUI/Text Shader");
     }
 
     void Update()
     {
+        if (estat == states.BUIT){
+            GetComponent<SpriteRenderer>().color = Color.green;
+            GetComponent<SpriteRenderer>().material.color = Color.green;
+        }
+        else if (estat == states.NOBUIT){
+            GetComponent<SpriteRenderer>().color = Color.yellow;
+            GetComponent<SpriteRenderer>().material.color = Color.yellow;
+        }
+        else {
+            GetComponent<SpriteRenderer>().color = Color.red;
+            GetComponent<SpriteRenderer>().material.color = Color.red;
+        }
     }
 
     public override void IniciaSimulacio(){
@@ -102,6 +115,7 @@ public class CuaScript : LlibreriaObjectes
             tempsObjecteCua[entitat] = tempsCua;
             ++entitatsEnviades;
             objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
+           
             string capacitat;
             if (capacitatMaxima == -1) capacitat = "∞";
             else capacitat = capacitatMaxima.ToString();
@@ -117,24 +131,18 @@ public class CuaScript : LlibreriaObjectes
                     if (capacitatMaxima == -1) capacitat = "∞";
                     else capacitat = capacitatMaxima.ToString();
                     etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
-                                while (objectesRebutjats.Count != 0) {
-                        // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
-                        if (AvisaDisponibilitat()) {
-                            break;
-                        }
-                    }
                     estat = states.NOBUIT;
                 } else {
                     estat = states.NOBUIT;
                 }
             } else {
-                while (objectesRebutjats.Count != 0) {
-                    // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
-                    if (AvisaDisponibilitat()) {
-                        break;
-                    }
-                }
                 estat = states.BUIT;
+            }
+            while (objectesRebutjats.Count != 0) {
+                // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
+                if (AvisaDisponibilitat()) {
+                    break;
+                }
             }
             return true; // En estat NOBUIT, si ens arriba una notificacioDisponibilitat sempre podrem enviar almenys una entitat
             
@@ -162,24 +170,18 @@ public class CuaScript : LlibreriaObjectes
                     if (capacitatMaxima == -1) capacitat = "∞";
                     else capacitat = capacitatMaxima.ToString();
                     etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
-                    while (objectesRebutjats.Count != 0) {
-                        // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
-                        if (AvisaDisponibilitat()) {
-                            break;
-                        }
-                    }
                     estat = states.NOBUIT;
                 } else {
                     estat = states.NOBUIT;
                 }
             } else {
-                while (objectesRebutjats.Count != 0) {
-                    // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
-                    if (AvisaDisponibilitat()) {
-                        break;
-                    }
-                }
                 estat = states.BUIT;
+            }
+            while (objectesRebutjats.Count != 0) {
+                // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
+                if (AvisaDisponibilitat()) {
+                    break;
+                }
             }
             return true; // En estat NOBUIT, si ens arriba una notificacioDisponibilitat sempre podrem enviar almenys una entitat
         }

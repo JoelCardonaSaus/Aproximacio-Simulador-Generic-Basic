@@ -14,7 +14,15 @@ public class MotorSimuladorScript : MonoBehaviour
     private GameObject sortidaPrefab;
     private List<GameObject> objectesLlibreria = new List<GameObject>();
     private int detallsObert = -1;
-    private PriorityQueue<Esdeveniment> llistaEsdevenmients = new PriorityQueue<Esdeveniment>((a, b) => a.temps.CompareTo(b.temps));
+    private PriorityQueue<Esdeveniment> llistaEsdevenmients = new PriorityQueue<Esdeveniment>((a, b) => {
+        // Compare first attribute
+        int result = a.temps.CompareTo(b.temps);
+        if (result != 0)
+            return result;
+
+        // Compare second attribute
+        return a.tipusEsdeveniment.CompareTo(b.tipusEsdeveniment);
+    });
     private float tempsActual;
     private float tempsMaxim;
     // Start is called before the first frame update
@@ -48,11 +56,19 @@ public class MotorSimuladorScript : MonoBehaviour
         for (int i = 0; i < objectesLlibreria.Count; i++){
             objectesLlibreria[i].GetComponent<LlibreriaObjectes>().IniciaSimulacio();
         }
-        UIScript.Instancia.UltimEsdeveniment(llistaEsdevenmients.FirstElement());
+        //UIScript.Instancia.UltimEsdeveniment(llistaEsdevenmients.FirstElement());
     }
 
     public void ReiniciarSimulador(){
-        llistaEsdevenmients = new PriorityQueue<Esdeveniment>((a, b) => a.temps.CompareTo(b.temps));
+        llistaEsdevenmients = new PriorityQueue<Esdeveniment>((a, b) => {
+            // Compare first attribute
+            int result = a.temps.CompareTo(b.temps);
+            if (result != 0)
+                return result;
+
+            // Compare second attribute
+            return a.tipusEsdeveniment.CompareTo(b.tipusEsdeveniment);
+        });
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("EntitatsTemporals");
 
         foreach (GameObject gameObject in gameObjects)

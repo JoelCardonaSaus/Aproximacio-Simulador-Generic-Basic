@@ -37,11 +37,25 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         if (maxEntitatsParalel == -1) capacitat = "∞";
         else capacitat = maxEntitatsParalel.ToString();
         etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
+        GetComponent<SpriteRenderer>().material.shader = Shader.Find("GUI/Text Shader");
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (estat == estats.DISPONIBLE){
+            GetComponent<SpriteRenderer>().color = Color.green;
+            GetComponent<SpriteRenderer>().material.color = Color.green;
+        }
+        else if (estat == estats.PROCESSANT){
+            GetComponent<SpriteRenderer>().color = Color.yellow;
+            GetComponent<SpriteRenderer>().material.color = Color.yellow;
+        }
+        else {
+            GetComponent<SpriteRenderer>().color = Color.red;
+            GetComponent<SpriteRenderer>().material.color = Color.red;
+        }
     }
 
     public override void IniciaSimulacio(){
@@ -123,6 +137,12 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                         if (maxEntitatsParalel == -1) capacitat = "∞";
                         else capacitat = maxEntitatsParalel.ToString();
                         etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
+                        if (entitatsAEnviar.Count == 0){
+                            if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
+                            else estat = estats.PROCESSANT;
+                        } else {
+                            estat = estats.BLOQUEJAT;
+                        }
                         while (objectesRebutjats.Count != 0) {
                             // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
                             if (AvisaDisponibilitat()) {
@@ -130,24 +150,18 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                             }
                         }
 
-                        if (entitatsAEnviar.Count == 0){
-                            if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
-                            else estat = estats.PROCESSANT;
-                        } else {
-                            estat = estats.BLOQUEJAT;
-                        }
                     } else {
                         estat = estats.BLOQUEJAT;
                     }
                 } else {
+                    if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
+                    else estat = estats.PROCESSANT;
                     while (objectesRebutjats.Count != 0) {
                         // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
                         if (AvisaDisponibilitat()) {
                             break;
                         }
                     }
-                    if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
-                    else estat = estats.PROCESSANT;
                 }
                 return true;
             }
@@ -201,7 +215,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         float tempsProcessat = (float)distribuidor.ObteSeguentNumero();
         tempsMigEntitatsProcessador+=tempsProcessat;
         entitatsProcessant.Add(entitat);
-        Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+(float)tempsProcessat, entitat, Esdeveniment.Tipus.PROCESSOS);
+        Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+tempsProcessat, entitat, Esdeveniment.Tipus.PROCESSOS);
         transform.parent.GetComponent<MotorSimuladorScript>().AfegirEsdeveniment(e);
     }
 
@@ -219,14 +233,14 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                     if (nDisponible != -1) {
                         ++nEntitatsEnviades;
                         SeguentsObjectes[nDisponible].GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
+                        if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
+                        else estat = estats.PROCESSANT;
                         while (objectesRebutjats.Count != 0) {
                             // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
                             if (AvisaDisponibilitat()) {
                                 break;
                             }
                         }
-                        if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
-                        else estat = estats.PROCESSANT;
                     } else {
                         entitatsAEnviar.Enqueue(entitat);
                         estat = estats.BLOQUEJAT;
@@ -250,6 +264,9 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                         if (nDisponible != -1){
                             ++nEntitatsEnviades;
                             SeguentsObjectes[nDisponible].GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
+                            if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
+                            else estat = estats.PROCESSANT;
+
                             while (objectesRebutjats.Count != 0) {
                                 // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
                                 if (AvisaDisponibilitat()) {
@@ -257,8 +274,6 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                                 }
                             }
 
-                            if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
-                            else estat = estats.PROCESSANT;
                         } else {
                             entitatsAEnviar.Enqueue(entitat);
                             estat = estats.BLOQUEJAT;

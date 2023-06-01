@@ -46,7 +46,8 @@ public class UIGeneradorScript : MonoBehaviour
         {
             cancela.interactable = true;
             aplicar.interactable = true;
-            nomActual = nomObjecte.text;
+            if (enrutament.value == 0) politicaActual = GeneradorScript.politiquesEnrutament.PRIMERDISPONIBLE;
+            else if (enrutament.value == 1) politicaActual = GeneradorScript.politiquesEnrutament.RANDOM;
         } else {
             aplicar.interactable = false;
             cancela.interactable = false;
