@@ -70,40 +70,54 @@ public class UIProcessadorScript : MonoBehaviour
                 param2.SetActive(true); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Probabilitat (0, 1]:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "# intents (int):";
+                parametresActuals = new double[2];
+                iParam1.text = ""; iParam2.text = "";
             } 
             else if (distribuidor.value == 0){
                 distribucioActual = ProcessadorScript.distribucionsProbabilitat.CONSTANT;
                 param2.SetActive(false); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Temps constant:";
+                parametresActuals = new double[1];
+                iParam1.text = "";
             }
             else if (distribuidor.value == 2){
                 distribucioActual = ProcessadorScript.distribucionsProbabilitat.EXPONENTIAL;
                 param2.SetActive(false); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Temps entre arribades:";
+                parametresActuals = new double[1];
+                iParam1.text = "";
             } 
             else if (distribuidor.value == 3){
                 distribucioActual = ProcessadorScript.distribucionsProbabilitat.NORMAL;
                 param2.SetActive(true); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mitjana:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Desviació estàndard:";
+                parametresActuals = new double[2];
+                iParam1.text = ""; iParam2.text = "";
             } 
             else if (distribuidor.value == 4) {
                 distribucioActual = ProcessadorScript.distribucionsProbabilitat.POISSON;
                 param2.SetActive(false); param3.SetActive(false);
-                param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "# events per unitat de temps:";
+                param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Lambda:";
+                parametresActuals = new double[1];
+                iParam1.text = "";
             }
             else if (distribuidor.value == 5){
                 distribucioActual = ProcessadorScript.distribucionsProbabilitat.TRIANGULAR;
                 param2.SetActive(true); param3.SetActive(true);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mínim:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Màxim:";
-                param3.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mode:";                
+                param3.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mode:";
+                parametresActuals = new double[3];    
+                iParam1.text = ""; iParam2.text = ""; iParam3.text = "";            
             } 
             else if (distribuidor.value == 6){
                 distribucioActual = ProcessadorScript.distribucionsProbabilitat.DISCRETEUNIFORM;
                 param2.SetActive(true); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mínim:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Màxim:";
+                parametresActuals = new double[2];
+                iParam1.text = ""; iParam2.text = "";
             } 
         } else {
             aplicar.interactable = false;
@@ -111,25 +125,30 @@ public class UIProcessadorScript : MonoBehaviour
         }
     }
 
-    public void CanviaParametres(){
+    public void CanviaParametre1(){
+        CanviaParametres(1);
+    }
+
+    public void CanviaParametre2(){
+        CanviaParametres(2);
+    }
+
+    public void CanviaParametre3(){
+        CanviaParametres(3);
+    }
+
+    public void CanviaParametres(int p){
         if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
             aplicar.interactable = true;
             cancela.interactable = true;
-            if (param2.activeSelf && param3.activeSelf){
-                parametresActuals = new double[3];
+            if (p == 1){
                 parametresActuals[0] = Double.Parse(iParam1.text);
-                parametresActuals[1] = Double.Parse(iParam2.text);
-                parametresActuals[2] = Double.Parse(iParam3.text);
-            } 
-            else if (param2.activeSelf && !param3.activeSelf){
-                parametresActuals = new double[2];
-                parametresActuals[0] = Double.Parse(iParam1.text);
-                parametresActuals[1] = Double.Parse(iParam2.text);
             }
-            else {
-                parametresActuals = new double[1];
-                parametresActuals[0] = Double.Parse(iParam1.text);
+            else if (p == 2){
+                parametresActuals[1] = Double.Parse(iParam2.text);
+            } else {
+                parametresActuals[2] = Double.Parse(iParam3.text);
             }
         } else {
             aplicar.interactable = false;
