@@ -18,6 +18,7 @@ public class CuaScript : LlibreriaObjectes
     private float tempsNoBuit = 0;
     private float tempsPle = 0;
     private float ultimTemps = 0;
+    private float tempsTotalEntitatsEnviades = 0;
     private int entitatsEnviades = 0;
 
     // Variable per poder moure els objectes
@@ -60,6 +61,7 @@ public class CuaScript : LlibreriaObjectes
         tempsPle = 0;
         ultimTemps = 0;
         entitatsEnviades = 0;
+        tempsTotalEntitatsEnviades = 0;
         string capacitat;
         if (capacitatMaxima == -1) capacitat = "∞";
         else capacitat = capacitatMaxima.ToString();
@@ -114,7 +116,8 @@ public class CuaScript : LlibreriaObjectes
             ultimTemps = tActual;
             GameObject entitat = cuaObjecte.Dequeue();
             float tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
-            tempsObjecteCua[entitat] = tempsCua;
+            tempsTotalEntitatsEnviades += tempsCua;
+            tempsObjecteCua.Remove(entitat);
             ++entitatsEnviades;
             objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
            
@@ -154,7 +157,8 @@ public class CuaScript : LlibreriaObjectes
             ultimTemps = tActual;
             GameObject entitat = cuaObjecte.Dequeue();
             float tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
-            tempsObjecteCua[entitat] = tempsCua;
+            tempsTotalEntitatsEnviades += tempsCua;
+            tempsObjecteCua.Remove(entitat);
             ++entitatsEnviades;
             objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
             string capacitat;
@@ -264,6 +268,33 @@ public class CuaScript : LlibreriaObjectes
     }
 
     public override void ActualizaEstadistics(){
+        string estadistics = "Output: " + entitatsEnviades+"\n";
+        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        etiquetes.text = cuaObjecte.Count.ToString();
+        if (capacitatMaxima == -1) etiquetes.text += "/∞";
+        else etiquetes.text += "/" + capacitatMaxima;
+        etiquetes.text += "\n" + transform.name + "\n";
+
+        if (estat == states.BUIT){
+            tempsBuit += (tempsActual - ultimTemps); 
+        } 
+        else if (estat == states.NOBUIT){
+            tempsNoBuit += (tempsActual - ultimTemps);
+        }
+        else {
+            tempsPle += (tempsActual - ultimTemps);
+        }
+        ultimTemps = tempsActual;
+        float percBuit = 100*(tempsBuit/(tempsActual));
+        float percNoBuit = 100*(tempsNoBuit/(tempsActual));
+        float percPle = 100*(tempsPle/(tempsActual));
+        if (entitatsEnviades != 0) estadistics += "Temps mig entitats a la cua: " + (tempsTotalEntitatsEnviades/entitatsEnviades) +"\n";
+        estadistics += "% Buit: " + percBuit + "\n";
+        estadistics += "% No Buit: " + percNoBuit + "\n";
+        estadistics += "% Ple: " + percPle + "\n";
+
+        
+        etiquetes.text += estadistics; 
     }
 
     //////////////////////////////////////////////////////////////////////
