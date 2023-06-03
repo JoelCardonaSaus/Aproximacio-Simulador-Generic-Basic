@@ -24,6 +24,9 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
     private float ultimTemps = 0;
     private List<double> tempsEntreEntitats = new List<double>();
 
+    // Variable per poder moure els objectes
+    Vector3 posicioRatoliOffset;
+
 
     void Start()
     {
@@ -236,6 +239,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
 
     public void OnMouseDown()
     {
+        posicioRatoliOffset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
         MotorSimuladorScript motorScript = gameObject.transform.parent.GetComponent<MotorSimuladorScript>();
         if (motorScript.AlgunDetallsObert())
         {
@@ -247,6 +251,18 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         }
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 4) UIScript.Instancia.AjuntarObjectes(this.gameObject);
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 5) UIScript.Instancia.DesjuntarObjectes(this.gameObject);
+    }
+
+    private void OnMouseDrag(){
+        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + posicioRatoliOffset;
+        for (int i = 0; i < SeguentsObjectes.Count; i++){
+            LineRenderer lr = gameObject.transform.GetChild(2+i).GetComponent<LineRenderer>();
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, SeguentsObjectes[i].transform.position);
+        }
+        for (int i = 0; i < ObjectesPredecessors.Count; i++){
+            ObjectesPredecessors[i].GetComponent<LlibreriaObjectes>().CanviaPosicioPredecessor(this.gameObject);
+        }
     }
 
 }

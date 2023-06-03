@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class LlibreriaObjectes : MonoBehaviour
 {
     public List<GameObject> SeguentsObjectes = new List<GameObject>(); 
+    public List<GameObject> ObjectesPredecessors = new List<GameObject>();
     public  enum politiquesEnrutament { PRIMERDISPONIBLE, RANDOM };
     public politiquesEnrutament enrutament;
 
@@ -61,6 +62,7 @@ public abstract class LlibreriaObjectes : MonoBehaviour
     public void AfegeixSeguentObjecte(GameObject objecte){
         if (!SeguentsObjectes.Contains(objecte)){
             DibuixaLinia(objecte);
+            objecte.GetComponent<LlibreriaObjectes>().AfegeixPredecessor(this.gameObject);
         }
     }
 
@@ -87,8 +89,22 @@ public abstract class LlibreriaObjectes : MonoBehaviour
     public void IntentaEliminarObjecteSeguents(GameObject objecte){
         if (SeguentsObjectes.Contains(objecte)) {
             Destroy(transform.GetChild(SeguentsObjectes.IndexOf(objecte)+2).gameObject);
+            objecte.GetComponent<LlibreriaObjectes>().EliminarPredecessor(this.gameObject);
             SeguentsObjectes.Remove(objecte);  
         }
+    }
+
+    public void AfegeixPredecessor(GameObject objecte){
+        ObjectesPredecessors.Add(objecte);
+    }
+
+    public void EliminarPredecessor(GameObject objecte){
+        ObjectesPredecessors.Remove(objecte);
+    }
+
+    public void CanviaPosicioPredecessor(GameObject objecte){
+        int i = SeguentsObjectes.IndexOf(objecte);
+        gameObject.transform.GetChild(2+i).GetComponent<LineRenderer>().SetPosition(1, objecte.transform.position);
     }
 
 }
