@@ -319,6 +319,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         nomImatge = "Output"+gameObject.transform.name;
         eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
     }
+    
     public override void ActualizaEstadistics(){
         string estadistics = "Output: " + nEntitatsEnviades +"\n";
         float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());

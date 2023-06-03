@@ -27,6 +27,7 @@ public class SortidaScript : LlibreriaObjectes
     public override void IniciaSimulacio(){
         nEntitatsDestruides = 0;
         tempsEntreEntitats = new List<double>();
+        etiqueta.text = transform.name + "\n";
     }
 
     public override void RepEntitat(GameObject entitat, GameObject objecteLlibreria)
@@ -58,6 +59,8 @@ public class SortidaScript : LlibreriaObjectes
     {
         nEntitatsDestruides = 0;
         tempsEntreEntitats = new List<double>();
+        etiqueta.text = transform.name + "\n";
+
     }
 
     new public int CercaDisponible(){   
@@ -98,7 +101,15 @@ public class SortidaScript : LlibreriaObjectes
         eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
     }
 
-    public override void ActualizaEstadistics(){}
+    public override void ActualizaEstadistics(){
+        string estadistics = "Output: " + nEntitatsDestruides +"\n";
+        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        
+        etiqueta.text = transform.name + "\n";
+        if (nEntitatsDestruides != 0) estadistics += "Temps mig entitats destruides: " + (tempsActual/(nEntitatsDestruides)) +"\n";
+
+        etiqueta.text += estadistics; 
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
