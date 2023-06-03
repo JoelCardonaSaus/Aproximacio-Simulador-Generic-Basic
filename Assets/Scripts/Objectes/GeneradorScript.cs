@@ -173,6 +173,31 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         eC.GeneraEstadistic(2, tempsEstats, etiquetes, "Percentatge", nomImatge);
     }
 
+    public override void ActualizaEstadistics(){
+        string estadistics = "Output: " + nEntitatsGenerades+"\n";
+        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        if (estat == estats.BLOQUEJAT){
+            tempsBloquejat += (tempsActual - ultimTemps); 
+            etiquetes.text = "1/1\n";
+        } 
+        else {
+            tempsGenerant += (tempsActual - ultimTemps);
+            etiquetes.text = "0/1\n";
+        }
+        etiquetes.text += transform.name + "\n";
+        ultimTemps = tempsActual;
+        float tempsTotal = tempsGenerant+tempsBloquejat;
+        float percGenerant = 100*(tempsGenerant/(tempsTotal));
+        float percBloquejat = 100*(tempsBloquejat/(tempsTotal));
+        if (nEntitatsGenerades != 0) estadistics += "Temps entre entitats: " + (tempsTotal/nEntitatsGenerades) +"\n";
+        estadistics += "% Generant: " + percGenerant + "\n";
+        estadistics += "% Bloquejat: " + percBloquejat + "\n";
+
+        
+        etiquetes.text += estadistics; 
+
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //                                                                  //

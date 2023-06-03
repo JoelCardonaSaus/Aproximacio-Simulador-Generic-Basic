@@ -263,6 +263,9 @@ public class CuaScript : LlibreriaObjectes
         eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
     }
 
+    public override void ActualizaEstadistics(){
+    }
+
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //                                                                  //

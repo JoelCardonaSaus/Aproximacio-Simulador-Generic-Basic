@@ -26,6 +26,7 @@ public abstract class LlibreriaObjectes : MonoBehaviour
     public abstract int ObteTipusObjecte();
     public abstract void GenerarPlots();
     public abstract void ReiniciaSimulador();
+    public abstract void ActualizaEstadistics();
     
     // Funcions per la UI
     public abstract bool RatoliSobreDetalls();

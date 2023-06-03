@@ -45,9 +45,11 @@ public class MotorSimuladorScript : MonoBehaviour
                 tempsActual = eActual.temps;
                 eActual.Executar();
                 UIScript.Instancia.UltimEsdeveniment(eActual);
+                for (int i = 0; i < objectesLlibreria.Count; ++i) objectesLlibreria[i].GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
             }
             if (llistaEsdevenmients.Count == 0 && tempsMaxim > tempsActual) {
                 tempsActual = tempsMaxim;
+                for (int i = 0; i < objectesLlibreria.Count; ++i) objectesLlibreria[i].GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
             }   
         }
     }
@@ -96,9 +98,11 @@ public class MotorSimuladorScript : MonoBehaviour
             tempsActual = eActual.temps;
             eActual.Executar();
             UIScript.Instancia.UltimEsdeveniment(eActual);
+            for (int i = 0; i < objectesLlibreria.Count; ++i) objectesLlibreria[i].GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
         }
         if (llistaEsdevenmients.Count == 0 && tempsMaxim > tempsActual) {
             tempsActual = tempsMaxim;
+            for (int i = 0; i < objectesLlibreria.Count; ++i) objectesLlibreria[i].GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
         }
     }
 

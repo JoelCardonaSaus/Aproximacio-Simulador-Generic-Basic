@@ -314,6 +314,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         nomImatge = "Output"+gameObject.transform.name;
         eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
     }
+    public override void ActualizaEstadistics(){}
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
