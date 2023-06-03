@@ -222,6 +222,7 @@ public class CuaScript : LlibreriaObjectes
         tempsPle = 0;
         ultimTemps = 0;
         entitatsEnviades = 0;
+        tempsTotalEntitatsEnviades = 0;
         string capacitat;
         if (capacitatMaxima == -1) capacitat = "∞";
         else capacitat = capacitatMaxima.ToString();

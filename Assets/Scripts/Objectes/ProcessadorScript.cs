@@ -15,6 +15,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     private List<GameObject> entitatsProcessant;
     //Variables per als estadistics
     private int nEntitatsEnviades = 0;
+    private int nEntitatsTractades = 0;
     private double tempsMigEntitatsProcessador;
     private enum estats { DISPONIBLE, PROCESSANT, BLOQUEJAT };
     private estats estat;
@@ -70,6 +71,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         tempsProcessat = 0;
         tempsBloquejat = 0;
         ultimTemps = 0;
+        nEntitatsTractades = 0;
         string capacitat;
         if (maxEntitatsParalel == -1) capacitat = "∞";
         else capacitat = maxEntitatsParalel.ToString();
@@ -199,6 +201,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         tempsProcessat = 0;
         tempsBloquejat = 0;
         ultimTemps = 0;
+        nEntitatsTractades = 0;
         string capacitat;
         if (maxEntitatsParalel == -1) capacitat = "∞";
         else capacitat = maxEntitatsParalel.ToString();
@@ -229,6 +232,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                     tempsProcessat += (e.temps-ultimTemps);
                     ultimTemps = e.temps;
                     GameObject entitat = e.ObteEntitatImplicada();
+                    ++nEntitatsTractades;
                     entitatsProcessant.Remove(entitat);
                     int nDisponible = CercaDisponible();
                     if (nDisponible != -1) {
@@ -256,6 +260,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                     tempsBloquejat += (e.temps-ultimTemps);
                     ultimTemps = e.temps;
                     GameObject entitat = e.ObteEntitatImplicada();
+                    ++nEntitatsTractades;
                     entitatsProcessant.Remove(entitat);
                     if (entitatsAEnviar.Count > 0){
                         entitatsAEnviar.Enqueue(entitat);
@@ -314,7 +319,36 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         nomImatge = "Output"+gameObject.transform.name;
         eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
     }
-    public override void ActualizaEstadistics(){}
+    public override void ActualizaEstadistics(){
+        string estadistics = "Output: " + nEntitatsEnviades +"\n";
+        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        etiquetes.text = entitatsProcessant.Count.ToString();
+        if (maxEntitatsParalel == -1) etiquetes.text += "/∞";
+        else etiquetes.text += "/" + maxEntitatsParalel;
+        etiquetes.text += "\n" + transform.name + "\n";
+
+        if (estat == estats.DISPONIBLE){
+            tempsDisponible += (tempsActual - ultimTemps); 
+        } 
+        else if (estat == estats.PROCESSANT){
+            tempsProcessat += (tempsActual - ultimTemps);
+        }
+        else {
+            tempsBloquejat += (tempsActual - ultimTemps);
+        }
+        ultimTemps = tempsActual;
+        float percDisponible = 100*(tempsDisponible/(tempsActual));
+        float percProcessant = 100*(tempsProcessat/(tempsActual));
+        float percBloquejat = 100*(tempsBloquejat/(tempsActual));
+        if (nEntitatsEnviades != 0) estadistics += "Temps mig processat: " + (tempsMigEntitatsProcessador/(entitatsProcessant.Count + nEntitatsTractades)) +"\n";
+        estadistics += "% Disponible: " + percDisponible + "\n";
+        estadistics += "% Processant: " + percProcessant + "\n";
+        estadistics += "% Bloquejat: " + percBloquejat + "\n";
+
+        
+        etiquetes.text += estadistics; 
+
+    }
 
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
