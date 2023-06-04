@@ -110,7 +110,6 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
     }
 
     public void TractarEsdeveniment(Esdeveniment e){
-        Debug.Log("hijo pta");
         switch (e.tipusEsdeveniment)
         {
             case Esdeveniment.Tipus.ARRIBADES:
@@ -118,7 +117,6 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
                     int objecteAEnviar = CercaDisponible();
                     tempsGenerant += (e.temps - ultimTemps);
                     ultimTemps = e.temps;
-                    Debug.Log(objecteAEnviar);
                     if (objecteAEnviar != -1) { // Si hi ha algun dels seguents objectes disponible, aleshores s'instancia una nova entitat temporal i s'envia l'entitat al objecte disponible
                         GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
                         SeguentsObjectes[objecteAEnviar].GetComponent<LlibreriaObjectes>().RepEntitat(novaEntitat, this.gameObject);

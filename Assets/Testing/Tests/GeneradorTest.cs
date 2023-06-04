@@ -4,13 +4,15 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEditor;
+
+[TestFixture]
 public class GeneradorTest
 {
-
+    
     [Test]
     public void GeneradorEnviaUnObjecte()
     {
-        GameObject motor = MotorSimuladorScript.Instancia.gameObject;
+        GameObject motor = GameObject.Instantiate(Resources.Load("MotorSimulador/MotorDeSimulacio")) as GameObject;;
         GameObject generador = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Generador/Generador")) as GameObject;
         GameObject cua = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
         
@@ -24,6 +26,29 @@ public class GeneradorTest
         MotorSimuladorScript.Instancia.ExecutarSeguentEsdeveniment();
 
         Assert.That(gs.getNGenerats(), Is.EqualTo(1));
+        MotorSimuladorScript.Instancia.ReiniciarSimulador();
+    }
+
+    [Test]
+    public void GeneradorProgramaEsdevenimentAlInstant5()
+    {
+        GameObject motor = MotorSimuladorScript.Instancia.gameObject;
+        GameObject generador = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Generador/Generador")) as GameObject;
+        GameObject cua = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
+        
+        generador.transform.parent = motor.transform;
+        cua.transform.parent = motor.transform;
+        
+        GeneradorScript gs = generador.GetComponent<GeneradorScript>();
+        gs.SeguentsObjectes.Add(cua);
+
+ 
+        MotorSimuladorScript.Instancia.IniciaSimulacio();
+        MotorSimuladorScript.Instancia.ExecutarSeguentEsdeveniment();
+
+        Assert.That(MotorSimuladorScript.Instancia.ObteTempsActual(), Is.EqualTo(5));
+        MotorSimuladorScript.Instancia.ReiniciarSimulador();
+
     }
 
     /*
