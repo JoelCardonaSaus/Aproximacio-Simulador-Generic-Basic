@@ -238,7 +238,7 @@ MonoBehaviour:
   - {fileID: 8555189609220193909, guid: f14de34e2a4fb594982139f7e34a357b, type: 3}
   - {fileID: 775699672233214996, guid: a8d683e1f27ea4742a38ba5e535109ce, type: 3}
   - {fileID: 6992971449690132176, guid: f7adf281c2ddbed49bde1520204f9599, type: 3}
-  entitatTemporal: {fileID: 5978900252387208746, guid: fc3559c3a304e03448ece8cdf88a8863, type: 3}
+  entitatTemporal: {fileID: 8555189609220193909, guid: f14de34e2a4fb594982139f7e34a357b, type: 3}
   estat: 0
 --- !u!1 &6081961840232085015
 GameObject:

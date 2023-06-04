@@ -21,8 +21,8 @@ public class MotorSimuladorScript : MonoBehaviour
 
         return a.tipusEsdeveniment.CompareTo(b.tipusEsdeveniment);
     });
-    private float tempsActual;
-    private float tempsMaxim;
+    private float tempsActual = 0;
+    private float tempsMaxim = 86400;
 
     private static MotorSimuladorScript instancia;
 
@@ -107,6 +107,7 @@ public class MotorSimuladorScript : MonoBehaviour
     public void ExecutarSeguentEsdeveniment(){
         if (llistaEsdevenmients.Count == 0 && tempsActual == 0) IniciaSimulacio();
         else if (llistaEsdevenmients.Count > 0){
+            Debug.Log("sadasd ");
             Esdeveniment eActual = llistaEsdevenmients.Dequeue();
             tempsActual = eActual.temps;
             eActual.Executar();
@@ -126,6 +127,7 @@ public class MotorSimuladorScript : MonoBehaviour
 
     public void AfegirEsdeveniment(Esdeveniment nouEsdeveminemt){
         if (nouEsdeveminemt.temps <= tempsMaxim) llistaEsdevenmients.Enqueue(nouEsdeveminemt);
+        else Debug.Log("asas");
     }
 
     public void AfegirObjecte(GameObject nouObjecte){

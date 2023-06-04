@@ -110,6 +110,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
     }
 
     public void TractarEsdeveniment(Esdeveniment e){
+        Debug.Log("hijo pta");
         switch (e.tipusEsdeveniment)
         {
             case Esdeveniment.Tipus.ARRIBADES:

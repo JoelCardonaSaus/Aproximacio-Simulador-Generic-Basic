@@ -615,7 +615,6 @@ MonoBehaviour:
   reiniciar: {fileID: 752604190}
   configuracio: {fileID: 344077943}
   seguentEsdev: {fileID: 1626606859}
-  motorSimulador: {fileID: 343814978}
   contentView: {fileID: 1922379763}
   prefabLogs: {fileID: 4978418023573130599, guid: cd966be1f54910a48b032ba52414e70e, type: 3}
   finestraErrors: {fileID: 2131376165}
@@ -949,34 +948,9 @@ CanvasRenderer:
   m_CullTransparentMesh: 1
 --- !u!1 &343814978 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 5857438818150556862, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
-  m_PrefabInstance: {fileID: 5857438817942542332}
+  m_CorrespondingSourceObject: {fileID: 4097567851987249105, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
+  m_PrefabInstance: {fileID: 4097567852188177555}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &343814980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 343814978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9c0d9c807aca7048b2160d142a9d1d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  escalaTemps: 1
---- !u!114 &343814982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 343814978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b24a12d27a06b445826f345d5b88efd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &344077941
 GameObject:
   m_ObjectHideFlags: 0
@@ -6237,60 +6211,60 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1287706134730673694, guid: b67dcb4164e77d848a0cccbbfdb02111, type: 3}
   m_PrefabInstance: {fileID: 2131376163}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &5857438817942542332
+--- !u!1001 &4097567852188177555
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5857438818150556862, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
-      propertyPath: m_Name
-      value: MotorDeSimulacio
-      objectReference: {fileID: 0}
-    - target: {fileID: 5857438818150556863, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+    - target: {fileID: 4097567851987249104, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5857438818150556863, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+    - target: {fileID: 4097567851987249104, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5857438818150556863, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+    - target: {fileID: 4097567851987249104, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5857438818150556863, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+    - target: {fileID: 4097567851987249104, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5857438818150556863, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+    - target: {fileID: 4097567851987249104, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5857438818150556863, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+    - target: {fileID: 4097567851987249104, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 5857438818150556863, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+    - target: {fileID: 4097567851987249104, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 5857438818150556863, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+    - target: {fileID: 4097567851987249104, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 5857438818150556863, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+    - target: {fileID: 4097567851987249104, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5857438818150556863, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+    - target: {fileID: 4097567851987249104, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5857438818150556863, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+    - target: {fileID: 4097567851987249104, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4097567851987249105, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}
+      propertyPath: m_Name
+      value: MotorDeSimulacio
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f625868e3ef66cb45bc3d1faf42ca453, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 7b58f90f83f291c4daaef4997cf40e05, type: 3}

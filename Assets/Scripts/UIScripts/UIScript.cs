@@ -68,7 +68,7 @@ public class UIScript : MonoBehaviour
     {
         seleccionat = btnSeleccionat.CAP;
         estat = estatsSimulacio.ATURAT;
-        comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
+        //comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
 
     }
 
@@ -375,26 +375,28 @@ public class UIScript : MonoBehaviour
     }
 
     public void UltimEsdeveniment(Esdeveniment e){
-        var nouText = Instantiate(prefabLogs);
-        string esdev = "";
-        if (e.tipusEsdeveniment == Esdeveniment.Tipus.PROCESSOS) esdev = "PROCESSOS";
-        else esdev = "ARRIBADES";
-        TMP_Text text1 = nouText.transform.GetChild(0).GetComponent<TMP_Text>();
-        TMP_Text text2 = nouText.transform.GetChild(1).GetComponent<TMP_Text>();
-        TMP_Text text3 = nouText.transform.GetChild(2).GetComponent<TMP_Text>();
-        text1.text = e.obteProductor().transform.name;
-        text1.color = Color.green;
-        text2.text = e.temps.ToString();
-        text2.color = Color.green;
-        text3.text = esdev;
-        text3.color = Color.green;
-        nouText.transform.SetParent(contentView.transform);
-        if (contentView.transform.childCount > 1){
-            contentView.transform.GetChild(contentView.transform.childCount-2).transform.GetChild(0).GetComponent<TMP_Text>().color = Color.black;
-            contentView.transform.GetChild(contentView.transform.childCount-2).transform.GetChild(1).GetComponent<TMP_Text>().color = Color.black;
-            contentView.transform.GetChild(contentView.transform.childCount-2).transform.GetChild(2).GetComponent<TMP_Text>().color = Color.black;
+        if (prefabLogs != null){
+            var nouText = Instantiate(prefabLogs);
+            string esdev = "";
+            if (e.tipusEsdeveniment == Esdeveniment.Tipus.PROCESSOS) esdev = "PROCESSOS";
+            else esdev = "ARRIBADES";
+            TMP_Text text1 = nouText.transform.GetChild(0).GetComponent<TMP_Text>();
+            TMP_Text text2 = nouText.transform.GetChild(1).GetComponent<TMP_Text>();
+            TMP_Text text3 = nouText.transform.GetChild(2).GetComponent<TMP_Text>();
+            text1.text = e.obteProductor().transform.name;
+            text1.color = Color.green;
+            text2.text = e.temps.ToString();
+            text2.color = Color.green;
+            text3.text = esdev;
+            text3.color = Color.green;
+            nouText.transform.SetParent(contentView.transform);
+            if (contentView.transform.childCount > 1){
+                contentView.transform.GetChild(contentView.transform.childCount-2).transform.GetChild(0).GetComponent<TMP_Text>().color = Color.black;
+                contentView.transform.GetChild(contentView.transform.childCount-2).transform.GetChild(1).GetComponent<TMP_Text>().color = Color.black;
+                contentView.transform.GetChild(contentView.transform.childCount-2).transform.GetChild(2).GetComponent<TMP_Text>().color = Color.black;
+            }
+            ActualitzaBarra();
         }
-        ActualitzaBarra();
     }
 
     public void ActualitzaBarra(){
