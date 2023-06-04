@@ -32,7 +32,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
     {
         distribuidor = new ConstantDistribution(5);
         estat = estats.GENERANT;
-        transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
+        transform.name = transform.name.Replace("Clone", MotorSimuladorScript.Instancia.ObteIdSeguentObjecte().ToString());
         etiquetes.text = "0/1\n"+transform.name;
         GetComponent<SpriteRenderer>().material.shader = Shader.Find("GUI/Text Shader");
     }
@@ -56,9 +56,9 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         tempsBloquejat = 0;
         ultimTemps = 0;
         etiquetes.text = "0/1\n"+transform.name;
-        GenerarEsdevenimentArribada(transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        GenerarEsdevenimentArribada(MotorSimuladorScript.Instancia.ObteTempsActual());
         tempsEntreEntitats = new List<double>();
-        entitatTemporal = entitatsTemporals[transform.parent.GetComponent<MotorSimuladorScript>().ObteEntitatsSeleccionades()];
+        entitatTemporal = entitatsTemporals[MotorSimuladorScript.Instancia.ObteEntitatsSeleccionades()];
     }
     
     public override void RepEntitat(GameObject entitat, GameObject objecteLlibreria){} // El generador mai rebra una entitat
@@ -73,7 +73,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
             ++nEntitatsGenerades;
             GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
             objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(novaEntitat, this.gameObject);
-            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
                     Debug.Log("TempsActual + ultim " + tActual + " " + ultimTemps);
             tempsBloquejat += (tActual - ultimTemps);
             ultimTemps = tActual;
@@ -106,7 +106,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         if (distribuidor==null) distribuidor = new ConstantDistribution(5);
         tempsSeguentEntitat = distribuidor.ObteSeguentNumero();
         Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+(float)tempsSeguentEntitat, null, Esdeveniment.Tipus.ARRIBADES);
-        transform.parent.GetComponent<MotorSimuladorScript>().AfegirEsdeveniment(e);
+        MotorSimuladorScript.Instancia.AfegirEsdeveniment(e);
     }
 
     public void TractarEsdeveniment(Esdeveniment e){
@@ -161,7 +161,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         string nomImatge = "Output"+gameObject.transform.name;
         eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
 
-        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
         if (estat == estats.BLOQUEJAT) tempsBloquejat += (tempsActual - ultimTemps); 
         else tempsGenerant += (tempsActual - ultimTemps);
         double[] tempsEstats = new double[2] { tempsGenerant, tempsBloquejat };
@@ -175,7 +175,7 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
 
     public override void ActualizaEstadistics(){
         string estadistics = "Output: " + nEntitatsGenerades+"\n";
-        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
         if (estat == estats.BLOQUEJAT){
             tempsBloquejat += (tempsActual - ultimTemps); 
             etiquetes.text = "1/1\n";
@@ -267,14 +267,13 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
     public void OnMouseDown()
     {
         posicioRatoliOffset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        MotorSimuladorScript motorScript = gameObject.transform.parent.GetComponent<MotorSimuladorScript>();
-        if (motorScript.AlgunDetallsObert())
+        if (MotorSimuladorScript.Instancia.AlgunDetallsObert())
         {
-            motorScript.TancaDetallsObert();
+            MotorSimuladorScript.Instancia.TancaDetallsObert();
         }
-        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) motorScript.EliminarObjecteLlista(this.gameObject);
+        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) MotorSimuladorScript.Instancia.EliminarObjecteLlista(this.gameObject);
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 7){
-            motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+            MotorSimuladorScript.Instancia.ObreDetallsFill(transform.GetSiblingIndex());
         }
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 4) UIScript.Instancia.AjuntarObjectes(this.gameObject);
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 5) UIScript.Instancia.DesjuntarObjectes(this.gameObject);

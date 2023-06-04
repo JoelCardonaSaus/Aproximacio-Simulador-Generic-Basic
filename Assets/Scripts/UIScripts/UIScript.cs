@@ -23,7 +23,6 @@ public class UIScript : MonoBehaviour
     public Button configuracio;
     public Button seguentEsdev;
 
-    public GameObject motorSimulador;
     private GameObject generadorPrefab;
     private GameObject cuaPrefab;
 
@@ -81,8 +80,8 @@ public class UIScript : MonoBehaviour
             {
                 if (seleccionat == btnSeleccionat.GENERADOR || seleccionat == btnSeleccionat.CUA || seleccionat == btnSeleccionat.PROCESSADOR || seleccionat == btnSeleccionat.SORTIDA) InstanciarObjecte();
             }  
-            if ((motorSimulador.GetComponent<MotorSimuladorScript>().AlgunDetallsObert()) && (!RatoliSobreAlgunObjece() && !RatoliSobreDetalls())){
-                motorSimulador.GetComponent<MotorSimuladorScript>().TancaDetallsObert();
+            if ((MotorSimuladorScript.Instancia.AlgunDetallsObert()) && (!RatoliSobreAlgunObjece() && !RatoliSobreDetalls())){
+                MotorSimuladorScript.Instancia.TancaDetallsObert();
             }
             if (estat == estatsSimulacio.ATURAT && seleccionat == btnSeleccionat.CONFIG){
                 if (!RatoliSobreDetallsConfiguracio()){
@@ -123,7 +122,7 @@ public class UIScript : MonoBehaviour
     }
 
     public bool RatoliSobreDetalls(){
-        return motorSimulador.GetComponent<MotorSimuladorScript>().RatoliSobreDetalls();
+        return MotorSimuladorScript.Instancia.RatoliSobreDetalls();
     }
 
     public bool RatoliSobreAlgunObjece(){
@@ -188,7 +187,7 @@ public class UIScript : MonoBehaviour
             } else {  
                 comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
                 estat = estatsSimulacio.SIMULANT;
-                motorSimulador.GetComponent<MotorSimuladorScript>().IniciaSimulacio();
+                MotorSimuladorScript.Instancia.IniciaSimulacio();
                 logs.SetActive(true);
             }
         }
@@ -198,7 +197,7 @@ public class UIScript : MonoBehaviour
         if (seleccionat != btnSeleccionat.ERROR){
             estat = estatsSimulacio.ATURAT;
             comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
-            motorSimulador.GetComponent<MotorSimuladorScript>().ReiniciarSimulador();
+            MotorSimuladorScript.Instancia.ReiniciarSimulador();
             logs.SetActive(false);
             seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (s): 0";
             foreach (Transform child in contentView.transform) {
@@ -214,8 +213,8 @@ public class UIScript : MonoBehaviour
             if (estat != estatsSimulacio.SIMULANT){
                 //estat = estatsSimulacio.SIMULANT;
                 logs.SetActive(true);
-                motorSimulador.GetComponent<MotorSimuladorScript>().ExecutarSeguentEsdeveniment();
-                float tempsSegEsdv = motorSimulador.GetComponent<MotorSimuladorScript>().ObteTempsSeguentEsdeveniment();
+                MotorSimuladorScript.Instancia.ExecutarSeguentEsdeveniment();
+                float tempsSegEsdv = MotorSimuladorScript.Instancia.ObteTempsSeguentEsdeveniment();
                 seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (s): " + tempsSegEsdv.ToString();
             }
         }
@@ -340,7 +339,7 @@ public class UIScript : MonoBehaviour
         }
 
         if (objecteId != -1){
-            motorSimulador.GetComponent<MotorSimuladorScript>().CreaObjecteFill(objecteId, worldPosition);
+            MotorSimuladorScript.Instancia.CreaObjecteFill(objecteId, worldPosition);
             DeseleccionarBackground(seleccionat);
             seleccionat = btnSeleccionat.CAP;
             SeleccionarBackground(seleccionat);

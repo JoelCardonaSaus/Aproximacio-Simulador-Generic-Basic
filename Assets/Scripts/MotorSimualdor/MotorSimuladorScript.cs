@@ -23,7 +23,27 @@ public class MotorSimuladorScript : MonoBehaviour
     });
     private float tempsActual;
     private float tempsMaxim;
-    // Start is called before the first frame update
+
+    private static MotorSimuladorScript instancia;
+
+    private MotorSimuladorScript() { }
+
+    public static MotorSimuladorScript Instancia {
+        get {
+            if (instancia == null){
+                instancia = FindObjectOfType<MotorSimuladorScript>();
+
+                if (instancia == null){
+                    GameObject singletonObject = new GameObject();
+                    instancia = singletonObject.AddComponent<MotorSimuladorScript>();
+                    singletonObject.name = typeof(UIScript).ToString();
+                    DontDestroyOnLoad(singletonObject);
+                }
+            }
+            return instancia;
+        }
+    }
+
     void Start()
     {
         generadorPrefab = Resources.Load("LlibreriaObjectes/Generador/Generador") as GameObject;
@@ -34,7 +54,7 @@ public class MotorSimuladorScript : MonoBehaviour
         tempsMaxim = 86400;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if (UIScript.Instancia.ObteEstatSimulador() == 0){

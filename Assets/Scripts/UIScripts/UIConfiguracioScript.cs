@@ -14,7 +14,6 @@ public class UIConfiguracioScript : MonoBehaviour
     private entitats entitatsConfirmades = entitats.PAQUETS;
     private float tempsMaximActual = 86400;
     private float tempsMaximConfirmat = 86400;
-    public GameObject motorSimulador;
     public GameObject finestraErrors;
 
     public void CanviTempsMaxim(){
@@ -55,11 +54,11 @@ public class UIConfiguracioScript : MonoBehaviour
     public void AplicarCanvis(){
         if (entitatsActuals != entitatsConfirmades){
             entitatsConfirmades = entitatsActuals;
-            motorSimulador.GetComponent<MotorSimuladorScript>().CanviaEntitatsTemporals((int)entitatsConfirmades);
+            MotorSimuladorScript.Instancia.CanviaEntitatsTemporals((int)entitatsConfirmades);
         }
         if (tempsMaximActual != tempsMaximConfirmat){
             tempsMaximConfirmat = tempsMaximActual;
-            motorSimulador.GetComponent<MotorSimuladorScript>().CanviaTempsMaxim(tempsMaximConfirmat);
+            MotorSimuladorScript.Instancia.CanviaTempsMaxim(tempsMaximConfirmat);
         }
         cancela.interactable = false;
         aplicar.interactable = false;

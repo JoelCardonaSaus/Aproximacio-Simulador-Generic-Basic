@@ -26,7 +26,7 @@ public class CuaScript : LlibreriaObjectes
 
     void Start()
     {
-        transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
+        transform.name = transform.name.Replace("Clone", MotorSimuladorScript.Instancia.ObteIdSeguentObjecte().ToString());
         cuaObjecte = new Queue<GameObject>();
         string capacitat;
         if (capacitatMaxima == -1) capacitat = "∞";
@@ -73,7 +73,7 @@ public class CuaScript : LlibreriaObjectes
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         if (estat == states.NOBUIT){
             cuaObjecte.Enqueue(entitat);
-            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsObjecteCua.Add(entitat, tActual);
             tempsNoBuit += (tActual - ultimTemps);
             ultimTemps = tActual;
@@ -81,7 +81,7 @@ public class CuaScript : LlibreriaObjectes
             else estat = states.PLE;
         }
         else if (estat == states.BUIT){
-            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             int nDisponible = CercaDisponible();
             tempsBuit += (tActual - ultimTemps);
             ultimTemps = tActual;
@@ -105,7 +105,7 @@ public class CuaScript : LlibreriaObjectes
     // Retorna fals si no pot enviar cap entitat al que ha avisat que esta disponible
     public override bool NotificacioDisponible(GameObject objecteLlibreria)
     {
-        float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+        float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
         if (estat == states.BUIT){
             tempsBuit += (tActual - ultimTemps);
             ultimTemps = tActual;
@@ -115,7 +115,7 @@ public class CuaScript : LlibreriaObjectes
             tempsNoBuit += (tActual - ultimTemps);
             ultimTemps = tActual;
             GameObject entitat = cuaObjecte.Dequeue();
-            float tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
+            float tempsCua = (float)MotorSimuladorScript.Instancia.ObteTempsActual() - (float)tempsObjecteCua[entitat];
             tempsTotalEntitatsEnviades += tempsCua;
             tempsObjecteCua.Remove(entitat);
             ++entitatsEnviades;
@@ -130,7 +130,7 @@ public class CuaScript : LlibreriaObjectes
                 int nDisponible = CercaDisponible();
                 if (nDisponible != -1){
                     entitat = cuaObjecte.Dequeue();
-                    tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
+                    tempsCua = (float)MotorSimuladorScript.Instancia.ObteTempsActual() - (float)tempsObjecteCua[entitat];
                     tempsObjecteCua[entitat] = tempsCua;
                     SeguentsObjectes[nDisponible].GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
                     if (capacitatMaxima == -1) capacitat = "∞";
@@ -156,7 +156,7 @@ public class CuaScript : LlibreriaObjectes
             tempsPle += (tActual - ultimTemps);
             ultimTemps = tActual;
             GameObject entitat = cuaObjecte.Dequeue();
-            float tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
+            float tempsCua = (float)MotorSimuladorScript.Instancia.ObteTempsActual() - (float)tempsObjecteCua[entitat];
             tempsTotalEntitatsEnviades += tempsCua;
             tempsObjecteCua.Remove(entitat);
             ++entitatsEnviades;
@@ -170,7 +170,7 @@ public class CuaScript : LlibreriaObjectes
                 int nDisponible = CercaDisponible();
                 if (nDisponible != -1){
                     entitat = cuaObjecte.Dequeue();
-                    tempsCua = (float)transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual() - (float)tempsObjecteCua[entitat];
+                    tempsCua = (float)MotorSimuladorScript.Instancia.ObteTempsActual() - (float)tempsObjecteCua[entitat];
                     tempsObjecteCua[entitat] = tempsCua;
                     SeguentsObjectes[nDisponible].GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
                     if (capacitatMaxima == -1) capacitat = "∞";
@@ -197,14 +197,14 @@ public class CuaScript : LlibreriaObjectes
     public override bool EstaDisponible(GameObject objecteLlibreria)
     {
         if (capacitatMaxima == -1 || cuaObjecte.Count < capacitatMaxima){
-            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             if (estat == states.BUIT) tempsBuit += (tActual-ultimTemps);
             else if (estat == states.NOBUIT) tempsNoBuit += (tActual-ultimTemps);
             ultimTemps = tActual;
             return true;
         } 
         else{
-            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsPle += (tActual-ultimTemps);
             ultimTemps = tActual;
             if (!objectesRebutjats.Contains(objecteLlibreria))  objectesRebutjats.Enqueue(objecteLlibreria);
@@ -250,7 +250,7 @@ public class CuaScript : LlibreriaObjectes
     public override void GenerarPlots(){
         EstadisticsController eC = transform.parent.GetComponent<EstadisticsController>();
 
-        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
         if (estat == states.BUIT) tempsBuit += (tempsActual - ultimTemps); 
         else if (estat == states.NOBUIT) tempsNoBuit += (tempsActual - ultimTemps);
         else tempsPle += (tempsActual - ultimTemps);
@@ -270,7 +270,7 @@ public class CuaScript : LlibreriaObjectes
 
     public override void ActualizaEstadistics(){
         string estadistics = "Output: " + entitatsEnviades+"\n";
-        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
         etiquetes.text = cuaObjecte.Count.ToString();
         if (capacitatMaxima == -1) etiquetes.text += "/∞";
         else etiquetes.text += "/" + capacitatMaxima;
@@ -308,13 +308,12 @@ public class CuaScript : LlibreriaObjectes
     public void OnMouseDown()
     {
         posicioRatoliOffset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        MotorSimuladorScript motorScript = gameObject.transform.parent.GetComponent<MotorSimuladorScript>();
-        if (motorScript.AlgunDetallsObert())
+        if (MotorSimuladorScript.Instancia.AlgunDetallsObert())
         {
-            motorScript.TancaDetallsObert();
+            MotorSimuladorScript.Instancia.TancaDetallsObert();
         }
-        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) motorScript.EliminarObjecteLlista(this.gameObject);
-        else if (UIScript.Instancia.ObteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) MotorSimuladorScript.Instancia.EliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.ObteBotoSeleccionat() == 7)MotorSimuladorScript.Instancia.ObreDetallsFill(transform.GetSiblingIndex());
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 4) UIScript.Instancia.AjuntarObjectes(this.gameObject);
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 5) UIScript.Instancia.DesjuntarObjectes(this.gameObject);
     }

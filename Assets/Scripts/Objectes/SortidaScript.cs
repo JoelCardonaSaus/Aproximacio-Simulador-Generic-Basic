@@ -16,7 +16,7 @@ public class SortidaScript : LlibreriaObjectes
     void Start()
     {
         nEntitatsDestruides = 0;
-        transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
+        transform.name = transform.name.Replace("Clone", MotorSimuladorScript.Instancia.ObteIdSeguentObjecte().ToString());
         etiqueta.text = transform.name;
     }
 
@@ -35,7 +35,7 @@ public class SortidaScript : LlibreriaObjectes
         Debug.Log("Es destrueix una nova entitat");
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         ++nEntitatsDestruides;
-        float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+        float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
         if (tempsEntreEntitats.Count != 0) {
             tempsEntreEntitats.Add(tActual-tempsEntreEntitats[tempsEntreEntitats.Count-1]);
         } else {
@@ -103,7 +103,7 @@ public class SortidaScript : LlibreriaObjectes
 
     public override void ActualizaEstadistics(){
         string estadistics = "Output: " + nEntitatsDestruides +"\n";
-        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
         
         etiqueta.text = transform.name + "\n";
         if (nEntitatsDestruides != 0) estadistics += "Temps mig entitats destruides: " + (tempsActual/(nEntitatsDestruides)) +"\n";
@@ -122,14 +122,13 @@ public class SortidaScript : LlibreriaObjectes
     public void OnMouseDown()
     {
         posicioRatoliOffset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        MotorSimuladorScript motorScript = gameObject.transform.parent.GetComponent<MotorSimuladorScript>();
-        if (motorScript.AlgunDetallsObert())
+        if (MotorSimuladorScript.Instancia.AlgunDetallsObert())
         {
-            motorScript.TancaDetallsObert();
+            MotorSimuladorScript.Instancia.TancaDetallsObert();
         }
-        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) motorScript.EliminarObjecteLlista(this.gameObject);
+        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) MotorSimuladorScript.Instancia.EliminarObjecteLlista(this.gameObject);
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 7){
-            motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+            MotorSimuladorScript.Instancia.ObreDetallsFill(transform.GetSiblingIndex());
         }
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 4) UIScript.Instancia.AjuntarObjectes(this.gameObject);
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 5) UIScript.Instancia.DesjuntarObjectes(this.gameObject);

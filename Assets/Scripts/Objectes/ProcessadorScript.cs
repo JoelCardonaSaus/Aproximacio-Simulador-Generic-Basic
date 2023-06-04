@@ -32,7 +32,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     // Start is called before the first frame update
     void Start()
     {   
-        transform.name = transform.name.Replace("Clone", transform.parent.GetComponent<MotorSimuladorScript>().ObteIdSeguentObjecte().ToString());
+        transform.name = transform.name.Replace("Clone", MotorSimuladorScript.Instancia.ObteIdSeguentObjecte().ToString());
         entitatsProcessant = new List<GameObject>();
         entitatsAEnviar = new Queue<GameObject>();
         string capacitat;
@@ -82,7 +82,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     {
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         if (estat == estats.DISPONIBLE){
-            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsDisponible += (tActual-ultimTemps);
             ultimTemps = tActual;
             GenerarEsdevenimentProces(entitat, tActual);
@@ -94,7 +94,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
             etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
         }
         else if (estat == estats.PROCESSANT){
-            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsProcessat += (tActual-ultimTemps);
             ultimTemps = tActual;
             GenerarEsdevenimentProces(entitat, tActual);
@@ -110,7 +110,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
 
     public override bool NotificacioDisponible(GameObject objecteLlibreria)
     {
-        float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+        float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
         if (estat == estats.DISPONIBLE){
             tempsDisponible += (tActual-ultimTemps);
             ultimTemps = tActual;
@@ -175,14 +175,14 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     public override bool EstaDisponible(GameObject objecteLlibreria)
     {
         if (estat != estats.BLOQUEJAT){
-            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             if (estat == estats.DISPONIBLE) tempsDisponible += (tActual-ultimTemps);
             else if (estat == estats.PROCESSANT) tempsProcessat += (tActual-ultimTemps);
             ultimTemps = tActual;
             return true;  
         } 
         else {
-            float tActual = transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual();
+            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsBloquejat += (tActual-ultimTemps);
             ultimTemps = tActual;
             if (!objectesRebutjats.Contains(objecteLlibreria)) objectesRebutjats.Enqueue(objecteLlibreria);
@@ -220,7 +220,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         tempsMigEntitatsProcessador+=tempsProcessat;
         entitatsProcessant.Add(entitat);
         Esdeveniment e = new Esdeveniment(this.gameObject, this.gameObject, tempsActual+tempsProcessat, entitat, Esdeveniment.Tipus.PROCESSOS);
-        transform.parent.GetComponent<MotorSimuladorScript>().AfegirEsdeveniment(e);
+        MotorSimuladorScript.Instancia.AfegirEsdeveniment(e);
     }
 
     public void TractarEsdeveniment(Esdeveniment e){
@@ -302,7 +302,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     public override void GenerarPlots(){
         EstadisticsController eC = transform.parent.GetComponent<EstadisticsController>();
 
-        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
         if (estat == estats.DISPONIBLE) tempsDisponible += (tempsActual - ultimTemps); 
         else if (estat == estats.PROCESSANT) tempsProcessat += (tempsActual - ultimTemps);
         else tempsBloquejat += (tempsActual - ultimTemps);
@@ -322,7 +322,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     
     public override void ActualizaEstadistics(){
         string estadistics = "Output: " + nEntitatsEnviades +"\n";
-        float tempsActual = (transform.parent.GetComponent<MotorSimuladorScript>().ObteTempsActual());
+        float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
         etiquetes.text = entitatsProcessant.Count.ToString();
         if (maxEntitatsParalel == -1) etiquetes.text += "/∞";
         else etiquetes.text += "/" + maxEntitatsParalel;
@@ -362,13 +362,13 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     public void OnMouseDown()
     {
         posicioRatoliOffset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        MotorSimuladorScript motorScript = gameObject.transform.parent.GetComponent<MotorSimuladorScript>();
-        if (motorScript.AlgunDetallsObert())
+    
+        if (MotorSimuladorScript.Instancia.AlgunDetallsObert())
         {
-            motorScript.TancaDetallsObert();
+            MotorSimuladorScript.Instancia.TancaDetallsObert();
         }
-        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) motorScript.EliminarObjecteLlista(this.gameObject);
-        else if (UIScript.Instancia.ObteBotoSeleccionat() == 7)motorScript.ObreDetallsFill(transform.GetSiblingIndex());
+        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) MotorSimuladorScript.Instancia.EliminarObjecteLlista(this.gameObject);
+        else if (UIScript.Instancia.ObteBotoSeleccionat() == 7)MotorSimuladorScript.Instancia.ObreDetallsFill(transform.GetSiblingIndex());
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 4) UIScript.Instancia.AjuntarObjectes(this.gameObject);
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 5) UIScript.Instancia.DesjuntarObjectes(this.gameObject);
 
