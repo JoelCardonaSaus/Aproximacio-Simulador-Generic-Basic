@@ -30,7 +30,7 @@ public class UIScript : MonoBehaviour
     private GameObject processadorPrefab;
     private GameObject sortidaPrefab;
     public GameObject contentView;
-    public TMP_Text prefabLogs;
+    public GameObject prefabLogs;
     public Scrollbar barra;
 
     public GameObject logs;
@@ -356,11 +356,23 @@ public class UIScript : MonoBehaviour
 
     public void UltimEsdeveniment(Esdeveniment e){
         var nouText = Instantiate(prefabLogs);
-        nouText.text = "Línia " + contentView.transform.childCount+"; Objecte:" + e.obteProductor().transform.name+", Temps:"+e.temps;
-        nouText.color = Color.green;
+        string esdev = "";
+        if (e.tipusEsdeveniment == Esdeveniment.Tipus.PROCESSOS) esdev = "PROCESSOS";
+        else esdev = "ARRIBADES";
+        TMP_Text text1 = nouText.transform.GetChild(0).GetComponent<TMP_Text>();
+        TMP_Text text2 = nouText.transform.GetChild(1).GetComponent<TMP_Text>();
+        TMP_Text text3 = nouText.transform.GetChild(2).GetComponent<TMP_Text>();
+        text1.text = e.obteProductor().transform.name;
+        text1.color = Color.green;
+        text2.text = e.temps.ToString();
+        text2.color = Color.green;
+        text3.text = esdev;
+        text3.color = Color.green;
         nouText.transform.SetParent(contentView.transform);
         if (contentView.transform.childCount > 1){
-            contentView.transform.GetChild(contentView.transform.childCount-2).GetComponent<TMP_Text>().color = Color.black;
+            contentView.transform.GetChild(contentView.transform.childCount-2).transform.GetChild(0).GetComponent<TMP_Text>().color = Color.black;
+            contentView.transform.GetChild(contentView.transform.childCount-2).transform.GetChild(1).GetComponent<TMP_Text>().color = Color.black;
+            contentView.transform.GetChild(contentView.transform.childCount-2).transform.GetChild(2).GetComponent<TMP_Text>().color = Color.black;
         }
         ActualitzaBarra();
     }

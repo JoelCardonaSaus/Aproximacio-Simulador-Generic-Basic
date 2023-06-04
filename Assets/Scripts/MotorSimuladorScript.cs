@@ -15,12 +15,10 @@ public class MotorSimuladorScript : MonoBehaviour
     private List<GameObject> objectesLlibreria = new List<GameObject>();
     private int detallsObert = -1;
     private PriorityQueue<Esdeveniment> llistaEsdevenmients = new PriorityQueue<Esdeveniment>((a, b) => {
-        // Compare first attribute
         int result = a.temps.CompareTo(b.temps);
         if (result != 0)
             return result;
 
-        // Compare second attribute
         return a.tipusEsdeveniment.CompareTo(b.tipusEsdeveniment);
     });
     private float tempsActual;
@@ -58,17 +56,14 @@ public class MotorSimuladorScript : MonoBehaviour
         for (int i = 0; i < objectesLlibreria.Count; i++){
             objectesLlibreria[i].GetComponent<LlibreriaObjectes>().IniciaSimulacio();
         }
-        //UIScript.Instancia.UltimEsdeveniment(llistaEsdevenmients.FirstElement());
     }
 
     public void ReiniciarSimulador(){
         llistaEsdevenmients = new PriorityQueue<Esdeveniment>((a, b) => {
-            // Compare first attribute
             int result = a.temps.CompareTo(b.temps);
             if (result != 0)
                 return result;
 
-            // Compare second attribute
             return a.tipusEsdeveniment.CompareTo(b.tipusEsdeveniment);
         });
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("EntitatsTemporals");
