@@ -126,7 +126,7 @@ public class SortidaScript : LlibreriaObjectes
         {
             MotorSimuladorScript.Instancia.TancaDetallsObert();
         }
-        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) MotorSimuladorScript.Instancia.EliminarObjecteLlista(this.gameObject);
+        if (UIScript.Instancia.ObteBotoSeleccionat() == 6) MotorSimuladorScript.Instancia.EliminarObjecte(this.gameObject);
         else if (UIScript.Instancia.ObteBotoSeleccionat() == 7){
             MotorSimuladorScript.Instancia.ObreDetallsFill(transform.GetSiblingIndex());
         }

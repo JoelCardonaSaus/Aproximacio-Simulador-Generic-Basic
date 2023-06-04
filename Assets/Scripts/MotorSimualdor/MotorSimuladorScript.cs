@@ -63,19 +63,17 @@ public class MotorSimuladorScript : MonoBehaviour
                 tempsActual = eActual.temps;
                 eActual.Executar();
                 UIScript.Instancia.UltimEsdeveniment(eActual);
-                for (int i = 0; i < objectesLlibreria.Count; ++i) objectesLlibreria[i].GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
+                for (int i = 0; i < transform.childCount; ++i) transform.GetChild(i).GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
             }
             if (llistaEsdevenmients.Count == 0 && tempsMaxim > tempsActual) {
                 tempsActual = tempsMaxim;
-                for (int i = 0; i < objectesLlibreria.Count; ++i) objectesLlibreria[i].GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
+                for (int i = 0; i < transform.childCount; ++i) transform.GetChild(i).GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
             }   
         }
     }
 
     public void IniciaSimulacio(){
-        for (int i = 0; i < objectesLlibreria.Count; i++){
-            objectesLlibreria[i].GetComponent<LlibreriaObjectes>().IniciaSimulacio();
-        }
+        for (int i = 0; i < transform.childCount; ++i) transform.GetChild(i).GetComponent<LlibreriaObjectes>().IniciaSimulacio();
     }
 
     public void ReiniciarSimulador(){
@@ -93,9 +91,9 @@ public class MotorSimuladorScript : MonoBehaviour
             Destroy(gameObject);
         }
 
-        for (int i = 0; i < objectesLlibreria.Count; i++){
-            objectesLlibreria[i].GetComponent<LlibreriaObjectes>().GenerarPlots();
-            objectesLlibreria[i].GetComponent<LlibreriaObjectes>().ReiniciaSimulador();
+        for (int i = 0; i < transform.childCount; ++i){
+            transform.GetChild(i).GetComponent<LlibreriaObjectes>().GenerarPlots();
+            transform.GetChild(i).GetComponent<LlibreriaObjectes>().ReiniciaSimulador();
         }
 
         tempsActual = 0;
@@ -113,11 +111,11 @@ public class MotorSimuladorScript : MonoBehaviour
             tempsActual = eActual.temps;
             eActual.Executar();
             UIScript.Instancia.UltimEsdeveniment(eActual);
-            for (int i = 0; i < objectesLlibreria.Count; ++i) objectesLlibreria[i].GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
+            for (int i = 0; i < transform.childCount; ++i) transform.GetChild(i).GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
         }
         if (llistaEsdevenmients.Count == 0 && tempsMaxim > tempsActual) {
             tempsActual = tempsMaxim;
-            for (int i = 0; i < objectesLlibreria.Count; ++i) objectesLlibreria[i].GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
+            for (int i = 0; i < transform.childCount; ++i) transform.GetChild(i).GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
         }
     }
 
@@ -130,22 +128,21 @@ public class MotorSimuladorScript : MonoBehaviour
         if (nouEsdeveminemt.temps <= tempsMaxim) llistaEsdevenmients.Enqueue(nouEsdeveminemt);
     }
 
-    public void AfegirObjecteLlista(GameObject nouObjecte){
+    public void AfegirObjecte(GameObject nouObjecte){
         if (!nouObjecte.name.Contains("Sortida")){
             if (detallsObert != -1) {
-                objectesLlibreria[detallsObert].GetComponent<LlibreriaObjectes>().TancaDetalls();
+                transform.GetChild(detallsObert).GetComponent<LlibreriaObjectes>().TancaDetalls();
             }
             nouObjecte.GetComponent<LlibreriaObjectes>().ObreDetalls();
         }
-        objectesLlibreria.Add(nouObjecte);
-        detallsObert = objectesLlibreria.Count-1;
+        detallsObert = transform.childCount-1;
     }
 
-    public void EliminarObjecteLlista(GameObject objecte) {
-        for (int i = 0; i < objectesLlibreria.Count; i++) {
-            objectesLlibreria[i].GetComponent<LlibreriaObjectes>().IntentaEliminarObjecteSeguents(objecte);
+    public void EliminarObjecte(GameObject objecte) {
+        for (int i = 0; i < transform.childCount; ++i){
+            transform.GetChild(i).GetComponent<LlibreriaObjectes>().IntentaEliminarObjecteSeguents(objecte);
+            transform.GetChild(i).GetComponent<LlibreriaObjectes>().IntentaEliminarObjectePredecessor(objecte);
         }
-        objectesLlibreria.Remove(objecte);
         Destroy(objecte);
     }
 
@@ -155,23 +152,19 @@ public class MotorSimuladorScript : MonoBehaviour
 
     public void TancaDetallsObert(){
         if (AlgunDetallsObert()){
-            objectesLlibreria[detallsObert].GetComponent<LlibreriaObjectes>().TancaDetalls();
+            transform.GetChild(detallsObert).GetComponent<LlibreriaObjectes>().TancaDetalls();
             detallsObert = -1;
         }
     }
 
     public void ObreDetallsFill(int nFill){
-        objectesLlibreria[nFill].GetComponent<LlibreriaObjectes>().ObreDetalls();
+        transform.GetChild(nFill).GetComponent<LlibreriaObjectes>().ObreDetalls();
         detallsObert = nFill;
     }
 
     public bool RatoliSobreDetalls(){
         if (detallsObert == -1) return false;
-        return objectesLlibreria[detallsObert].GetComponent<LlibreriaObjectes>().RatoliSobreDetalls();
-    }
-    private void OnValidate() {
-        if (escalaTemps < 0.5f) escalaTemps = 0.5f;
-        else if (escalaTemps > 10f) escalaTemps = 10f;     
+        return transform.GetChild(detallsObert).GetComponent<LlibreriaObjectes>().RatoliSobreDetalls();
     }
 
     public void CreaObjecteFill(int obj, Vector3 posicio){
@@ -194,7 +187,7 @@ public class MotorSimuladorScript : MonoBehaviour
                 break;
         }
         objecteNou.transform.parent = gameObject.transform;
-        AfegirObjecteLlista(objecteNou);
+        AfegirObjecte(objecteNou);
     }
 
     public void CanviaEntitatsTemporals(int entitatsSeleccionades){
