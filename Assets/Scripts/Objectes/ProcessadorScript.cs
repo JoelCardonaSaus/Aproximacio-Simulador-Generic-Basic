@@ -404,11 +404,13 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         return false;
     }
 
-    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, double[] nousParametres, int nEntitatsParalelMax, string nom){
+    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, float[] nousParametres, int nEntitatsParalelMax, string nom){
         transform.name = nom;
         enrutament = novaPolitica;
         distribucio = d;
-        parametres = nousParametres;
+        double[] aux = new double[nousParametres.Length];
+        for (int i = 0; i < nousParametres.Length; ++i) aux[i] = (double)nousParametres[i];
+        parametres = aux;
         maxEntitatsParalel = nEntitatsParalelMax;
         string capacitat;
         if (maxEntitatsParalel == -1) capacitat = "∞";

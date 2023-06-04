@@ -13,8 +13,8 @@ public class UIProcessadorScript : MonoBehaviour
     private ProcessadorScript.distribucionsProbabilitat distribucioConfirmada;
     private string nomActual;
     private string nomConfirmat;
-    private double[] parametresActuals;
-    private double[] parametresConfirmats;
+    private float[] parametresActuals;
+    private float[] parametresConfirmats;
     public InputField nomObjecte;
     public Dropdown enrutament; 
     public Dropdown distribuidor;
@@ -70,21 +70,21 @@ public class UIProcessadorScript : MonoBehaviour
                 param2.SetActive(true); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Probabilitat (0, 1]:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "# intents (int):";
-                parametresActuals = new double[2];
+                parametresActuals = new float[2];
                 iParam1.text = ""; iParam2.text = "";
             } 
             else if (distribuidor.value == 0){
                 distribucioActual = ProcessadorScript.distribucionsProbabilitat.CONSTANT;
                 param2.SetActive(false); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Temps constant:";
-                parametresActuals = new double[1];
+                parametresActuals = new float[1];
                 iParam1.text = "";
             }
             else if (distribuidor.value == 2){
                 distribucioActual = ProcessadorScript.distribucionsProbabilitat.EXPONENTIAL;
                 param2.SetActive(false); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Temps entre arribades:";
-                parametresActuals = new double[1];
+                parametresActuals = new float[1];
                 iParam1.text = "";
             } 
             else if (distribuidor.value == 3){
@@ -92,15 +92,17 @@ public class UIProcessadorScript : MonoBehaviour
                 param2.SetActive(true); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mitjana:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Desviació estàndard:";
-                parametresActuals = new double[2];
+                parametresActuals = new float[2];
                 iParam1.text = ""; iParam2.text = "";
             } 
             else if (distribuidor.value == 4) {
                 distribucioActual = ProcessadorScript.distribucionsProbabilitat.POISSON;
                 param2.SetActive(false); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Lambda:";
-                parametresActuals = new double[1];
-                iParam1.text = "";
+                parametresActuals = new float[1];
+                parametresActuals[0] = 1;
+                parametresConfirmats = parametresActuals;
+                iParam1.text = "1";
             }
             else if (distribuidor.value == 5){
                 distribucioActual = ProcessadorScript.distribucionsProbabilitat.TRIANGULAR;
@@ -108,7 +110,7 @@ public class UIProcessadorScript : MonoBehaviour
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mínim:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Màxim:";
                 param3.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mode:";
-                parametresActuals = new double[3];    
+                parametresActuals = new float[3];    
                 iParam1.text = ""; iParam2.text = ""; iParam3.text = "";            
             } 
             else if (distribuidor.value == 6){
@@ -116,7 +118,7 @@ public class UIProcessadorScript : MonoBehaviour
                 param2.SetActive(true); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mínim:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Màxim:";
-                parametresActuals = new double[2];
+                parametresActuals = new float[2];
                 iParam1.text = ""; iParam2.text = "";
             } 
         } else {
@@ -140,15 +142,100 @@ public class UIProcessadorScript : MonoBehaviour
     public void CanviaParametres(int p){
         if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
-            aplicar.interactable = true;
-            cancela.interactable = true;
             if (p == 1){
-                parametresActuals[0] = Double.Parse(iParam1.text);
+                float aux;
+                if (float.TryParse(iParam1.text, out aux)){
+                    if (aux < 0) UIScript.Instancia.MostrarError("ERROR: El primer paràmetre ha de ser major o igual a 0");
+                    else {
+                        if (distribucioActual == ProcessadorScript.distribucionsProbabilitat.BINOMIAL){
+                            if (aux > 1) UIScript.Instancia.MostrarError("ERROR: El primer paràmetre ha d'estar inclós entre 0 i 1");
+                            else{
+                                parametresActuals[0] = aux;
+                                aplicar.interactable = true;
+                                cancela.interactable = true;
+                            }
+                        }
+                        else if (distribucioActual == ProcessadorScript.distribucionsProbabilitat.POISSON){
+                            if (aux <= 0) UIScript.Instancia.MostrarError("ERROR: La lambda ha de ser superior a 0");
+                            else{
+                                parametresActuals[0] = aux;
+                                aplicar.interactable = true;
+                                cancela.interactable = true;
+                            }
+                        }  
+                        else if (distribucioActual == ProcessadorScript.distribucionsProbabilitat.TRIANGULAR || distribucioActual == ProcessadorScript.distribucionsProbabilitat.DISCRETEUNIFORM) {
+                            if (parametresActuals[1] != 0 && parametresActuals[1] < aux) UIScript.Instancia.MostrarError("ERROR: El primer paràmetre no pot ser major que el segon paràmetre");
+                            else{
+                                parametresActuals[0] = aux;
+                                aplicar.interactable = true;
+                                cancela.interactable = true;
+                            }
+                        }
+                        else{
+                            parametresActuals[0] = aux;
+                            aplicar.interactable = true;
+                            cancela.interactable = true;
+                        }
+                    }
+                } else {
+                    UIScript.Instancia.MostrarError("ERROR: El primer paràmetre ha de ser un número");
+                }
             }
             else if (p == 2){
-                parametresActuals[1] = Double.Parse(iParam2.text);
+                if (distribucioActual == ProcessadorScript.distribucionsProbabilitat.BINOMIAL){
+                    int aux;
+                    if (int.TryParse(iParam2.text, out aux)){
+                        if (aux < 0) UIScript.Instancia.MostrarError("ERROR: El segon paràmetre ha de ser major a 0");
+                        else {
+                            aplicar.interactable = true;
+                            cancela.interactable = true;
+                            parametresActuals[1] = aux;
+                        }
+                    }
+                    else {
+                        UIScript.Instancia.MostrarError("ERROR: El segon paràmetre ha de ser un número enter");
+                    }
+                } else {
+                    float aux;
+                    if (float.TryParse(iParam2.text, out aux)){
+                        if (aux < 0) UIScript.Instancia.MostrarError("ERROR: El segon paràmetre ha de ser major o igual a 0");
+                        else {
+                            if (distribucioActual == ProcessadorScript.distribucionsProbabilitat.TRIANGULAR || distribucioActual == ProcessadorScript.distribucionsProbabilitat.DISCRETEUNIFORM) {
+                                if (parametresActuals[0] != 0 && parametresActuals[0] > aux) UIScript.Instancia.MostrarError("ERROR: El primer paràmetre no pot ser major que el segon paràmetre");
+                                else{
+                                    parametresActuals[1] = aux;
+                                    aplicar.interactable = true;
+                                    cancela.interactable = true;
+                                }
+                            }
+                            else{
+                                parametresActuals[1] = aux;
+                                aplicar.interactable = true;
+                                cancela.interactable = true;
+                            }
+                        }
+                    }
+                }
             } else {
-                parametresActuals[2] = Double.Parse(iParam3.text);
+                float aux;
+                if (float.TryParse(iParam3.text, out aux)){
+                    if (aux < 0) UIScript.Instancia.MostrarError("ERROR: El tercer paràmetre ha de ser major o igual a 0");
+                    else {
+                        if (distribucioActual == ProcessadorScript.distribucionsProbabilitat.TRIANGULAR) {
+                            if ((parametresActuals[0] != 0 && parametresActuals[0] > aux) || (parametresActuals[1] != 0 && parametresActuals[1] < aux)) UIScript.Instancia.MostrarError("ERROR: El tercer paràmetre ha d'estar inclós entre el primer i el segon paràmetre");
+                            else{
+                                parametresActuals[2] = aux;
+                                aplicar.interactable = true;
+                                cancela.interactable = true;
+                            }
+                        }
+                        else{
+                            parametresActuals[2] = aux;
+                            aplicar.interactable = true;
+                            cancela.interactable = true;
+                        }
+                    }
+                }
             }
         } else {
             aplicar.interactable = false;
@@ -159,9 +246,17 @@ public class UIProcessadorScript : MonoBehaviour
     public void CanviCapacitat(){
         if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
-            cancela.interactable = true;
-            aplicar.interactable = true;
-            capacitatActual = int.Parse(capacitatInput.text);
+            int aux;
+            if (int.TryParse(capacitatInput.text, out aux)){
+                if (aux <= 0 && aux != -1) UIScript.Instancia.MostrarError("ERROR: La capacitat del processador ha de ser superior a 0, o -1 en cas d'una capacitat infinita");
+                else {
+                    capacitatActual = aux;
+                    cancela.interactable = true;
+                    aplicar.interactable = true;
+                }
+            } else {
+                UIScript.Instancia.MostrarError("ERROR: La capacitat màxima del processador ha de ser un número enter");
+            }
         } else {
             aplicar.interactable = false;
             cancela.interactable = false;
@@ -228,7 +323,7 @@ public class UIProcessadorScript : MonoBehaviour
         politicaConfirmada = ProcessadorScript.politiquesEnrutament.PRIMERDISPONIBLE;
         politicaActual = politicaConfirmada;
 
-        parametresConfirmats = new double[1]{5};
+        parametresConfirmats = new float[1]{5};
         parametresActuals = parametresConfirmats;
 
         capacitatConfirmada = -1;
