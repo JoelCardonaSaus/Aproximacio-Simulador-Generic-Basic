@@ -9,7 +9,7 @@ public class UIScript : MonoBehaviour
 {
     private enum estatsSimulacio { SIMULANT, ATURAT, PAUSAT };
     private estatsSimulacio estat;
-    private enum btnSeleccionat { GENERADOR, CUA, PROCESSADOR, SORTIDA, JUNTAR, DESJUNTAR, ELIMINAR, CAP, CONFIG };
+    private enum btnSeleccionat { GENERADOR, CUA, PROCESSADOR, SORTIDA, JUNTAR, DESJUNTAR, ELIMINAR, CAP, CONFIG, ERROR };
     private btnSeleccionat seleccionat;
     public Button generadorButton;
     public Button cuaButton;
@@ -31,6 +31,7 @@ public class UIScript : MonoBehaviour
     private GameObject sortidaPrefab;
     public GameObject contentView;
     public GameObject prefabLogs;
+    public GameObject finestraErrors;
     public Scrollbar barra;
 
     public GameObject logs;
@@ -139,77 +140,97 @@ public class UIScript : MonoBehaviour
     }
 
     public void BotoGeneradorClicat(){
-        SeleccionarOpcio(btnSeleccionat.GENERADOR);
+        if (seleccionat != btnSeleccionat.ERROR) SeleccionarOpcio(btnSeleccionat.GENERADOR);
     }
 
     public void BotoCuaClicat(){
-        SeleccionarOpcio(btnSeleccionat.CUA);
+        if (seleccionat != btnSeleccionat.ERROR) SeleccionarOpcio(btnSeleccionat.CUA);
     }
 
     public void BotoProcessadorClicat(){
-        SeleccionarOpcio(btnSeleccionat.PROCESSADOR);
+        if (seleccionat != btnSeleccionat.ERROR) SeleccionarOpcio(btnSeleccionat.PROCESSADOR);
     }
 
     public void BotoSortidaClicat(){
-        SeleccionarOpcio(btnSeleccionat.SORTIDA);
+        if (seleccionat != btnSeleccionat.ERROR) SeleccionarOpcio(btnSeleccionat.SORTIDA);
     }
 
     public void BotoJuntarClicat(){
-        SeleccionarOpcio(btnSeleccionat.JUNTAR);
+        if (seleccionat != btnSeleccionat.ERROR) SeleccionarOpcio(btnSeleccionat.JUNTAR);
     }
 
     public void BotoDesjuntarClicat(){
-        SeleccionarOpcio(btnSeleccionat.DESJUNTAR);
+        if (seleccionat != btnSeleccionat.ERROR) SeleccionarOpcio(btnSeleccionat.DESJUNTAR);
     }
 
     public void BotoEliminarClicat(){
-        SeleccionarOpcio(btnSeleccionat.ELIMINAR);
+        if (seleccionat != btnSeleccionat.ERROR) SeleccionarOpcio(btnSeleccionat.ELIMINAR);
     }
 
     public void BotoConfiguracioClicat(){
-        SeleccionarOpcio(btnSeleccionat.CONFIG);
-        configuracio.gameObject.transform.parent.transform.GetChild(1).gameObject.SetActive(true);
+        if (seleccionat != btnSeleccionat.ERROR) {
+            SeleccionarOpcio(btnSeleccionat.CONFIG);
+            configuracio.gameObject.transform.parent.transform.GetChild(1).gameObject.SetActive(true);
+        }
     }
 
     public void BotoComencarPausaClicat(){
-        if (estat == estatsSimulacio.SIMULANT) {
-            estat = estatsSimulacio.PAUSAT;
-            comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
-        } else if (estat == estatsSimulacio.PAUSAT){
-            SeleccionarOpcio(btnSeleccionat.CAP);
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-            comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
-            estat = estatsSimulacio.SIMULANT;
-            logs.SetActive(true);
-        } else {  
-            comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
-            estat = estatsSimulacio.SIMULANT;
-            motorSimulador.GetComponent<MotorSimuladorScript>().IniciaSimulacio();
-            logs.SetActive(true);
+        if (seleccionat != btnSeleccionat.ERROR){
+            if (estat == estatsSimulacio.SIMULANT) {
+                estat = estatsSimulacio.PAUSAT;
+                comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
+            } else if (estat == estatsSimulacio.PAUSAT){
+                SeleccionarOpcio(btnSeleccionat.CAP);
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
+                estat = estatsSimulacio.SIMULANT;
+                logs.SetActive(true);
+            } else {  
+                comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
+                estat = estatsSimulacio.SIMULANT;
+                motorSimulador.GetComponent<MotorSimuladorScript>().IniciaSimulacio();
+                logs.SetActive(true);
+            }
         }
     }
 
     public void BotoReiniciaClicat(){
-        estat = estatsSimulacio.ATURAT;
-        comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
-        motorSimulador.GetComponent<MotorSimuladorScript>().ReiniciarSimulador();
-        logs.SetActive(false);
-        seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (s): 0";
-        foreach (Transform child in contentView.transform) {
-            Destroy(child.gameObject);
-        }
+        if (seleccionat != btnSeleccionat.ERROR){
+            estat = estatsSimulacio.ATURAT;
+            comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
+            motorSimulador.GetComponent<MotorSimuladorScript>().ReiniciarSimulador();
+            logs.SetActive(false);
+            seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (s): 0";
+            foreach (Transform child in contentView.transform) {
+                Destroy(child.gameObject);
+            }
 
-        ReiniciarBarra();
+            ReiniciarBarra();
+        }
     }
 
     public void BotoStepClicat(){
-        if (estat != estatsSimulacio.SIMULANT){
-            //estat = estatsSimulacio.SIMULANT;
-            logs.SetActive(true);
-            motorSimulador.GetComponent<MotorSimuladorScript>().ExecutarSeguentEsdeveniment();
-            float tempsSegEsdv = motorSimulador.GetComponent<MotorSimuladorScript>().ObteTempsSeguentEsdeveniment();
-            seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (s): " + tempsSegEsdv.ToString();
+        if (seleccionat != btnSeleccionat.ERROR){
+            if (estat != estatsSimulacio.SIMULANT){
+                //estat = estatsSimulacio.SIMULANT;
+                logs.SetActive(true);
+                motorSimulador.GetComponent<MotorSimuladorScript>().ExecutarSeguentEsdeveniment();
+                float tempsSegEsdv = motorSimulador.GetComponent<MotorSimuladorScript>().ObteTempsSeguentEsdeveniment();
+                seguentEsdev.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Següent Esdeveniment\nTemps (s): " + tempsSegEsdv.ToString();
+            }
         }
+    }
+
+    public void MostrarError(string missatgeError){
+        finestraErrors.transform.GetChild(0).transform.GetChild(0).GetComponent<TMP_Text>().text = missatgeError;
+        finestraErrors.SetActive(true);
+        estat = estatsSimulacio.ATURAT;
+        SeleccionarOpcio(btnSeleccionat.ERROR);
+    }
+
+    public void AcceptarError(){
+        finestraErrors.SetActive(false);
+        SeleccionarOpcio(btnSeleccionat.CAP);
     }
 
     private void SeleccionarOpcio(btnSeleccionat seleccionatNou){

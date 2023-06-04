@@ -223,12 +223,14 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         return false;
     }
 
-    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, double[] nousParametres, string nom){
+    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, float[] nousParametres, string nom){
         transform.name = nom;
         etiquetes.text = "0/1\n"+transform.name;
         enrutament = novaPolitica;
         distribucio = d;
-        parametres = nousParametres;
+        double[] aux = new double[nousParametres.Length];
+        for (int i = 0; i < nousParametres.Length; ++i) aux[i] = (double)nousParametres[i];
+        parametres = aux;
         ActualitzaDistribuidor();
     }
 

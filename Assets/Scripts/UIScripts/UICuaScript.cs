@@ -51,9 +51,18 @@ public class UICuaScript : MonoBehaviour
     public void CanviCapacitat(){
         if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
-            cancela.interactable = true;
-            aplicar.interactable = true;
-            capacitatActual = int.Parse(capacitatInput.text);
+            int aux;
+            if (int.TryParse(capacitatInput.text, out aux)){
+                if (aux <= 0 && aux != -1) UIScript.Instancia.MostrarError("ERROR: La capacitat de la cua ha de ser superior a 0, o -1 en cas d'una capacitat infinita");
+                else {
+                    capacitatActual = aux;
+                    cancela.interactable = true;
+                    aplicar.interactable = true;
+                }
+            } else {
+                UIScript.Instancia.MostrarError("ERROR: La capacitat màxima de la cua ha de ser un número enter");
+            }
+            
         } else {
             aplicar.interactable = false;
             cancela.interactable = false;

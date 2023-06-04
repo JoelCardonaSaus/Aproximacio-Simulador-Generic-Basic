@@ -11,8 +11,8 @@ public class UIGeneradorScript : MonoBehaviour
     private GeneradorScript.distribucionsProbabilitat distribucioConfirmada;
     private string nomActual;
     private string nomConfirmat;
-    private double[] parametresActuals;
-    private double[] parametresConfirmats;
+    private float[] parametresActuals;
+    private float[] parametresConfirmats;
     public InputField nomObjecte;
     public Dropdown enrutament; 
     public Dropdown distribuidor;
@@ -65,21 +65,21 @@ public class UIGeneradorScript : MonoBehaviour
                 param2.SetActive(true); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Probabilitat (0, 1]:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "# intents (int):";
-                parametresActuals = new double[2];
+                parametresActuals = new float[2];
                 iParam1.text = ""; iParam2.text = "";
             } 
             else if (distribuidor.value == 0){
                 distribucioActual = GeneradorScript.distribucionsProbabilitat.CONSTANT;
                 param2.SetActive(false); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Temps constant:";
-                parametresActuals = new double[1];
+                parametresActuals = new float[1];
                 iParam1.text = "";
             }
             else if (distribuidor.value == 2){
                 distribucioActual = GeneradorScript.distribucionsProbabilitat.EXPONENTIAL;
                 param2.SetActive(false); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Temps entre arribades:";
-                parametresActuals = new double[1];
+                parametresActuals = new float[1];
                 iParam1.text = "";
             } 
             else if (distribuidor.value == 3){
@@ -87,15 +87,17 @@ public class UIGeneradorScript : MonoBehaviour
                 param2.SetActive(true); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mitjana:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Desviació estàndard:";
-                parametresActuals = new double[2];
+                parametresActuals = new float[2];
                 iParam1.text = ""; iParam2.text = "";
             } 
             else if (distribuidor.value == 4) {
                 distribucioActual = GeneradorScript.distribucionsProbabilitat.POISSON;
                 param2.SetActive(false); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Lambda:";
-                parametresActuals = new double[1];
-                iParam1.text = "";
+                parametresActuals = new float[1];
+                parametresActuals[0] = 1;
+                parametresConfirmats = parametresActuals;
+                iParam1.text = "1";
             }
             else if (distribuidor.value == 5){
                 distribucioActual = GeneradorScript.distribucionsProbabilitat.TRIANGULAR;
@@ -103,7 +105,7 @@ public class UIGeneradorScript : MonoBehaviour
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mínim:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Màxim:";
                 param3.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mode:";
-                parametresActuals = new double[3];  
+                parametresActuals = new float[3];  
                 iParam1.text = ""; iParam2.text = ""; iParam3.text = "";              
             } 
             else if (distribuidor.value == 6){
@@ -111,7 +113,7 @@ public class UIGeneradorScript : MonoBehaviour
                 param2.SetActive(true); param3.SetActive(false);
                 param1.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Mínim:";
                 param2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Màxim:";
-                parametresActuals = new double[2];
+                parametresActuals = new float[2];
                 iParam1.text = ""; iParam2.text = "";
             } 
         } else {
@@ -135,15 +137,100 @@ public class UIGeneradorScript : MonoBehaviour
     public void CanviaParametres(int p){
         if (UIScript.Instancia.ObteEstatSimulador() == 1)
         {
-            aplicar.interactable = true;
-            cancela.interactable = true;
             if (p == 1){
-                parametresActuals[0] = Double.Parse(iParam1.text);
+                float aux;
+                if (float.TryParse(iParam1.text, out aux)){
+                    if (aux < 0) UIScript.Instancia.MostrarError("ERROR: El primer paràmetre ha de ser major o igual a 0");
+                    else {
+                        if (distribucioActual == GeneradorScript.distribucionsProbabilitat.BINOMIAL){
+                            if (aux > 1) UIScript.Instancia.MostrarError("ERROR: El primer paràmetre ha d'estar inclós entre 0 i 1");
+                            else{
+                                parametresActuals[0] = aux;
+                                aplicar.interactable = true;
+                                cancela.interactable = true;
+                            }
+                        }
+                        else if (distribucioActual == GeneradorScript.distribucionsProbabilitat.POISSON){
+                            if (aux <= 0) UIScript.Instancia.MostrarError("ERROR: La lambda ha de ser superior a 0");
+                            else{
+                                parametresActuals[0] = aux;
+                                aplicar.interactable = true;
+                                cancela.interactable = true;
+                            }
+                        }  
+                        else if (distribucioActual == GeneradorScript.distribucionsProbabilitat.TRIANGULAR || distribucioActual == GeneradorScript.distribucionsProbabilitat.DISCRETEUNIFORM) {
+                            if (parametresActuals[1] != 0 && parametresActuals[1] < aux) UIScript.Instancia.MostrarError("ERROR: El primer paràmetre no pot ser major que el segon paràmetre");
+                            else{
+                                parametresActuals[0] = aux;
+                                aplicar.interactable = true;
+                                cancela.interactable = true;
+                            }
+                        }
+                        else{
+                            parametresActuals[0] = aux;
+                            aplicar.interactable = true;
+                            cancela.interactable = true;
+                        }
+                    }
+                } else {
+                    UIScript.Instancia.MostrarError("ERROR: El primer paràmetre ha de ser un número");
+                }
             }
             else if (p == 2){
-                parametresActuals[1] = Double.Parse(iParam2.text);
+                if (distribucioActual == GeneradorScript.distribucionsProbabilitat.BINOMIAL){
+                    int aux;
+                    if (int.TryParse(iParam2.text, out aux)){
+                        if (aux < 0) UIScript.Instancia.MostrarError("ERROR: El segon paràmetre ha de ser major a 0");
+                        else {
+                            aplicar.interactable = true;
+                            cancela.interactable = true;
+                            parametresActuals[1] = aux;
+                        }
+                    }
+                    else {
+                        UIScript.Instancia.MostrarError("ERROR: El segon paràmetre ha de ser un número enter");
+                    }
+                } else {
+                    float aux;
+                    if (float.TryParse(iParam2.text, out aux)){
+                        if (aux < 0) UIScript.Instancia.MostrarError("ERROR: El segon paràmetre ha de ser major o igual a 0");
+                        else {
+                            if (distribucioActual == GeneradorScript.distribucionsProbabilitat.TRIANGULAR || distribucioActual == GeneradorScript.distribucionsProbabilitat.DISCRETEUNIFORM) {
+                                if (parametresActuals[0] != 0 && parametresActuals[0] > aux) UIScript.Instancia.MostrarError("ERROR: El primer paràmetre no pot ser major que el segon paràmetre");
+                                else{
+                                    parametresActuals[1] = aux;
+                                    aplicar.interactable = true;
+                                    cancela.interactable = true;
+                                }
+                            }
+                            else{
+                                parametresActuals[1] = aux;
+                                aplicar.interactable = true;
+                                cancela.interactable = true;
+                            }
+                        }
+                    }
+                }
             } else {
-                parametresActuals[2] = Double.Parse(iParam3.text);
+                float aux;
+                if (float.TryParse(iParam3.text, out aux)){
+                    if (aux < 0) UIScript.Instancia.MostrarError("ERROR: El tercer paràmetre ha de ser major o igual a 0");
+                    else {
+                        if (distribucioActual == GeneradorScript.distribucionsProbabilitat.TRIANGULAR) {
+                            if ((parametresActuals[0] != 0 && parametresActuals[0] > aux) || (parametresActuals[1] != 0 && parametresActuals[1] < aux)) UIScript.Instancia.MostrarError("ERROR: El tercer paràmetre ha d'estar inclós entre el primer i el segon paràmetre");
+                            else{
+                                parametresActuals[2] = aux;
+                                aplicar.interactable = true;
+                                cancela.interactable = true;
+                            }
+                        }
+                        else{
+                            parametresActuals[2] = aux;
+                            aplicar.interactable = true;
+                            cancela.interactable = true;
+                        }
+                    }
+                }
             }
         } else {
             aplicar.interactable = false;
@@ -203,7 +290,7 @@ public class UIGeneradorScript : MonoBehaviour
         distribucioConfirmada = GeneradorScript.distribucionsProbabilitat.CONSTANT;
         distribucioActual = distribucioConfirmada;
         politicaConfirmada = GeneradorScript.politiquesEnrutament.PRIMERDISPONIBLE;
-        parametresConfirmats = new double[1]{5};
+        parametresConfirmats = new float[1]{5};
         parametresActuals = parametresConfirmats;
         nomObjecte.text = gameObject.transform.parent.transform.parent.name;
         nomConfirmat = gameObject.transform.parent.transform.parent.name;
