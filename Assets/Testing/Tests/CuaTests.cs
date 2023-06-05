@@ -6,48 +6,95 @@ using UnityEngine.TestTools;
 
 public class CuaTests
 {
-    public GameObject entitatTemporal;
-    /*
-    [Test]
-    public void CuaRepUnObjecte()
-    {
-        GameObject cua = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
-        CuaScript cuaScript = cua.GetComponent<CuaScript>();
-        entitatTemporal = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        
-        //cuaScript.recieveObject(entitatTemporal);
-        // state EMPTY --> 1
-        Assert.That(cuaScript.getState(), Is.EqualTo(1));
+    private GameObject motor;
+    private GameObject cua;
+    private GameObject entitatTemporalPrefab = Resources.Load<GameObject>("EntitatsTemporals/PaquetPrefab");
+
+    [SetUp]
+    public void setup(){
+        motor = GameObject.Instantiate(Resources.Load("MotorSimulador/MotorDeSimulacio")) as GameObject;
+        cua = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
+        cua.transform.parent = motor.transform;
+    }
+
+    [TearDown]
+    public void teardown(){
+        MotorSimuladorScript.Instancia.ReiniciarSimulador();
+        Object.Destroy(cua.gameObject);
+        Object.Destroy(motor.gameObject);
     }
 
     [Test]
-    public void CuaEnviaObjecteIQuedaBuida()
+    public void CuaRepUnaEntitatCapacitatInfinita()
     {
-        GameObject fakeObject = new GameObject();
-        fakeObject.AddComponent<FakeRebreObjecte>();
-        FakeRebreObjecte fo = fakeObject.GetComponent<FakeRebreObjecte>();
-        
-        GameObject cua = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
-        CuaScript cuaScript = cua.GetComponent<CuaScript>();
-        entitatTemporal = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        
-        cuaScript.SeguentsObjectes.Add(fakeObject);
-        //cuaScript.recieveObject(entitatTemporal);
-        //cuaScript.sendObject();
-        
-        // state EMPTY --> 0
-        Assert.That(cuaScript.getState(), Is.EqualTo(0));
+        cua.GetComponent<CuaScript>().capacitatMaxima = -1;
+        cua.GetComponent<CuaScript>().IniciaSimulacio();
+        if (cua.GetComponent<CuaScript>().EstaDisponible(null)){
+            GameObject entitatAux = GameObject.Instantiate(entitatTemporalPrefab);
+            cua.GetComponent<CuaScript>().RepEntitat(entitatAux, null);
+        }
+
+        Assert.That(cua.GetComponent<CuaScript>().ObteEstat(), Is.EqualTo(1));
     }
 
     [Test]
-    public void CuaPlenaNoDisponible()
+    public void CuaCapacitat1RepUnaEntitat()
     {
-        GameObject cua = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
-        CuaScript cuaScript = cua.GetComponent<CuaScript>();
-        entitatTemporal = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        cuaScript.capacitatMaxima = 0;
-
-        //Assert.That(cuaScript.isAvailable(this.gameObject), Is.EqualTo(false));
+        GameObject generador = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Generador/Generador")) as GameObject;
+        cua.GetComponent<CuaScript>().capacitatMaxima = 1;
+        cua.GetComponent<CuaScript>().IniciaSimulacio();
+        if (cua.GetComponent<CuaScript>().EstaDisponible(generador)){
+            GameObject entitatAux = GameObject.Instantiate(entitatTemporalPrefab);
+            cua.GetComponent<CuaScript>().RepEntitat(entitatAux, generador);
+        }
+        Assert.That(cua.GetComponent<CuaScript>().ObteEstat(), Is.EqualTo(2));
+        Assert.That(cua.GetComponent<CuaScript>().EstaDisponible(generador), Is.EqualTo(false));
     }
-    */
+
+    [Test]
+    public void CuaRepUnObjecteIEnviaAlSeguent()
+    {
+        GameObject cua2 = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
+        cua.GetComponent<CuaScript>().AfegeixSeguentObjecte(cua2);
+        cua.GetComponent<CuaScript>().IniciaSimulacio();
+        cua2.GetComponent<CuaScript>().IniciaSimulacio();
+        if (cua.GetComponent<CuaScript>().EstaDisponible(null)){
+            GameObject entitatAux = GameObject.Instantiate(entitatTemporalPrefab);
+            cua.GetComponent<CuaScript>().RepEntitat(entitatAux, null);
+        }
+
+        Assert.That(cua.GetComponent<CuaScript>().ObteEstat(), Is.EqualTo(0));
+        Assert.That(cua.GetComponent<CuaScript>().ObteEntitatsEnviades(), Is.EqualTo(1));
+    }
+
+    [Test]
+    public void CuaRepUnObjecteINoPotEnviarAlSeguent()
+    {
+        GameObject cua2 = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
+        cua.GetComponent<CuaScript>().AfegeixSeguentObjecte(cua2);
+        cua2.GetComponent<CuaScript>().capacitatMaxima = 0;
+        cua.GetComponent<CuaScript>().IniciaSimulacio();
+        cua2.GetComponent<CuaScript>().IniciaSimulacio();
+        if (cua.GetComponent<CuaScript>().EstaDisponible(null)){
+            GameObject entitatAux = GameObject.Instantiate(entitatTemporalPrefab);
+            cua.GetComponent<CuaScript>().RepEntitat(entitatAux, null);
+        }
+
+        Assert.That(cua.GetComponent<CuaScript>().ObteEstat(), Is.EqualTo(1));
+        Assert.That(cua.GetComponent<CuaScript>().ObteEntitatsEnviades(), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void CuaRepUnaEntitatCapacitatNoInfinitaIMesGranA1()
+    {
+        cua.GetComponent<CuaScript>().capacitatMaxima = 2;
+        cua.GetComponent<CuaScript>().IniciaSimulacio();
+        if (cua.GetComponent<CuaScript>().EstaDisponible(null)){
+            GameObject entitatAux = GameObject.Instantiate(entitatTemporalPrefab);
+            cua.GetComponent<CuaScript>().RepEntitat(entitatAux, null);
+        }
+
+        Assert.That(cua.GetComponent<CuaScript>().ObteEstat(), Is.EqualTo(1));
+    }
+   
 }

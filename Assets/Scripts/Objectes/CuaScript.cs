@@ -242,8 +242,12 @@ public class CuaScript : LlibreriaObjectes
     }
 
 
-    public int getState(){
+    public int ObteEstat(){
         return (int)estat;
+    }
+
+    public int ObteEntitatsEnviades(){
+        return entitatsEnviades;
     }
 
 
