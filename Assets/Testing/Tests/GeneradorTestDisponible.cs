@@ -48,11 +48,9 @@ public class GeneradorTestDisponible
         GeneradorScript gs = generador.GetComponent<GeneradorScript>();
         gs.AfegeixSeguentObjecte(cua);
 
- 
         MotorSimuladorScript.Instancia.IniciaSimulacio();
-        MotorSimuladorScript.Instancia.ExecutarSeguentEsdeveniment();
 
-        Assert.AreEqual(MotorSimuladorScript.Instancia.ObteTempsActual(), 5);
+        Assert.AreEqual(MotorSimuladorScript.Instancia.ObteTempsSeguentEsdeveniment(), 5);
     }
     
 }

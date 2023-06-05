@@ -12,15 +12,15 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     public distribucionsProbabilitat distribucio;
     public double[] parametres;
     public ISeguentNumero distribuidor;
-    private List<GameObject> entitatsProcessant;
+    private List<GameObject> entitatsProcessant = new List<GameObject>();
     //Variables per als estadistics
     private int nEntitatsEnviades = 0;
     private int nEntitatsTractades = 0;
     private double tempsMigEntitatsProcessador;
     private enum estats { DISPONIBLE, PROCESSANT, BLOQUEJAT };
     private estats estat;
-    private Queue<GameObject> entitatsAEnviar;
-    private Queue<GameObject> objectesRebutjats;
+    private Queue<GameObject> entitatsAEnviar = new Queue<GameObject>();
+    private Queue<GameObject> objectesRebutjats = new Queue<GameObject>();
     private float tempsDisponible = 0;
     private float tempsProcessat = 0;
     private float tempsBloquejat = 0;
@@ -215,6 +215,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
 
     public void GenerarEsdevenimentProces(GameObject entitat, float tempsActual){
         Debug.Log("Es genera un esdeveniment per a un processador " + tempsActual.ToString());
+        if (distribuidor==null) distribuidor = new ConstantDistribution(5);
         float tempsProcessat = (float)distribuidor.ObteSeguentNumero();
         tempsMigEntitatsProcessador+=tempsProcessat;
         entitatsProcessant.Add(entitat);
@@ -348,6 +349,14 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         
         etiquetes.text += estadistics; 
 
+    }
+
+    public int ObteEstat(){
+        return (int)estat;
+    }
+
+    public int ObteEntitatsEnviades(){
+        return nEntitatsEnviades;
     }
 
     //////////////////////////////////////////////////////////////////////

@@ -7,7 +7,7 @@ using TMPro;
 public class SortidaScript : LlibreriaObjectes
 {
     private int nEntitatsDestruides;
-    private List<double> tempsEntreEntitats;
+    private List<double> tempsEntreEntitats = new List<double>();
     public TMP_Text etiqueta;
 
     // Variable per poder moure els objectes

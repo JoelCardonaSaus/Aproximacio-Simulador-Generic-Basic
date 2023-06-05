@@ -8,9 +8,9 @@ public class CuaScript : LlibreriaObjectes
 {
     public TMP_Text etiquetes;
     public int capacitatMaxima = -1; // -1 == No hi ha capacitat màxima, >0 capacitat màxima de la cua
-    private Queue<GameObject> cuaObjecte;
-    private Dictionary<GameObject, double> tempsObjecteCua;
-    private Queue<GameObject> objectesRebutjats;
+    private Queue<GameObject> cuaObjecte = new Queue<GameObject>();
+    private Dictionary<GameObject, double> tempsObjecteCua = new Dictionary<GameObject, double>();
+    private Queue<GameObject> objectesRebutjats = new Queue<GameObject>();
     private enum states { BUIT, NOBUIT, PLE };
     private states estat;
 
