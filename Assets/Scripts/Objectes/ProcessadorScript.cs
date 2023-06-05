@@ -181,7 +181,8 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         } 
         else {
             float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
-            tempsBloquejat += (tActual-ultimTemps);
+            if (estat == estats.BLOQUEJAT) tempsBloquejat += (tActual-ultimTemps);
+            else if (estat == estats.PROCESSANT) tempsProcessat += (tActual-ultimTemps);
             ultimTemps = tActual;
             if (!objectesRebutjats.Contains(objecteLlibreria)) objectesRebutjats.Enqueue(objecteLlibreria);
         }
@@ -321,7 +322,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     public override void ActualizaEstadistics(){
         string estadistics = "Output: " + nEntitatsEnviades +"\n";
         float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
-        etiquetes.text = entitatsProcessant.Count.ToString();
+        etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count).ToString();
         if (maxEntitatsParalel == -1) etiquetes.text += "/∞";
         else etiquetes.text += "/" + maxEntitatsParalel;
         etiquetes.text += "\n" + transform.name + "\n";

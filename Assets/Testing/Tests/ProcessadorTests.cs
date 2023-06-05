@@ -6,7 +6,9 @@ using UnityEngine.TestTools;
 
 public class ProcessadorTests
 {
-    public GameObject entitatTemporal;
+    private GameObject motor;
+    private GameObject generador;
+    private GameObject cua;
     /*
     [Test]
     public void ProcessadorRepUnObjecte()
