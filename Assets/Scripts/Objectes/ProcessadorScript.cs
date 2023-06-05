@@ -86,8 +86,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
             tempsDisponible += (tActual-ultimTemps);
             ultimTemps = tActual;
             GenerarEsdevenimentProces(entitat, tActual);
-            if (maxEntitatsParalel == 1) estat = estats.BLOQUEJAT;
-            else estat = estats.PROCESSANT;
+            estat = estats.PROCESSANT;
             string capacitat;
             if (maxEntitatsParalel == -1) capacitat = "∞";
             else capacitat = maxEntitatsParalel.ToString();
@@ -98,8 +97,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
             tempsProcessat += (tActual-ultimTemps);
             ultimTemps = tActual;
             GenerarEsdevenimentProces(entitat, tActual);
-            if (maxEntitatsParalel == -1 || (maxEntitatsParalel > entitatsProcessant.Count)) estat = estats.PROCESSANT;
-            else estat = estats.BLOQUEJAT;
+            estat = estats.PROCESSANT;
             string capacitat;
             if (maxEntitatsParalel == -1) capacitat = "∞";
             else capacitat = maxEntitatsParalel.ToString();
@@ -174,7 +172,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
 
     public override bool EstaDisponible(GameObject objecteLlibreria)
     {
-        if (estat != estats.BLOQUEJAT){
+        if (estat != estats.BLOQUEJAT && maxEntitatsParalel > entitatsProcessant.Count){
             float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             if (estat == estats.DISPONIBLE) tempsDisponible += (tActual-ultimTemps);
             else if (estat == estats.PROCESSANT) tempsProcessat += (tActual-ultimTemps);
