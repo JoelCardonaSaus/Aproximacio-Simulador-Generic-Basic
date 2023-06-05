@@ -8,15 +8,38 @@ using UnityEditor;
 [TestFixture]
 public class GeneradorTest
 {
-    
+    GameObject motor;
+    GameObject generador;
+
+    [SetUp]
+    public void setup(){
+        motor = GameObject.Instantiate(Resources.Load("MotorSimulador/MotorDeSimulacio")) as GameObject;
+        generador = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Generador/Generador")) as GameObject;
+        generador.transform.parent = motor.transform;
+    }
+
+    [TearDown]
+    public void teardown(){
+        Object.Destroy(generador);
+        Object.Destroy(motor);
+        MotorSimuladorScript.Instancia.ReiniciarSimulador();
+    }
+
+    [Test]
+    public void GeneradorBloquejat()
+    {                
+        GeneradorScript generadorScript = generador.GetComponent<GeneradorScript>();
+
+        MotorSimuladorScript.Instancia.IniciaSimulacio();
+        MotorSimuladorScript.Instancia.ExecutarSeguentEsdeveniment();
+
+        Assert.That(generadorScript.estat, Is.EqualTo(GeneradorScript.estats.BLOQUEJAT));
+    }
+
     [Test]
     public void GeneradorEnviaUnObjecte()
     {
-        GameObject motor = GameObject.Instantiate(Resources.Load("MotorSimulador/MotorDeSimulacio")) as GameObject;;
-        GameObject generador = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Generador/Generador")) as GameObject;
         GameObject cua = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
-        
-        generador.transform.parent = motor.transform;
         cua.transform.parent = motor.transform;
         
         GeneradorScript gs = generador.GetComponent<GeneradorScript>();
@@ -26,17 +49,13 @@ public class GeneradorTest
         MotorSimuladorScript.Instancia.ExecutarSeguentEsdeveniment();
 
         Assert.That(gs.getNGenerats(), Is.EqualTo(1));
-        MotorSimuladorScript.Instancia.ReiniciarSimulador();
+        Object.Destroy(cua);
     }
 
     [Test]
     public void GeneradorProgramaEsdevenimentAlInstant5()
     {
-        GameObject motor = MotorSimuladorScript.Instancia.gameObject;
-        GameObject generador = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Generador/Generador")) as GameObject;
         GameObject cua = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
-        
-        generador.transform.parent = motor.transform;
         cua.transform.parent = motor.transform;
         
         GeneradorScript gs = generador.GetComponent<GeneradorScript>();
@@ -47,25 +66,20 @@ public class GeneradorTest
         MotorSimuladorScript.Instancia.ExecutarSeguentEsdeveniment();
 
         Assert.That(MotorSimuladorScript.Instancia.ObteTempsActual(), Is.EqualTo(5));
-        MotorSimuladorScript.Instancia.ReiniciarSimulador();
-
+        Object.Destroy(cua);
     }
 
-    /*
+    
     [Test]
-    public void GeneradorNoEnviaCapObjecte()
+    public void GeneradorNoPotEnviarEntitat()
     {
-        GameObject fakeObject = new GameObject();
-        fakeObject.AddComponent<FakeRebreObjecte>();
-        FakeRebreObjecte fo = fakeObject.GetComponent<FakeRebreObjecte>();
+        GeneradorScript generadorScript = generador.GetComponent<GeneradorScript>();
 
-        GameObject generador = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Generador/Generador")) as GameObject;
-        GeneradorScript gs = generador.GetComponent<GeneradorScript>();
-        gs.entitatTemporal = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        gs.SeguentsObjectes.Add(fakeObject);
+        MotorSimuladorScript.Instancia.IniciaSimulacio();
+        MotorSimuladorScript.Instancia.ExecutarSeguentEsdeveniment();
 
-        Assert.That(gs.getNGenerats(), Is.EqualTo(0));
+        Assert.That(generadorScript.getNGenerats(), Is.EqualTo(0));
     }
-    */
+    
 }
 
