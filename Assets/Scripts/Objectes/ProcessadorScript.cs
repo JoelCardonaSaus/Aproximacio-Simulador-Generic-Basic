@@ -253,30 +253,8 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                     GameObject entitat = e.ObteEntitatImplicada();
                     ++nEntitatsTractades;
                     entitatsProcessant.Remove(entitat);
-                    if (entitatsAEnviar.Count > 0){
-                        //CercaDisponible();
-                        entitatsAEnviar.Enqueue(entitat);
-                        estat = estats.BLOQUEJAT;
-                    } else {
-                        int nDisponible = CercaDisponible();
-                        if (nDisponible != -1){
-                            ++nEntitatsEnviades;
-                            SeguentsObjectes[nDisponible].GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
-                            if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
-                            else estat = estats.PROCESSANT;
-
-                            while (objectesRebutjats.Count != 0) {
-                                // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
-                                if (AvisaDisponibilitat()) {
-                                    break;
-                                }
-                            }
-
-                        } else {
-                            entitatsAEnviar.Enqueue(entitat);
-                            estat = estats.BLOQUEJAT;
-                        }
-                    }
+                    entitatsAEnviar.Enqueue(entitat);
+                    estat = estats.BLOQUEJAT;
                     string capacitat;
                     if (maxEntitatsParalel == -1) capacitat = "∞";
                     else capacitat = maxEntitatsParalel.ToString();

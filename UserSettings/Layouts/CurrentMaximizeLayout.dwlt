@@ -19,12 +19,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 30
-    width: 1536
-    height: 730.8
+    width: 1920
+    height: 947
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 1351
+  controlID: 15
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -41,14 +41,14 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Game
-    m_Image: {fileID: 4621777727084837110, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: -6423792434712278376, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 232
-    y: 73.6
-    width: 838.80005
-    height: 495
+    x: 290
+    y: 73
+    width: 1049
+    height: 647
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -74,10 +74,10 @@ MonoBehaviour:
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -768
-    m_HBaseRangeMax: 768
-    m_VBaseRangeMin: -432
-    m_VBaseRangeMax: 432
+    m_HBaseRangeMin: -960
+    m_HBaseRangeMax: 960
+    m_VBaseRangeMin: -540
+    m_VBaseRangeMax: 540
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -95,23 +95,23 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 838.80005
-      height: 474
-    m_Scale: {x: 0.54609376, y: 0.54609376}
-    m_Translation: {x: 419.40002, y: 237}
+      width: 1049
+      height: 626
+    m_Scale: {x: 0.5463542, y: 0.5463542}
+    m_Translation: {x: 524.5, y: 312.99997}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -768
-      y: -433.9914
-      width: 1536
-      height: 867.9828
+      x: -960
+      y: -572.8884
+      width: 1920
+      height: 1145.7769
     m_MinimalGUI: 1
-  m_defaultScale: 0.54609376
-  m_LastWindowPixelSize: {x: 1048.5, y: 618.75}
+  m_defaultScale: 0.5463542
+  m_LastWindowPixelSize: {x: 1049, y: 647}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
@@ -136,12 +136,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1072.8
-    height: 730.8
+    width: 1341
+    height: 947
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 1352
+  controlID: 16
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -161,12 +161,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1072.8
-    height: 516
+    width: 1341
+    height: 668
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 1353
+  controlID: 17
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -184,8 +184,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 232
-    height: 516
+    width: 290
+    height: 668
   m_MinSize: {x: 201, y: 221}
   m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 6}
@@ -209,14 +209,14 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Hierarchy
-    m_Image: {fileID: -3734745235275155857, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: 7966133145522015247, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 73.6
-    width: 231
-    height: 495
+    y: 73
+    width: 289
+    height: 647
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -224,9 +224,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 746b0000
-      m_LastClickedID: 27508
-      m_ExpandedIDs: 08efffff48efffff84f0ffff32f5ffff
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 38fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -265,10 +265,10 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 232
+    x: 290
     y: 0
-    width: 840.80005
-    height: 516
+    width: 1051
+    height: 668
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 2}
@@ -293,14 +293,14 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Scene
-    m_Image: {fileID: 8634526014445323508, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: 2593428753322112591, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 232
-    y: 73.6
-    width: 838.80005
-    height: 495
+    x: 290
+    y: 73
+    width: 1049
+    height: 647
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -397,7 +397,7 @@ MonoBehaviour:
       containerId: overlay-container--right
       floating: 0
       collapsed: 0
-      displayed: 1
+      displayed: 0
       snapOffset: {x: 0, y: 0}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
@@ -535,9 +535,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 840.61566, y: 541.4343, z: 28.635906}
+    m_Target: {x: 894.0961, y: 521.06476, z: 1.9607939}
     speed: 2
-    m_Value: {x: 840.61566, y: 541.4343, z: 28.635906}
+    m_Value: {x: 894.0961, y: 521.06476, z: 1.9607939}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -588,9 +588,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 551.62946
+    m_Target: 542.376
     speed: 2
-    m_Value: 551.62946
+    m_Value: 542.376
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -625,23 +625,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ProjectBrowser
+  m_Name: ConsoleWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 516
-    width: 1072.8
-    height: 214.79999
-  m_MinSize: {x: 231, y: 271}
-  m_MaxSize: {x: 10001, y: 10021}
-  m_ActualView: {fileID: 10}
+    y: 668
+    width: 1341
+    height: 279
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 11}
   m_Panes:
   - {fileID: 10}
   - {fileID: 11}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -658,14 +658,14 @@ MonoBehaviour:
   m_MaxSize: {x: 10000, y: 10000}
   m_TitleContent:
     m_Text: Project
-    m_Image: {fileID: -5179483145760003458, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: -5467254957812901981, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 589.60004
-    width: 1071.8
-    height: 193.79999
+    y: 741
+    width: 1340
+    height: 258
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -683,22 +683,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Testing/Tests
+    - Assets
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 85
   m_LastFolders:
-  - Assets/Testing/Tests
+  - Assets
   m_LastFoldersGridSize: 85
-  m_LastProjectPath: C:\Users\joelc\Desktop\Aproximacio-Simulador-Generic-Basic
+  m_LastProjectPath: C:\Users\vcard\OneDrive\Escritorio\Universitat\TFG\Aproximacio-Simulador-Generic-Basic
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 66.20001}
-    m_SelectedIDs: b46a0000
-    m_LastClickedID: 27316
-    m_ExpandedIDs: 00000000626a00007a6a000000ca9a3bffffff7f
+    m_SelectedIDs: 125e0000
+    m_LastClickedID: 24082
+    m_ExpandedIDs: 00000000125e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -726,7 +726,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000626a000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000125e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -751,8 +751,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 746b0000
-    m_LastClickedInstanceID: 27508
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000325b000000000000
     m_RenameOverlay:
@@ -798,14 +798,14 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Console
-    m_Image: {fileID: -4950941429401207979, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: -4327648978806127646, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 632
-    width: 1021.4
-    height: 151.39996
+    y: 741
+    width: 1340
+    height: 258
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -820,23 +820,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: InspectorWindow
+  m_Name: TestRunnerWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1072.8
+    x: 1341
     y: 0
-    width: 463.19995
-    height: 730.8
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 13}
+    width: 579
+    height: 947
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 13}
   - {fileID: 14}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -853,14 +853,14 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Inspector
-    m_Image: {fileID: -440750813802333266, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: -2667387946076563598, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1072.8
-    y: 73.6
-    width: 462.19995
-    height: 709.8
+    x: 1341
+    y: 73
+    width: 578
+    height: 926
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -898,21 +898,21 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1396
-    y: 73.6
-    width: 139
-    height: 709.8
+    x: 1341
+    y: 73
+    width: 578
+    height: 926
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_Spl:
-    ID: 1074
+    ID: 130
     splitterInitialOffset: 0
     currentActiveSplitter: -1
     realSizes:
-    - 480
-    - 160
+    - 642
+    - 214
     relativeSizes:
     - 0.75
     - 0.25
@@ -922,7 +922,7 @@ MonoBehaviour:
     maxSizes:
     - 0
     - 0
-    lastTotalSize: 640
+    lastTotalSize: 856
     splitSize: 6
     xOffset: 0
     m_Version: 1
@@ -939,7 +939,7 @@ MonoBehaviour:
       name: AproximacioSimuladorGenericBasic
       fullName: AproximacioSimuladorGenericBasic
       resultStatus: 1
-      duration: 0.3765195
+      duration: 17.0852
       messages: 
       output: 
       stacktrace: 
@@ -950,12 +950,12 @@ MonoBehaviour:
       categories: []
       parentId: 
       parentUniqueId: 
-    - id: 1028
-      uniqueId: '[Tests][C:/Users/joelc/Desktop/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll][suite]'
+    - id: 1022
+      uniqueId: '[Tests][C:/Users/vcard/OneDrive/Escritorio/Universitat/TFG/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll][suite]'
       name: Tests.dll
-      fullName: C:/Users/joelc/Desktop/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll
+      fullName: C:/Users/vcard/OneDrive/Escritorio/Universitat/TFG/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll
       resultStatus: 1
-      duration: 0.0820941
+      duration: 16.853508
       messages: 
       output: 
       stacktrace: 
@@ -971,7 +971,7 @@ MonoBehaviour:
       name: CuaTests
       fullName: CuaTests
       resultStatus: 1
-      duration: 0.1808105
+      duration: 6.12385
       messages: 
       output: 
       stacktrace: 
@@ -987,7 +987,7 @@ MonoBehaviour:
       name: CuaCapacitat1RepUnaEntitat
       fullName: CuaTests.CuaCapacitat1RepUnaEntitat
       resultStatus: 1
-      duration: 0.1357021
+      duration: 0.1621403
       messages: 
       output: 
       stacktrace: 
@@ -1004,7 +1004,7 @@ MonoBehaviour:
       name: CuaRepUnaEntitatCapacitatInfinita
       fullName: CuaTests.CuaRepUnaEntitatCapacitatInfinita
       resultStatus: 1
-      duration: 0.0040165
+      duration: 0.0044882
       messages: 
       output: 
       stacktrace: 
@@ -1021,7 +1021,7 @@ MonoBehaviour:
       name: CuaRepUnaEntitatCapacitatNoInfinitaIMesGranA1
       fullName: CuaTests.CuaRepUnaEntitatCapacitatNoInfinitaIMesGranA1
       resultStatus: 1
-      duration: 0.0034804
+      duration: 0.0040791
       messages: 
       output: 
       stacktrace: 
@@ -1038,7 +1038,7 @@ MonoBehaviour:
       name: CuaRepUnObjecteIEnviaAlSeguent
       fullName: CuaTests.CuaRepUnObjecteIEnviaAlSeguent
       resultStatus: 1
-      duration: 0.0129118
+      duration: 5.9183707
       messages: 
       output: 
       stacktrace: 
@@ -1055,7 +1055,7 @@ MonoBehaviour:
       name: CuaRepUnObjecteINoPotEnviarAlSeguent
       fullName: CuaTests.CuaRepUnObjecteINoPotEnviarAlSeguent
       resultStatus: 1
-      duration: 0.0061285
+      duration: 0.0087481
       messages: 
       output: 
       stacktrace: 
@@ -1072,7 +1072,7 @@ MonoBehaviour:
       name: GeneradorTestBloquejat
       fullName: GeneradorTestBloquejat
       resultStatus: 1
-      duration: 0.1161269
+      duration: 6.508572
       messages: 
       output: 
       stacktrace: 
@@ -1088,7 +1088,7 @@ MonoBehaviour:
       name: GeneradorEsBloqueja
       fullName: GeneradorTestBloquejat.GeneradorEsBloqueja
       resultStatus: 1
-      duration: 0.0104759
+      duration: 6.3862066
       messages: 
       output: 
       stacktrace: 
@@ -1105,7 +1105,7 @@ MonoBehaviour:
       name: GeneradorNoPotEnviarEntitat
       fullName: GeneradorTestBloquejat.GeneradorNoPotEnviarEntitat
       resultStatus: 1
-      duration: 0.0056377
+      duration: 0.0076734
       messages: 
       output: 
       stacktrace: 
@@ -1122,7 +1122,7 @@ MonoBehaviour:
       name: GeneradorTestDisponible
       fullName: GeneradorTestDisponible
       resultStatus: 1
-      duration: 0.027412
+      duration: 0.0928937
       messages: 
       output: 
       stacktrace: 
@@ -1138,7 +1138,7 @@ MonoBehaviour:
       name: GeneradorEnviaUnObjecte
       fullName: GeneradorTestDisponible.GeneradorEnviaUnObjecte
       resultStatus: 1
-      duration: 0.0102948
+      duration: 0.0297173
       messages: 
       output: 
       stacktrace: 
@@ -1155,7 +1155,7 @@ MonoBehaviour:
       name: GeneradorProgramaEsdevenimentAlInstant5
       fullName: GeneradorTestDisponible.GeneradorProgramaEsdevenimentAlInstant5
       resultStatus: 1
-      duration: 0.0094351
+      duration: 0.0329844
       messages: 
       output: 
       stacktrace: 
@@ -1172,7 +1172,7 @@ MonoBehaviour:
       name: ProcessadorTests
       fullName: ProcessadorTests
       resultStatus: 1
-      duration: 0.0871964
+      duration: 4.0943575
       messages: 
       output: 
       stacktrace: 
@@ -1188,7 +1188,7 @@ MonoBehaviour:
       name: ProcessadorBloquejatIntentaRebreEntitat
       fullName: ProcessadorTests.ProcessadorBloquejatIntentaRebreEntitat
       resultStatus: 1
-      duration: 0.0278809
+      duration: 0.0317961
       messages: 
       output: 'Es genera un esdeveniment per a un processador 0
 
@@ -1210,7 +1210,7 @@ MonoBehaviour:
       name: ProcessadorCapacitat1IntentaRebreSegonaEntitat
       fullName: ProcessadorTests.ProcessadorCapacitat1IntentaRebreSegonaEntitat
       resultStatus: 1
-      duration: 0.008414
+      duration: 0.010355
       messages: 
       output: 'Es genera un esdeveniment per a un processador 0
 
@@ -1229,7 +1229,7 @@ MonoBehaviour:
       name: ProcessadorExecutaEsdevenimentIQuedaBloquejat
       fullName: ProcessadorTests.ProcessadorExecutaEsdevenimentIQuedaBloquejat
       resultStatus: 1
-      duration: 0.0090417
+      duration: 0.0128698
       messages: 
       output: 'Es genera un esdeveniment per a un processador 0
 
@@ -1251,7 +1251,7 @@ MonoBehaviour:
       name: ProcessadorExecutaEsdevenimentIQuedaDisponible
       fullName: ProcessadorTests.ProcessadorExecutaEsdevenimentIQuedaDisponible
       resultStatus: 1
-      duration: 0.0096421
+      duration: 0.014151
       messages: 
       output: 'Es genera un esdeveniment per a un processador 0
 
@@ -1273,7 +1273,7 @@ MonoBehaviour:
       name: ProcessadorPleRebutjaObjecteAlliberaUnEspaiIRepObjecteRebutjat
       fullName: ProcessadorTests.ProcessadorPleRebutjaObjecteAlliberaUnEspaiIRepObjecteRebutjat
       resultStatus: 1
-      duration: 0.0184824
+      duration: 3.9995031
       messages: 
       output: 'Es genera un esdeveniment per a un processador 0
 
@@ -1300,7 +1300,7 @@ MonoBehaviour:
       name: ProcessadorRepEntitatIProgramaEsdevenimentAlInstant5
       fullName: ProcessadorTests.ProcessadorRepEntitatIProgramaEsdevenimentAlInstant5
       resultStatus: 1
-      duration: 0.0088401
+      duration: 0.0119238
       messages: 
       output: 'Es genera un esdeveniment per a un processador 0
 
@@ -1319,7 +1319,7 @@ MonoBehaviour:
       name: SortidaTests
       fullName: SortidaTests
       resultStatus: 1
-      duration: 0.0205764
+      duration: 0.0232905
       messages: 
       output: 
       stacktrace: 
@@ -1335,7 +1335,7 @@ MonoBehaviour:
       name: SortidaDestrueixUnaEntitat
       fullName: SortidaTests.SortidaDestrueixUnaEntitat
       resultStatus: 1
-      duration: 0.0046343
+      duration: 0.0077317
       messages: 
       output: 'Es destrueix una nova entitat
 
