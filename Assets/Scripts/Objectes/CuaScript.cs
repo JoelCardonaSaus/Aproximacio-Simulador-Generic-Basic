@@ -135,7 +135,8 @@ public class CuaScript : LlibreriaObjectes
                     if (capacitatMaxima == -1) capacitat = "∞";
                     else capacitat = capacitatMaxima.ToString();
                     etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
-                    estat = states.NOBUIT;
+                    if (cuaObjecte.Count == 0) estat = states.BUIT;
+                    else estat = states.NOBUIT;
                 } else {
                     estat = states.NOBUIT;
                 }

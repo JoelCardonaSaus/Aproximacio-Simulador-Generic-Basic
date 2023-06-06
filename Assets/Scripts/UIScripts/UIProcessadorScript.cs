@@ -33,7 +33,7 @@ public class UIProcessadorScript : MonoBehaviour
 
     public void CanviaNom()
     {
-        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
         {
             cancela.interactable = true;
             aplicar.interactable = true;
@@ -47,7 +47,7 @@ public class UIProcessadorScript : MonoBehaviour
 
     public void CanviEnrutamentSeleccionat()
     {
-        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
         {
             cancela.interactable = true;
             aplicar.interactable = true;
@@ -61,7 +61,7 @@ public class UIProcessadorScript : MonoBehaviour
 
     public void CanviDistribuidorSeleccionat()
     {
-        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
         {
             cancela.interactable = true;
             aplicar.interactable = true;
@@ -140,7 +140,7 @@ public class UIProcessadorScript : MonoBehaviour
     }
 
     public void CanviaParametres(int p){
-        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
         {
             if (p == 1){
                 float aux;
@@ -244,7 +244,7 @@ public class UIProcessadorScript : MonoBehaviour
     }
 
     public void CanviCapacitat(){
-        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
         {
             int aux;
             if (int.TryParse(capacitatInput.text, out aux)){

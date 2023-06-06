@@ -17,7 +17,7 @@ public class UIConfiguracioScript : MonoBehaviour
     public GameObject finestraErrors;
 
     public void CanviTempsMaxim(){
-        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
         {
             float aux;
             if (float.TryParse(tempsMaxim.text, out aux)){
@@ -38,7 +38,7 @@ public class UIConfiguracioScript : MonoBehaviour
 
     public void CanviEntitatsSeleccionat()
     {
-        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
         {
             cancela.interactable = true;
             aplicar.interactable = true;

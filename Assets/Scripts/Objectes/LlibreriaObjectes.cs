@@ -85,6 +85,7 @@ public abstract class LlibreriaObjectes : MonoBehaviour
 
     public void DesajuntarSeguentObjecte(GameObject desjuntar){
         IntentaEliminarObjecteSeguents(desjuntar);
+        desjuntar.GetComponent<LlibreriaObjectes>().IntentaEliminarObjectePredecessor(this.gameObject);
     }
 
     public void IntentaEliminarObjecteSeguents(GameObject objecte){

@@ -24,6 +24,9 @@ public class MotorSimuladorScript : MonoBehaviour
     private float tempsActual = 0;
     private float tempsMaxim = 86400;
 
+    public enum estats { ATURAT, SIMULANT };
+    public estats estat = estats.ATURAT;
+
     private static MotorSimuladorScript instancia;
 
     private MotorSimuladorScript() { }
@@ -52,6 +55,7 @@ public class MotorSimuladorScript : MonoBehaviour
         sortidaPrefab = Resources.Load("LlibreriaObjectes/Sortida/Sortida") as GameObject;
         idSeguentObjecte = 0;
         tempsMaxim = 86400;
+        estat = estats.ATURAT;
     }
 
 
@@ -73,10 +77,12 @@ public class MotorSimuladorScript : MonoBehaviour
     }
 
     public void IniciaSimulacio(){
+        estat = estats.SIMULANT;
         for (int i = 0; i < transform.childCount; ++i) transform.GetChild(i).GetComponent<LlibreriaObjectes>().IniciaSimulacio();
     }
 
     public void ReiniciarSimulador(){
+        estat = estats.ATURAT;
         llistaEsdevenmients = new PriorityQueue<Esdeveniment>((a, b) => {
             int result = a.temps.CompareTo(b.temps);
             if (result != 0)

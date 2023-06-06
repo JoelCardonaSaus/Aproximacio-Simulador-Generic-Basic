@@ -22,7 +22,7 @@ public class UICuaScript : MonoBehaviour
 
     public void CanviaNom()
     {
-        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
         {
             cancela.interactable = true;
             aplicar.interactable = true;
@@ -36,7 +36,7 @@ public class UICuaScript : MonoBehaviour
 
     public void CanviEnrutamentSeleccionat()
     {
-        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
         {
             cancela.interactable = true;
             aplicar.interactable = true;
@@ -49,7 +49,7 @@ public class UICuaScript : MonoBehaviour
     }
 
     public void CanviCapacitat(){
-        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
         {
             int aux;
             if (int.TryParse(capacitatInput.text, out aux)){

@@ -16,7 +16,7 @@ public class UISortidaScript : MonoBehaviour
 
     public void CanviaNom()
     {
-        if (UIScript.Instancia.ObteEstatSimulador() == 1)
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
         {
             cancela.interactable = true;
             aplicar.interactable = true;
