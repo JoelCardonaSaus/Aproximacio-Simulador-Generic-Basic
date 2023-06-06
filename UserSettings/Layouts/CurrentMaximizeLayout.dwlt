@@ -19,12 +19,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 30
-    width: 1920
-    height: 947
+    width: 1536
+    height: 730.8
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 80
+  controlID: 1351
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -34,25 +34,89 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 1
-  m_Script: {fileID: 12003, guid: 0000000000000000e000000000000000, type: 0}
+  m_Script: {fileID: 12015, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MinSize: {x: 100, y: 100}
+  m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
-    m_Text: Console
-    m_Image: {fileID: -4327648978806127646, guid: 0000000000000000d000000000000000, type: 0}
+    m_Text: Game
+    m_Image: {fileID: 4621777727084837110, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 0
-    y: 703
-    width: 1522
-    height: 296
+    x: 232
+    y: 73.6
+    width: 838.80005
+    height: 495
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
+  m_SerializedViewNames: []
+  m_SerializedViewValues: []
+  m_PlayModeViewName: GameView
+  m_ShowGizmos: 0
+  m_TargetDisplay: 0
+  m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
+  m_TargetSize: {x: 1920, y: 1080}
+  m_TextureFilterMode: 0
+  m_TextureHideFlags: 61
+  m_RenderIMGUI: 1
+  m_EnterPlayModeBehavior: 0
+  m_UseMipMap: 0
+  m_VSyncEnabled: 0
+  m_Gizmos: 0
+  m_Stats: 0
+  m_SelectedSizes: 03000000000000000000000000000000000000000000000000000000000000000000000000000000
+  m_ZoomArea:
+    m_HRangeLocked: 0
+    m_VRangeLocked: 0
+    hZoomLockedByDefault: 0
+    vZoomLockedByDefault: 0
+    m_HBaseRangeMin: -768
+    m_HBaseRangeMax: 768
+    m_VBaseRangeMin: -432
+    m_VBaseRangeMax: 432
+    m_HAllowExceedBaseRangeMin: 1
+    m_HAllowExceedBaseRangeMax: 1
+    m_VAllowExceedBaseRangeMin: 1
+    m_VAllowExceedBaseRangeMax: 1
+    m_ScaleWithWindow: 0
+    m_HSlider: 0
+    m_VSlider: 0
+    m_IgnoreScrollWheelUntilClicked: 0
+    m_EnableMouseInput: 0
+    m_EnableSliderZoomHorizontal: 0
+    m_EnableSliderZoomVertical: 0
+    m_UniformScale: 1
+    m_UpDirection: 1
+    m_DrawArea:
+      serializedVersion: 2
+      x: 0
+      y: 21
+      width: 838.80005
+      height: 474
+    m_Scale: {x: 0.54609376, y: 0.54609376}
+    m_Translation: {x: 419.40002, y: 237}
+    m_MarginLeft: 0
+    m_MarginRight: 0
+    m_MarginTop: 0
+    m_MarginBottom: 0
+    m_LastShownAreaInsideMargins:
+      serializedVersion: 2
+      x: -768
+      y: -433.9914
+      width: 1536
+      height: 867.9828
+    m_MinimalGUI: 1
+  m_defaultScale: 0.54609376
+  m_LastWindowPixelSize: {x: 1048.5, y: 618.75}
+  m_ClearInEditMode: 1
+  m_NoCameraWarning: 1
+  m_LowResolutionForAspectRatios: 01000000000000000000
+  m_XRRenderMode: 0
+  m_RenderTexture: {fileID: 0}
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -67,17 +131,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Children:
   - {fileID: 4}
-  - {fileID: 10}
+  - {fileID: 9}
   m_Position:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1523
-    height: 947
+    width: 1072.8
+    height: 730.8
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 81
+  controlID: 1352
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -97,12 +161,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1523
-    height: 630
+    width: 1072.8
+    height: 516
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 50
+  controlID: 1353
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -120,8 +184,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 333
-    height: 630
+    width: 232
+    height: 516
   m_MinSize: {x: 201, y: 221}
   m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 6}
@@ -145,14 +209,14 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Hierarchy
-    m_Image: {fileID: 7966133145522015247, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: -3734745235275155857, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 73
-    width: 332
-    height: 609
+    y: 73.6
+    width: 231
+    height: 495
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -160,9 +224,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 38fbffff
+      m_SelectedIDs: 746b0000
+      m_LastClickedID: 27508
+      m_ExpandedIDs: 08efffff48efffff84f0ffff32f5ffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -196,23 +260,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: SceneView
+  m_Name: GameView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 333
+    x: 232
     y: 0
-    width: 1190
-    height: 630
+    width: 840.80005
+    height: 516
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 8}
+  m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 8}
-  - {fileID: 9}
-  m_Selected: 0
-  m_LastSelected: 1
+  - {fileID: 2}
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -229,14 +293,14 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Scene
-    m_Image: {fileID: 2593428753322112591, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: 8634526014445323508, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 333
-    y: 73
-    width: 1188
-    height: 609
+    x: 232
+    y: 73.6
+    width: 838.80005
+    height: 495
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -333,7 +397,7 @@ MonoBehaviour:
       containerId: overlay-container--right
       floating: 0
       collapsed: 0
-      displayed: 0
+      displayed: 1
       snapOffset: {x: 0, y: 0}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
@@ -471,9 +535,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 928.3104, y: 538.9387, z: 1.9497828}
+    m_Target: {x: 840.61566, y: 541.4343, z: 28.635906}
     speed: 2
-    m_Value: {x: 928.3104, y: 538.9387, z: 1.9497828}
+    m_Value: {x: 840.61566, y: 541.4343, z: 28.635906}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -524,9 +588,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 543.4765
+    m_Target: 551.62946
     speed: 2
-    m_Value: 543.4765
+    m_Value: 551.62946
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -560,117 +624,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 1
-  m_Script: {fileID: 12015, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Game
-    m_Image: {fileID: -6423792434712278376, guid: 0000000000000000d000000000000000, type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 333
-    y: 73
-    width: 1188
-    height: 609
-  m_ViewDataDictionary: {fileID: 0}
-  m_OverlayCanvas:
-    m_LastAppliedPresetName: Default
-    m_SaveData: []
-  m_SerializedViewNames: []
-  m_SerializedViewValues: []
-  m_PlayModeViewName: GameView
-  m_ShowGizmos: 0
-  m_TargetDisplay: 0
-  m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 1920, y: 1080}
-  m_TextureFilterMode: 0
-  m_TextureHideFlags: 61
-  m_RenderIMGUI: 1
-  m_EnterPlayModeBehavior: 0
-  m_UseMipMap: 0
-  m_VSyncEnabled: 0
-  m_Gizmos: 0
-  m_Stats: 0
-  m_SelectedSizes: 03000000000000000000000000000000000000000000000000000000000000000000000000000000
-  m_ZoomArea:
-    m_HRangeLocked: 0
-    m_VRangeLocked: 0
-    hZoomLockedByDefault: 0
-    vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -960
-    m_HBaseRangeMax: 960
-    m_VBaseRangeMin: -540
-    m_VBaseRangeMax: 540
-    m_HAllowExceedBaseRangeMin: 1
-    m_HAllowExceedBaseRangeMax: 1
-    m_VAllowExceedBaseRangeMin: 1
-    m_VAllowExceedBaseRangeMax: 1
-    m_ScaleWithWindow: 0
-    m_HSlider: 0
-    m_VSlider: 0
-    m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
-    m_EnableSliderZoomHorizontal: 0
-    m_EnableSliderZoomVertical: 0
-    m_UniformScale: 1
-    m_UpDirection: 1
-    m_DrawArea:
-      serializedVersion: 2
-      x: 0
-      y: 21
-      width: 1188
-      height: 588
-    m_Scale: {x: 0.54444444, y: 0.54444444}
-    m_Translation: {x: 594, y: 294}
-    m_MarginLeft: 0
-    m_MarginRight: 0
-    m_MarginTop: 0
-    m_MarginBottom: 0
-    m_LastShownAreaInsideMargins:
-      serializedVersion: 2
-      x: -1091.0204
-      y: -540
-      width: 2182.0408
-      height: 1080
-    m_MinimalGUI: 1
-  m_defaultScale: 0.54444444
-  m_LastWindowPixelSize: {x: 1188, y: 609}
-  m_ClearInEditMode: 1
-  m_NoCameraWarning: 1
-  m_LowResolutionForAspectRatios: 01000000000000000000
-  m_XRRenderMode: 0
-  m_RenderTexture: {fileID: 0}
---- !u!114 &10
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ConsoleWindow
+  m_Name: ProjectBrowser
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 630
-    width: 1523
-    height: 317
-  m_MinSize: {x: 101, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 2}
+    y: 516
+    width: 1072.8
+    height: 214.79999
+  m_MinSize: {x: 231, y: 271}
+  m_MaxSize: {x: 10001, y: 10021}
+  m_ActualView: {fileID: 10}
   m_Panes:
+  - {fileID: 10}
   - {fileID: 11}
-  - {fileID: 2}
-  m_Selected: 1
-  m_LastSelected: 0
---- !u!114 &11
+  m_Selected: 0
+  m_LastSelected: 1
+--- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -686,14 +658,14 @@ MonoBehaviour:
   m_MaxSize: {x: 10000, y: 10000}
   m_TitleContent:
     m_Text: Project
-    m_Image: {fileID: -5467254957812901981, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: -5179483145760003458, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 703
-    width: 1522
-    height: 296
+    y: 589.60004
+    width: 1071.8
+    height: 193.79999
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -711,22 +683,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources/MotorSimulador
+    - Assets/Testing/Tests
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 85
   m_LastFolders:
-  - Assets/Resources/MotorSimulador
+  - Assets/Testing/Tests
   m_LastFoldersGridSize: 85
-  m_LastProjectPath: C:\Users\vcard\OneDrive\Escritorio\Universitat\TFG\Aproximacio-Simulador-Generic-Basic
+  m_LastProjectPath: C:\Users\joelc\Desktop\Aproximacio-Simulador-Generic-Basic
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 32}
-    m_SelectedIDs: 12970000
-    m_LastClickedID: 38674
-    m_ExpandedIDs: 00000000125e0000
+    scrollPos: {x: 0, y: 66.20001}
+    m_SelectedIDs: b46a0000
+    m_LastClickedID: 27316
+    m_ExpandedIDs: 00000000626a00007a6a000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -754,7 +726,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000125e0000
+    m_ExpandedIDs: 00000000626a000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -779,9 +751,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 18970000
-    m_LastClickedInstanceID: 38680
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: 746b0000
+    m_LastClickedInstanceID: 27508
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000325b000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -810,6 +782,34 @@ MonoBehaviour:
     m_GridSize: 85
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 131
+--- !u!114 &11
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12003, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Console
+    m_Image: {fileID: -4950941429401207979, guid: 0000000000000000d000000000000000, type: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 0
+    y: 632
+    width: 1021.4
+    height: 151.39996
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData: []
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -820,23 +820,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: TestRunnerWindow
+  m_Name: InspectorWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1523
+    x: 1072.8
     y: 0
-    width: 397
-    height: 947
-  m_MinSize: {x: 101, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 14}
+    width: 463.19995
+    height: 730.8
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
   - {fileID: 14}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -853,14 +853,14 @@ MonoBehaviour:
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Inspector
-    m_Image: {fileID: -2667387946076563598, guid: 0000000000000000d000000000000000, type: 0}
+    m_Image: {fileID: -440750813802333266, guid: 0000000000000000d000000000000000, type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1523
-    y: 73
-    width: 396
-    height: 926
+    x: 1072.8
+    y: 73.6
+    width: 462.19995
+    height: 709.8
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -898,21 +898,21 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1523
-    y: 73
-    width: 396
-    height: 926
+    x: 1396
+    y: 73.6
+    width: 139
+    height: 709.8
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_Spl:
-    ID: 117
+    ID: 1074
     splitterInitialOffset: 0
     currentActiveSplitter: -1
     realSizes:
-    - 642
-    - 214
+    - 480
+    - 160
     relativeSizes:
     - 0.75
     - 0.25
@@ -922,7 +922,7 @@ MonoBehaviour:
     maxSizes:
     - 0
     - 0
-    lastTotalSize: 856
+    lastTotalSize: 640
     splitSize: 6
     xOffset: 0
     m_Version: 1
@@ -939,7 +939,7 @@ MonoBehaviour:
       name: AproximacioSimuladorGenericBasic
       fullName: AproximacioSimuladorGenericBasic
       resultStatus: 1
-      duration: 0.6064052
+      duration: 0.3765195
       messages: 
       output: 
       stacktrace: 
@@ -950,12 +950,12 @@ MonoBehaviour:
       categories: []
       parentId: 
       parentUniqueId: 
-    - id: 1007
-      uniqueId: '[Tests][C:/Users/vcard/OneDrive/Escritorio/Universitat/TFG/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll][suite]'
+    - id: 1028
+      uniqueId: '[Tests][C:/Users/joelc/Desktop/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll][suite]'
       name: Tests.dll
-      fullName: C:/Users/vcard/OneDrive/Escritorio/Universitat/TFG/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll
+      fullName: C:/Users/joelc/Desktop/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll
       resultStatus: 1
-      duration: 0.3412154
+      duration: 0.0820941
       messages: 
       output: 
       stacktrace: 
@@ -967,11 +967,11 @@ MonoBehaviour:
       parentId: 1000
       parentUniqueId: '[AproximacioSimuladorGenericBasic][suite]'
     - id: 1001
-      uniqueId: Tests.dll/[Tests][GeneradorTest][suite]
-      name: GeneradorTest
-      fullName: GeneradorTest
+      uniqueId: Tests.dll/[Tests][CuaTests][suite]
+      name: CuaTests
+      fullName: CuaTests
       resultStatus: 1
-      duration: 0.198307
+      duration: 0.1808105
       messages: 
       output: 
       stacktrace: 
@@ -980,31 +980,14 @@ MonoBehaviour:
       description: 
       isSuite: 1
       categories: []
-      parentId: 1010
+      parentId: 1022
       parentUniqueId: '[Tests][C:/Users/vcard/OneDrive/Escritorio/Universitat/TFG/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll][suite]'
-    - id: 1002
-      uniqueId: Tests.dll/GeneradorTest/[Tests][GeneradorTest.GeneradorEnviaUnObjecte]
-      name: GeneradorEnviaUnObjecte
-      fullName: GeneradorTest.GeneradorEnviaUnObjecte
-      resultStatus: 1
-      duration: 0.1642919
-      messages: 
-      output: 
-      stacktrace: 
-      notRunnable: 0
-      ignoredOrSkipped: 0
-      description: 
-      isSuite: 0
-      categories:
-      - Uncategorized
-      parentId: 1001
-      parentUniqueId: Tests.dll/[Tests][GeneradorTest][suite]
     - id: 1003
-      uniqueId: Tests.dll/GeneradorTest/[Tests][GeneradorTest.GeneradorProgramaEsdevenimentAlInstant5]
-      name: GeneradorProgramaEsdevenimentAlInstant5
-      fullName: GeneradorTest.GeneradorProgramaEsdevenimentAlInstant5
+      uniqueId: Tests.dll/CuaTests/[Tests][CuaTests.CuaCapacitat1RepUnaEntitat]
+      name: CuaCapacitat1RepUnaEntitat
+      fullName: CuaTests.CuaCapacitat1RepUnaEntitat
       resultStatus: 1
-      duration: 0.0127255
+      duration: 0.1357021
       messages: 
       output: 
       stacktrace: 
@@ -1015,13 +998,81 @@ MonoBehaviour:
       categories:
       - Uncategorized
       parentId: 1001
-      parentUniqueId: Tests.dll/[Tests][GeneradorTest][suite]
-    - id: 1017
-      uniqueId: Tests.dll/[Tests][NewTestScript][suite]
-      name: NewTestScript
-      fullName: NewTestScript
+      parentUniqueId: Tests.dll/[Tests][CuaTests][suite]
+    - id: 1002
+      uniqueId: Tests.dll/CuaTests/[Tests][CuaTests.CuaRepUnaEntitatCapacitatInfinita]
+      name: CuaRepUnaEntitatCapacitatInfinita
+      fullName: CuaTests.CuaRepUnaEntitatCapacitatInfinita
       resultStatus: 1
-      duration: 0.1274305
+      duration: 0.0040165
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: Tests.dll/[Tests][CuaTests][suite]
+    - id: 1006
+      uniqueId: Tests.dll/CuaTests/[Tests][CuaTests.CuaRepUnaEntitatCapacitatNoInfinitaIMesGranA1]
+      name: CuaRepUnaEntitatCapacitatNoInfinitaIMesGranA1
+      fullName: CuaTests.CuaRepUnaEntitatCapacitatNoInfinitaIMesGranA1
+      resultStatus: 1
+      duration: 0.0034804
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: Tests.dll/[Tests][CuaTests][suite]
+    - id: 1004
+      uniqueId: Tests.dll/CuaTests/[Tests][CuaTests.CuaRepUnObjecteIEnviaAlSeguent]
+      name: CuaRepUnObjecteIEnviaAlSeguent
+      fullName: CuaTests.CuaRepUnObjecteIEnviaAlSeguent
+      resultStatus: 1
+      duration: 0.0129118
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: Tests.dll/[Tests][CuaTests][suite]
+    - id: 1005
+      uniqueId: Tests.dll/CuaTests/[Tests][CuaTests.CuaRepUnObjecteINoPotEnviarAlSeguent]
+      name: CuaRepUnObjecteINoPotEnviarAlSeguent
+      fullName: CuaTests.CuaRepUnObjecteINoPotEnviarAlSeguent
+      resultStatus: 1
+      duration: 0.0061285
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: Tests.dll/[Tests][CuaTests][suite]
+    - id: 1010
+      uniqueId: Tests.dll/[Tests][GeneradorTestBloquejat][suite]
+      name: GeneradorTestBloquejat
+      fullName: GeneradorTestBloquejat
+      resultStatus: 1
+      duration: 0.1161269
       messages: 
       output: 
       stacktrace: 
@@ -1030,14 +1081,14 @@ MonoBehaviour:
       description: 
       isSuite: 1
       categories: []
-      parentId: 1023
+      parentId: 1022
       parentUniqueId: '[Tests][C:/Users/vcard/OneDrive/Escritorio/Universitat/TFG/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll][suite]'
-    - id: 1020
-      uniqueId: Tests.dll/NewTestScript/[Tests][NewTestScript.substractTest]
-      name: substractTest
-      fullName: NewTestScript.substractTest
+    - id: 1012
+      uniqueId: Tests.dll/GeneradorTestBloquejat/[Tests][GeneradorTestBloquejat.GeneradorEsBloqueja]
+      name: GeneradorEsBloqueja
+      fullName: GeneradorTestBloquejat.GeneradorEsBloqueja
       resultStatus: 1
-      duration: 0.0003767
+      duration: 0.0104759
       messages: 
       output: 
       stacktrace: 
@@ -1047,16 +1098,123 @@ MonoBehaviour:
       isSuite: 0
       categories:
       - Uncategorized
-      parentId: 1017
-      parentUniqueId: Tests.dll/[Tests][NewTestScript][suite]
+      parentId: 1010
+      parentUniqueId: Tests.dll/[Tests][GeneradorTestBloquejat][suite]
+    - id: 1011
+      uniqueId: Tests.dll/GeneradorTestBloquejat/[Tests][GeneradorTestBloquejat.GeneradorNoPotEnviarEntitat]
+      name: GeneradorNoPotEnviarEntitat
+      fullName: GeneradorTestBloquejat.GeneradorNoPotEnviarEntitat
+      resultStatus: 1
+      duration: 0.0056377
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1010
+      parentUniqueId: Tests.dll/[Tests][GeneradorTestBloquejat][suite]
+    - id: 1007
+      uniqueId: Tests.dll/[Tests][GeneradorTestDisponible][suite]
+      name: GeneradorTestDisponible
+      fullName: GeneradorTestDisponible
+      resultStatus: 1
+      duration: 0.027412
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1022
+      parentUniqueId: '[Tests][C:/Users/vcard/OneDrive/Escritorio/Universitat/TFG/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll][suite]'
+    - id: 1008
+      uniqueId: Tests.dll/GeneradorTestDisponible/[Tests][GeneradorTestDisponible.GeneradorEnviaUnObjecte]
+      name: GeneradorEnviaUnObjecte
+      fullName: GeneradorTestDisponible.GeneradorEnviaUnObjecte
+      resultStatus: 1
+      duration: 0.0102948
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1007
+      parentUniqueId: Tests.dll/[Tests][GeneradorTestDisponible][suite]
+    - id: 1009
+      uniqueId: Tests.dll/GeneradorTestDisponible/[Tests][GeneradorTestDisponible.GeneradorProgramaEsdevenimentAlInstant5]
+      name: GeneradorProgramaEsdevenimentAlInstant5
+      fullName: GeneradorTestDisponible.GeneradorProgramaEsdevenimentAlInstant5
+      resultStatus: 1
+      duration: 0.0094351
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1007
+      parentUniqueId: Tests.dll/[Tests][GeneradorTestDisponible][suite]
+    - id: 1013
+      uniqueId: Tests.dll/[Tests][ProcessadorTests][suite]
+      name: ProcessadorTests
+      fullName: ProcessadorTests
+      resultStatus: 1
+      duration: 0.0871964
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1022
+      parentUniqueId: '[Tests][C:/Users/vcard/OneDrive/Escritorio/Universitat/TFG/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll][suite]'
+    - id: 1017
+      uniqueId: Tests.dll/ProcessadorTests/[Tests][ProcessadorTests.ProcessadorBloquejatIntentaRebreEntitat]
+      name: ProcessadorBloquejatIntentaRebreEntitat
+      fullName: ProcessadorTests.ProcessadorBloquejatIntentaRebreEntitat
+      resultStatus: 1
+      duration: 0.0278809
+      messages: 
+      output: 'Es genera un esdeveniment per a un processador 0
+
+        Una entitat
+        s''ha processat
+
+'
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1013
+      parentUniqueId: Tests.dll/[Tests][ProcessadorTests][suite]
     - id: 1018
-      uniqueId: Tests.dll/NewTestScript/[Tests][NewTestScript.sumTwoNumbersBad]
-      name: sumTwoNumbersBad
-      fullName: NewTestScript.sumTwoNumbersBad
+      uniqueId: Tests.dll/ProcessadorTests/[Tests][ProcessadorTests.ProcessadorCapacitat1IntentaRebreSegonaEntitat]
+      name: ProcessadorCapacitat1IntentaRebreSegonaEntitat
+      fullName: ProcessadorTests.ProcessadorCapacitat1IntentaRebreSegonaEntitat
       resultStatus: 1
-      duration: 0.0028585
+      duration: 0.008414
       messages: 
-      output: 
+      output: 'Es genera un esdeveniment per a un processador 0
+
+'
       stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
@@ -1064,16 +1222,70 @@ MonoBehaviour:
       isSuite: 0
       categories:
       - Uncategorized
-      parentId: 1017
-      parentUniqueId: Tests.dll/[Tests][NewTestScript][suite]
+      parentId: 1013
+      parentUniqueId: Tests.dll/[Tests][ProcessadorTests][suite]
+    - id: 1015
+      uniqueId: Tests.dll/ProcessadorTests/[Tests][ProcessadorTests.ProcessadorExecutaEsdevenimentIQuedaBloquejat]
+      name: ProcessadorExecutaEsdevenimentIQuedaBloquejat
+      fullName: ProcessadorTests.ProcessadorExecutaEsdevenimentIQuedaBloquejat
+      resultStatus: 1
+      duration: 0.0090417
+      messages: 
+      output: 'Es genera un esdeveniment per a un processador 0
+
+        Una entitat
+        s''ha processat
+
+'
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1013
+      parentUniqueId: Tests.dll/[Tests][ProcessadorTests][suite]
+    - id: 1016
+      uniqueId: Tests.dll/ProcessadorTests/[Tests][ProcessadorTests.ProcessadorExecutaEsdevenimentIQuedaDisponible]
+      name: ProcessadorExecutaEsdevenimentIQuedaDisponible
+      fullName: ProcessadorTests.ProcessadorExecutaEsdevenimentIQuedaDisponible
+      resultStatus: 1
+      duration: 0.0096421
+      messages: 
+      output: 'Es genera un esdeveniment per a un processador 0
+
+        Una entitat
+        s''ha processat
+
+'
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1013
+      parentUniqueId: Tests.dll/[Tests][ProcessadorTests][suite]
     - id: 1019
-      uniqueId: Tests.dll/NewTestScript/[Tests][NewTestScript.sumTwoNumbersGood]
-      name: sumTwoNumbersGood
-      fullName: NewTestScript.sumTwoNumbersGood
+      uniqueId: Tests.dll/ProcessadorTests/[Tests][ProcessadorTests.ProcessadorPleRebutjaObjecteAlliberaUnEspaiIRepObjecteRebutjat]
+      name: ProcessadorPleRebutjaObjecteAlliberaUnEspaiIRepObjecteRebutjat
+      fullName: ProcessadorTests.ProcessadorPleRebutjaObjecteAlliberaUnEspaiIRepObjecteRebutjat
       resultStatus: 1
-      duration: 0.0002885
+      duration: 0.0184824
       messages: 
-      output: 
+      output: 'Es genera un esdeveniment per a un processador 0
+
+        Una entitat
+        s''ha processat
+
+        Es destrueix una nova entitat
+
+        Es genera
+        un esdeveniment per a un processador 5
+
+'
       stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
@@ -1081,16 +1293,18 @@ MonoBehaviour:
       isSuite: 0
       categories:
       - Uncategorized
-      parentId: 1017
-      parentUniqueId: Tests.dll/[Tests][NewTestScript][suite]
-    - id: 1021
-      uniqueId: Tests.dll/NewTestScript/[Tests][NewTestScript.testAvailable]
-      name: testAvailable
-      fullName: NewTestScript.testAvailable
+      parentId: 1013
+      parentUniqueId: Tests.dll/[Tests][ProcessadorTests][suite]
+    - id: 1014
+      uniqueId: Tests.dll/ProcessadorTests/[Tests][ProcessadorTests.ProcessadorRepEntitatIProgramaEsdevenimentAlInstant5]
+      name: ProcessadorRepEntitatIProgramaEsdevenimentAlInstant5
+      fullName: ProcessadorTests.ProcessadorRepEntitatIProgramaEsdevenimentAlInstant5
       resultStatus: 1
-      duration: 0.003013
+      duration: 0.0088401
       messages: 
-      output: 
+      output: 'Es genera un esdeveniment per a un processador 0
+
+'
       stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
@@ -1098,16 +1312,34 @@ MonoBehaviour:
       isSuite: 0
       categories:
       - Uncategorized
-      parentId: 1017
-      parentUniqueId: Tests.dll/[Tests][NewTestScript][suite]
-    - id: 1022
-      uniqueId: Tests.dll/NewTestScript/[Tests][NewTestScript.testChangeState]
-      name: testChangeState
-      fullName: NewTestScript.testChangeState
+      parentId: 1013
+      parentUniqueId: Tests.dll/[Tests][ProcessadorTests][suite]
+    - id: 1026
+      uniqueId: Tests.dll/[Tests][SortidaTests][suite]
+      name: SortidaTests
+      fullName: SortidaTests
       resultStatus: 1
-      duration: 0.0003552
+      duration: 0.0205764
       messages: 
       output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1028
+      parentUniqueId: '[Tests][C:/Users/vcard/OneDrive/Escritorio/Universitat/TFG/Aproximacio-Simulador-Generic-Basic/Library/ScriptAssemblies/Tests.dll][suite]'
+    - id: 1027
+      uniqueId: Tests.dll/SortidaTests/[Tests][SortidaTests.SortidaDestrueixUnaEntitat]
+      name: SortidaDestrueixUnaEntitat
+      fullName: SortidaTests.SortidaDestrueixUnaEntitat
+      resultStatus: 1
+      duration: 0.0046343
+      messages: 
+      output: 'Es destrueix una nova entitat
+
+'
       stacktrace: 
       notRunnable: 0
       ignoredOrSkipped: 0
@@ -1115,15 +1347,15 @@ MonoBehaviour:
       isSuite: 0
       categories:
       - Uncategorized
-      parentId: 1017
-      parentUniqueId: Tests.dll/[Tests][NewTestScript][suite]
-    m_ResultText: GeneradorEnviaUnObjecte (0,164s)
+      parentId: 1026
+      parentUniqueId: Tests.dll/[Tests][SortidaTests][suite]
+    m_ResultText: substractTest (0,033s)
     m_ResultStacktrace: 
     m_TestListState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 491feba7
-      m_LastClickedID: -1477763255
-      m_ExpandedIDs: afd27581a3098b8def037a9f369ab5ab4f284b1c1332713c06e9c468ffffff7f
+      m_SelectedIDs: 110f1a8a
+      m_LastClickedID: -1978003695
+      m_ExpandedIDs: afd27581a3098b8def037a9f369ab5ab4f284b1c22524b3a1332713c7f57584105b2df6606e9c468ffffff7f
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
