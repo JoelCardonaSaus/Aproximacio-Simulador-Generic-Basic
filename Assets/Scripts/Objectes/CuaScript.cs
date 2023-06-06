@@ -87,7 +87,6 @@ public class CuaScript : LlibreriaObjectes
             ultimTemps = tActual;
             if (nDisponible != -1){
                 SeguentsObjectes[nDisponible].GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
-                tempsObjecteCua.Add(entitat, 0);
                 ++entitatsEnviades;
             } else {
                 cuaObjecte.Enqueue(entitat);
@@ -143,6 +142,7 @@ public class CuaScript : LlibreriaObjectes
             } else {
                 estat = states.BUIT;
             }
+            
             while (objectesRebutjats.Count != 0) {
                 // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
                 if (AvisaDisponibilitat()) {
