@@ -74,7 +74,6 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
             GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
             objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(novaEntitat, this.gameObject);
             float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
-                    Debug.Log("TempsActual + ultim " + tActual + " " + ultimTemps);
             tempsBloquejat += (tActual - ultimTemps);
             ultimTemps = tActual;
             GenerarEsdevenimentArribada(tActual); // Es programa un nou esdeveniment d'arribada

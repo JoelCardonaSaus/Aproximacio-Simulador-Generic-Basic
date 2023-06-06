@@ -10,7 +10,7 @@ public class CuaScript : LlibreriaObjectes
     public int capacitatMaxima = -1; // -1 == No hi ha capacitat màxima, >0 capacitat màxima de la cua
     private Queue<GameObject> cuaObjecte = new Queue<GameObject>();
     private Dictionary<GameObject, double> tempsObjecteCua = new Dictionary<GameObject, double>();
-    private Queue<GameObject> objectesRebutjats = new Queue<GameObject>();
+    private List<GameObject> objectesRebutjats = new List<GameObject>();
     private enum states { BUIT, NOBUIT, PLE };
     private states estat;
 
@@ -53,7 +53,7 @@ public class CuaScript : LlibreriaObjectes
 
     public override void IniciaSimulacio(){
         estat = states.BUIT;
-        objectesRebutjats = new Queue<GameObject>();
+        objectesRebutjats = new List<GameObject>();
         tempsObjecteCua = new Dictionary<GameObject, double>();
         cuaObjecte = new Queue<GameObject>();
         tempsBuit = 0;
@@ -72,6 +72,8 @@ public class CuaScript : LlibreriaObjectes
     {
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         if (estat == states.NOBUIT){
+            //Avisem als seguents objecte que hi ha més d'un element per enviar
+            //CercaDisponible();
             cuaObjecte.Enqueue(entitat);
             float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsObjecteCua.Add(entitat, tActual);
@@ -208,14 +210,14 @@ public class CuaScript : LlibreriaObjectes
             float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsPle += (tActual-ultimTemps);
             ultimTemps = tActual;
-            if (!objectesRebutjats.Contains(objecteLlibreria))  objectesRebutjats.Enqueue(objecteLlibreria);
+            objectesRebutjats.Add(objecteLlibreria);
             return false;
         }
     }
 
     public override void ReiniciaSimulador(){
         estat = states.BUIT;
-        objectesRebutjats = new Queue<GameObject>();
+        objectesRebutjats = new List<GameObject>();
         tempsObjecteCua = new Dictionary<GameObject, double>();
         cuaObjecte = new Queue<GameObject>();
         tempsBuit = 0;
@@ -237,7 +239,8 @@ public class CuaScript : LlibreriaObjectes
 
     // Retorna cert si l'objecte a qui s'avisa pot enviar-li una nova entitat
     private bool AvisaDisponibilitat(){
-        GameObject objecteNou = objectesRebutjats.Dequeue();
+        GameObject objecteNou = objectesRebutjats[0];
+        objectesRebutjats.RemoveAt(0);
         return objecteNou.GetComponent<LlibreriaObjectes>().NotificacioDisponible(this.gameObject);
 
     }
