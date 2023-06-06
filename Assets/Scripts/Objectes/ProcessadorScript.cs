@@ -129,7 +129,9 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
             if (maxEntitatsParalel == -1) capacitat = "∞";
             else capacitat = maxEntitatsParalel.ToString();
             etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
-            if (entitatsAEnviar.Count != 0) {
+
+            bool rebutjat = false;
+            while (entitatsAEnviar.Count != 0 && !rebutjat) {
                 int nDisponible = CercaDisponible();
                 if (nDisponible != -1){
                     entitat = entitatsAEnviar.Dequeue();
@@ -137,22 +139,12 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                     if (maxEntitatsParalel == -1) capacitat = "∞";
                     else capacitat = maxEntitatsParalel.ToString();
                     etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
-                    if (entitatsAEnviar.Count == 0){
-                        if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
-                        else estat = estats.PROCESSANT;
-                        while (objectesRebutjats.Count != 0) {
-                            // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
-                            if (AvisaDisponibilitat()) {
-                                break;
-                            }
-                        }
-                    } else {
-                        estat = estats.BLOQUEJAT;
-                    }
                 } else {
+                    rebutjat = true;
                     estat = estats.BLOQUEJAT;
                 }
-            } else {
+            } 
+            if (entitatsAEnviar.Count == 0){
                 if (entitatsProcessant.Count == 0) estat = estats.DISPONIBLE;
                 else estat = estats.PROCESSANT;
                 while (objectesRebutjats.Count != 0) {
@@ -162,6 +154,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
                     }
                 }
             }
+            else estat = estats.BLOQUEJAT;
             return true;
             
         }

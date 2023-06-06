@@ -73,7 +73,6 @@ public class CuaScript : LlibreriaObjectes
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         if (estat == states.NOBUIT){
             //Avisem als seguents objecte que hi ha més d'un element per enviar
-            //CercaDisponible();
             cuaObjecte.Enqueue(entitat);
             float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsObjecteCua.Add(entitat, tActual);
@@ -127,7 +126,9 @@ public class CuaScript : LlibreriaObjectes
             else capacitat = capacitatMaxima.ToString();
             etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
 
-            if (cuaObjecte.Count != 0){
+            bool rebutjat = false;
+
+            while (cuaObjecte.Count != 0 && !rebutjat){
                 int nDisponible = CercaDisponible();
                 if (nDisponible != -1){
                     entitat = cuaObjecte.Dequeue();
@@ -137,14 +138,13 @@ public class CuaScript : LlibreriaObjectes
                     if (capacitatMaxima == -1) capacitat = "∞";
                     else capacitat = capacitatMaxima.ToString();
                     etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
-                    if (cuaObjecte.Count == 0) estat = states.BUIT;
-                    else estat = states.NOBUIT;
                 } else {
-                    estat = states.NOBUIT;
+                    rebutjat = true;
                 }
-            } else {
-                estat = states.BUIT;
-            }
+            } 
+
+            if (cuaObjecte.Count == 0) estat = states.BUIT;
+            else estat = states.NOBUIT;
             
             while (objectesRebutjats.Count != 0) {
                 // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
@@ -169,7 +169,9 @@ public class CuaScript : LlibreriaObjectes
             else capacitat = capacitatMaxima.ToString();
             etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
 
-            if (cuaObjecte.Count != 0){
+            bool rebutjat = false;
+
+            while (cuaObjecte.Count != 0 && !rebutjat){
                 int nDisponible = CercaDisponible();
                 if (nDisponible != -1){
                     entitat = cuaObjecte.Dequeue();
@@ -179,13 +181,14 @@ public class CuaScript : LlibreriaObjectes
                     if (capacitatMaxima == -1) capacitat = "∞";
                     else capacitat = capacitatMaxima.ToString();
                     etiquetes.text = cuaObjecte.Count+"/"+capacitat+"\n"+transform.name;
-                    estat = states.NOBUIT;
                 } else {
-                    estat = states.NOBUIT;
+                    rebutjat = true;
                 }
-            } else {
-                estat = states.BUIT;
-            }
+            } 
+
+            if (cuaObjecte.Count == 0) estat = states.BUIT;
+            else estat = states.NOBUIT;
+
             while (objectesRebutjats.Count != 0) {
                 // A la funcio AvisaDisponibilitat es fa un Dequeue del objectesRebutjats
                 if (AvisaDisponibilitat()) {
