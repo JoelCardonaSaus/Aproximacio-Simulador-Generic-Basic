@@ -163,7 +163,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
 
     public override bool EstaDisponible(GameObject objecteLlibreria)
     {
-        if (estat != estats.BLOQUEJAT && maxEntitatsParalel > entitatsProcessant.Count){
+        if (estat != estats.BLOQUEJAT && (maxEntitatsParalel > entitatsProcessant.Count || maxEntitatsParalel == -1)){
             float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             if (estat == estats.DISPONIBLE) tempsDisponible += (tActual-ultimTemps);
             else if (estat == estats.PROCESSANT) tempsProcessat += (tActual-ultimTemps);
