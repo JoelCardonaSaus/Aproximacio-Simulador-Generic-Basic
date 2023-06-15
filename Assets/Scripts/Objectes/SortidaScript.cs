@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class SortidaScript : LlibreriaObjectes
 {
@@ -98,7 +99,7 @@ public class SortidaScript : LlibreriaObjectes
         float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
         
         etiqueta.text = transform.name + "\n";
-        if (nEntitatsDestruides != 0) estadistics += "Temps mig entitats destruides: " + (tempsActual/(nEntitatsDestruides)) +"\n";
+        if (nEntitatsDestruides != 0) estadistics += "Temps mig entitats destruides: " + (float)Math.Round((tempsActual/(nEntitatsDestruides)),2) +"\n";
 
         etiqueta.text += estadistics; 
     }

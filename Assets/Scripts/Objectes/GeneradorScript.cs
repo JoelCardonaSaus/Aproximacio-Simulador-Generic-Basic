@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -165,9 +166,9 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         etiquetes.text += transform.name + "\n";
         ultimTemps = tempsActual;
         float tempsTotal = tempsGenerant+tempsBloquejat;
-        float percGenerant = 100*(tempsGenerant/(tempsTotal));
-        float percBloquejat = 100*(tempsBloquejat/(tempsTotal));
-        if (nEntitatsGenerades != 0) estadistics += "Temps entre entitats: " + (tempsTotal/nEntitatsGenerades) +"\n";
+        float percGenerant = (float)Math.Round(100*(tempsGenerant/(tempsTotal)),2);
+        float percBloquejat = (float)Math.Round(100-percGenerant,2);
+        if (nEntitatsGenerades != 0) estadistics += "Temps entre entitats: " + (float)Math.Round(tempsTotal/nEntitatsGenerades) +"\n";
         estadistics += "% Generant: " + percGenerant + "\n";
         estadistics += "% Bloquejat: " + percBloquejat + "\n";
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
 {
@@ -205,7 +206,6 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
 
 
     public void GenerarEsdevenimentProces(GameObject entitat, float tempsActual){
-        Debug.Log("Es genera un esdeveniment per a un processador " + tempsActual.ToString());
         if (distribuidor==null) distribuidor = new ConstantDistribution(5);
         float tempsProcessat = (float)distribuidor.ObteSeguentNumero();
         tempsMigEntitatsProcessador+=tempsProcessat;
@@ -215,7 +215,6 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     }
 
     public void TractarEsdeveniment(Esdeveniment e){
-        Debug.Log("Una entitat s'ha processat");
         switch (e.tipusEsdeveniment)
         {
             case Esdeveniment.Tipus.PROCESSOS:
@@ -288,10 +287,10 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
             tempsBloquejat += (tempsActual - ultimTemps);
         }
         ultimTemps = tempsActual;
-        float percDisponible = 100*(tempsDisponible/(tempsActual));
-        float percProcessant = 100*(tempsProcessat/(tempsActual));
-        float percBloquejat = 100*(tempsBloquejat/(tempsActual));
-        if (nEntitatsEnviades != 0) estadistics += "Temps mig processat: " + (tempsMigEntitatsProcessador/(entitatsProcessant.Count + nEntitatsTractades)) +"\n";
+        float percDisponible = (float)Math.Round(100*(tempsDisponible/(tempsActual)),2);
+        float percProcessant = (float)Math.Round(100*(tempsProcessat/(tempsActual)),2);
+        float percBloquejat = (float)Math.Round(100-(percDisponible+percProcessant),2);
+        if (nEntitatsEnviades != 0) estadistics += "Temps mig processat: " + (float)Math.Round((tempsMigEntitatsProcessador/(entitatsProcessant.Count + nEntitatsTractades)),2) +"\n";
         estadistics += "% Disponible: " + percDisponible + "\n";
         estadistics += "% Processant: " + percProcessant + "\n";
         estadistics += "% Bloquejat: " + percBloquejat + "\n";

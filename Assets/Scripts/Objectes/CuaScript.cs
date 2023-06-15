@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -274,10 +275,10 @@ public class CuaScript : LlibreriaObjectes
             tempsPle += (tempsActual - ultimTemps);
         }
         ultimTemps = tempsActual;
-        float percBuit = 100*(tempsBuit/(tempsActual));
-        float percNoBuit = 100*(tempsNoBuit/(tempsActual));
-        float percPle = 100*(tempsPle/(tempsActual));
-        if (entitatsEnviades != 0) estadistics += "Temps mig entitats a la cua: " + (tempsTotalEntitatsEnviades/entitatsEnviades) +"\n";
+        float percBuit = (float)Math.Round(100*(tempsBuit/(tempsActual)), 2);
+        float percNoBuit = (float)Math.Round(100*(tempsNoBuit/(tempsActual)), 2);
+        float percPle = (float)Math.Round(100-(percBuit+percNoBuit), 2);
+        if (entitatsEnviades != 0) estadistics += "Temps mig entitats a la cua: " + Math.Round((tempsTotalEntitatsEnviades/entitatsEnviades),2) +"\n";
         estadistics += "% Buit: " + percBuit + "\n";
         estadistics += "% No Buit: " + percNoBuit + "\n";
         estadistics += "% Ple: " + percPle + "\n";
