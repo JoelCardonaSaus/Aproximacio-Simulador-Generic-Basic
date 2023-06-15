@@ -33,7 +33,6 @@ public class SortidaScript : LlibreriaObjectes
 
     public override void RepEntitat(GameObject entitat, GameObject objecteLlibreria)
     {
-        Debug.Log("Es destrueix una nova entitat");
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         ++nEntitatsDestruides;
         float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();

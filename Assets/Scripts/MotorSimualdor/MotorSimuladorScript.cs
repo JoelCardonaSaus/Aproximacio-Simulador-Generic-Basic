@@ -65,12 +65,14 @@ public class MotorSimuladorScript : MonoBehaviour
             if (llistaEsdevenmients.Count > 0){
                 Esdeveniment eActual = llistaEsdevenmients.Dequeue();
                 tempsActual = eActual.temps;
+                UIScript.Instancia.ActualitzarTempsActual(tempsActual);
                 eActual.Executar();
                 UIScript.Instancia.UltimEsdeveniment(eActual);
                 for (int i = 0; i < transform.childCount; ++i) transform.GetChild(i).GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
             }
             if (llistaEsdevenmients.Count == 0 && tempsMaxim > tempsActual) {
                 tempsActual = tempsMaxim;
+                UIScript.Instancia.ActualitzarTempsActual(tempsActual);
                 for (int i = 0; i < transform.childCount; ++i) transform.GetChild(i).GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
             }   
         }
@@ -102,6 +104,7 @@ public class MotorSimuladorScript : MonoBehaviour
         }
 
         tempsActual = 0;
+        UIScript.Instancia.ActualitzarTempsActual(tempsActual);
     }
 
     public float ObteTempsActual()
@@ -114,12 +117,14 @@ public class MotorSimuladorScript : MonoBehaviour
         else if (llistaEsdevenmients.Count > 0){
             Esdeveniment eActual = llistaEsdevenmients.Dequeue();
             tempsActual = eActual.temps;
+            UIScript.Instancia.ActualitzarTempsActual(tempsActual);
             eActual.Executar();
             UIScript.Instancia.UltimEsdeveniment(eActual);
             for (int i = 0; i < transform.childCount; ++i) transform.GetChild(i).GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
         }
         if (llistaEsdevenmients.Count == 0 && tempsMaxim > tempsActual) {
             tempsActual = tempsMaxim;
+            UIScript.Instancia.ActualitzarTempsActual(tempsActual);
             for (int i = 0; i < transform.childCount; ++i) transform.GetChild(i).GetComponent<LlibreriaObjectes>().ActualizaEstadistics();
         }
     }

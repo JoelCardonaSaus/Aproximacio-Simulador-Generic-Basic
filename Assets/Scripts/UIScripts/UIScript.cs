@@ -32,7 +32,7 @@ public class UIScript : MonoBehaviour
     public GameObject prefabLogs;
     public GameObject finestraErrors;
     public Scrollbar barra;
-
+    public TextMeshProUGUI tempsActual;
     public GameObject logs;
 
     private static UIScript instancia;
@@ -408,5 +408,9 @@ public class UIScript : MonoBehaviour
         Vector3 pos = contentView.GetComponent<RectTransform>().anchoredPosition;
         pos.y = 0;
         contentView.GetComponent<RectTransform>().anchoredPosition = pos;
+    }
+
+    public void ActualitzarTempsActual(float tActual){
+        tempsActual.text = "Temps actual " + tActual;
     }
 }
