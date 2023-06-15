@@ -151,26 +151,6 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         return nEntitatsGenerades;
     }
 
-
-    public override void GenerarPlots(){
-        EstadisticsController eC = transform.parent.GetComponent<EstadisticsController>();
-        double[] nEntitatsEstadistic = new double[1] { nEntitatsGenerades };
-        string [] etiquetes = new string[1] { gameObject.transform.name };
-        string nomImatge = "Output"+gameObject.transform.name;
-        eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
-
-        float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
-        if (estat == estats.BLOQUEJAT) tempsBloquejat += (tempsActual - ultimTemps); 
-        else tempsGenerant += (tempsActual - ultimTemps);
-        double[] tempsEstats = new double[2] { tempsGenerant, tempsBloquejat };
-        etiquetes = new string[2] { "Generant", "Bloquejat" };
-        nomImatge = "TempsEstats"+gameObject.transform.name;
-        eC.GeneraEstadistic(0, tempsEstats, etiquetes, "Temps", nomImatge);
-
-        nomImatge = "PercentatgeEstats"+gameObject.transform.name;
-        eC.GeneraEstadistic(2, tempsEstats, etiquetes, "Percentatge", nomImatge);
-    }
-
     public override void ActualizaEstadistics(){
         string estadistics = "Output: " + nEntitatsGenerades+"\n";
         float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());

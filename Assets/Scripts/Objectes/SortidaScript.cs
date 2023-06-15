@@ -93,14 +93,6 @@ public class SortidaScript : LlibreriaObjectes
         nEntitatsDestruides = 0;
     }
 
-    public override void GenerarPlots(){
-        EstadisticsController eC = transform.parent.GetComponent<EstadisticsController>();
-        double[] nEntitatsEstadistic = new double[1] { nEntitatsDestruides };
-        string [] etiquetes = new string[1] { gameObject.transform.name };
-        string nomImatge = "Output"+gameObject.transform.name;
-        eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
-    }
-
     public override void ActualizaEstadistics(){
         string estadistics = "Output: " + nEntitatsDestruides +"\n";
         float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());

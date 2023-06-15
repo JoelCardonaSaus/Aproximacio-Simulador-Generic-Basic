@@ -24,7 +24,6 @@ public abstract class LlibreriaObjectes : MonoBehaviour
     public abstract bool NotificacioDisponible(GameObject objecteLlibreria);
     public abstract bool EstaDisponible(GameObject objecteLlibreria);
     public abstract int ObteTipusObjecte();
-    public abstract void GenerarPlots();
     public abstract void ReiniciaSimulador();
     public abstract void ActualizaEstadistics();
     

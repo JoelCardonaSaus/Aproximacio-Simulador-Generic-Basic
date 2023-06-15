@@ -269,27 +269,6 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         objectesRebutjats.RemoveAt(0);
         return objecteNou.GetComponent<LlibreriaObjectes>().NotificacioDisponible(this.gameObject);
     }
-
-    public override void GenerarPlots(){
-        EstadisticsController eC = transform.parent.GetComponent<EstadisticsController>();
-
-        float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
-        if (estat == estats.DISPONIBLE) tempsDisponible += (tempsActual - ultimTemps); 
-        else if (estat == estats.PROCESSANT) tempsProcessat += (tempsActual - ultimTemps);
-        else tempsBloquejat += (tempsActual - ultimTemps);
-        double[] tempsEstats = new double[3] { tempsDisponible, tempsProcessat, tempsBloquejat };
-        string[] etiquetes = new string[3] { "Disponible", "Processant", "Bloquejat" };
-        string nomImatge = "TempsEstats"+gameObject.transform.name;
-        eC.GeneraEstadistic(0, tempsEstats, etiquetes, "Temps", nomImatge);
-
-        nomImatge = "PercentatgeEstats"+gameObject.transform.name;
-        eC.GeneraEstadistic(2, tempsEstats, etiquetes, "Percentatge", nomImatge);
-
-        double[] nEntitatsEstadistic = new double[1] { nEntitatsEnviades };
-        etiquetes = new string[1] { gameObject.transform.name };
-        nomImatge = "Output"+gameObject.transform.name;
-        eC.GeneraEstadistic(0, nEntitatsEstadistic, etiquetes, "Sortides",nomImatge);
-    }
     
     public override void ActualizaEstadistics(){
         string estadistics = "Output: " + nEntitatsEnviades +"\n";

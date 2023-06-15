@@ -98,7 +98,6 @@ public class MotorSimuladorScript : MonoBehaviour
         }
 
         for (int i = 0; i < transform.childCount; ++i){
-            transform.GetChild(i).GetComponent<LlibreriaObjectes>().GenerarPlots();
             transform.GetChild(i).GetComponent<LlibreriaObjectes>().ReiniciaSimulador();
         }
 
