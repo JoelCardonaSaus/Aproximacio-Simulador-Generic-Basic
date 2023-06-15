@@ -58,7 +58,6 @@ public class UIScript : MonoBehaviour
 
 
 
-    [SerializeField] public Texture2D[] imatgesCursor = new Texture2D[6];
     [SerializeField] public Texture2D[] imatgesStartPause = new Texture2D[2];
     private GameObject[] ajuntar = new GameObject[2];
     private GameObject[] desjuntar = new GameObject[2];
@@ -180,7 +179,6 @@ public class UIScript : MonoBehaviour
                 comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[0], new Rect(0, 0, imatgesStartPause[0].width, imatgesStartPause[0].height), new Vector2(0.5f, 0.5f));
             } else if (estat == estatsSimulacio.PAUSAT){
                 SeleccionarOpcio(btnSeleccionat.CAP);
-                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
                 estat = estatsSimulacio.SIMULANT;
                 logs.SetActive(true);
@@ -284,34 +282,26 @@ public class UIScript : MonoBehaviour
         switch (seleccionatNou){
             case btnSeleccionat.GENERADOR:
                 generadorButton.GetComponent<Image>().color = Color.green;
-                Cursor.SetCursor(imatgesCursor[0], Vector2.zero, CursorMode.Auto);
                 break;
             case btnSeleccionat.CUA:
                 cuaButton.GetComponent<Image>().color = Color.green;
-                Cursor.SetCursor(imatgesCursor[1], Vector2.zero, CursorMode.Auto);
                 break;
             case btnSeleccionat.PROCESSADOR:
                 processadorButton.GetComponent<Image>().color = Color.green;
-                Cursor.SetCursor(imatgesCursor[2], Vector2.zero, CursorMode.Auto);
                 break;
             case btnSeleccionat.SORTIDA:
                 sortidaButton.GetComponent<Image>().color = Color.green;
-                Cursor.SetCursor(imatgesCursor[3], Vector2.zero, CursorMode.Auto);
                 break;
             case btnSeleccionat.JUNTAR:
                 juntarButton.GetComponent<Image>().color = Color.green;
-                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 break;
             case btnSeleccionat.DESJUNTAR:
                 desjuntarButton.GetComponent<Image>().color = Color.green;
-                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 break;
             case btnSeleccionat.ELIMINAR:
                 eliminarButton.GetComponent<Image>().color = Color.red;
-                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 break;
             default:
-                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 break;
         }
     }
