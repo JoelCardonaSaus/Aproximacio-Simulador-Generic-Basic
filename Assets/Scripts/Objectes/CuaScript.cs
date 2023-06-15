@@ -245,7 +245,6 @@ public class CuaScript : LlibreriaObjectes
         GameObject objecteNou = objectesRebutjats[0];
         objectesRebutjats.RemoveAt(0);
         return objecteNou.GetComponent<LlibreriaObjectes>().NotificacioDisponible(this.gameObject);
-
     }
 
 
