@@ -411,6 +411,6 @@ public class UIScript : MonoBehaviour
     }
 
     public void ActualitzarTempsActual(float tActual){
-        tempsActual.text = "Temps actual " + tActual;
+        if(tempsActual != null) tempsActual.text = "Temps actual " + tActual;
     }
 }
