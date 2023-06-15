@@ -71,11 +71,14 @@ public class CuaScript : LlibreriaObjectes
 
     public override void RepEntitat(GameObject entitat, GameObject objecteLlibreria)
     {
+        float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
+        Esdeveniment e = new Esdeveniment(objecteLlibreria, this.gameObject, tActual, entitat, Esdeveniment.Tipus.eRepEntitat);
+        UIScript.Instancia.UltimEsdeveniment(e);
+
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         if (estat == states.NOBUIT){
             //Avisem als seguents objecte que hi ha més d'un element per enviar
             cuaObjecte.Enqueue(entitat);
-            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsObjecteCua.Add(entitat, tActual);
             tempsNoBuit += (tActual - ultimTemps);
             ultimTemps = tActual;
@@ -83,7 +86,6 @@ public class CuaScript : LlibreriaObjectes
             else estat = states.PLE;
         }
         else if (estat == states.BUIT){
-            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             int nDisponible = CercaDisponible();
             tempsBuit += (tActual - ultimTemps);
             ultimTemps = tActual;
@@ -106,7 +108,11 @@ public class CuaScript : LlibreriaObjectes
     // Retorna fals si no pot enviar cap entitat al que ha avisat que esta disponible
     public override bool NotificacioDisponible(GameObject objecteLlibreria)
     {
+        
         float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
+        Esdeveniment e = new Esdeveniment(objecteLlibreria, this.gameObject, tActual, null, Esdeveniment.Tipus.eNotificacioDisponible);
+        UIScript.Instancia.UltimEsdeveniment(e);
+
         if (estat == states.BUIT){
             tempsBuit += (tActual - ultimTemps);
             ultimTemps = tActual;

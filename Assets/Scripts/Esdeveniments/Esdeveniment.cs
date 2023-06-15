@@ -11,7 +11,7 @@ public class Esdeveniment : IComparable<Esdeveniment>
     public float temps;
     private GameObject entitatImplicada;
 
-    public enum Tipus { PROCESSOS, ARRIBADES };
+    public enum Tipus { PROCESSOS, ARRIBADES, eRepEntitat, eNotificacioDisponible };
 
     public Tipus tipusEsdeveniment;
 

@@ -36,6 +36,8 @@ public class SortidaScript : LlibreriaObjectes
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         ++nEntitatsDestruides;
         float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
+        Esdeveniment e = new Esdeveniment(objecteLlibreria, this.gameObject, tActual, entitat, Esdeveniment.Tipus.eRepEntitat);
+        UIScript.Instancia.UltimEsdeveniment(e);
         if (tempsEntreEntitats.Count != 0) {
             tempsEntreEntitats.Add(tActual-tempsEntreEntitats[tempsEntreEntitats.Count-1]);
         } else {

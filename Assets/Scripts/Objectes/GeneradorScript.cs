@@ -66,15 +66,24 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
 
     // Per parametre es passa el gameobject de la llibreria que avisa de la seva disponibilitat
     public override bool NotificacioDisponible(GameObject objecteLlibreria){
-        if (estat == estats.GENERANT) return false;
+        if (estat == estats.GENERANT){
+            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
+            Esdeveniment e = new Esdeveniment(objecteLlibreria, this.gameObject, tActual, null, Esdeveniment.Tipus.eNotificacioDisponible);
+            UIScript.Instancia.UltimEsdeveniment(e);
+            return false;
+        } 
         else if (estat == estats.BLOQUEJAT)
         {
+            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             etiquetes.text = "0/1\n"+transform.name;
             estat = estats.GENERANT;
             ++nEntitatsGenerades;
             GameObject novaEntitat = Instantiate(entitatTemporal, transform.position + new Vector3(0,+1,0), Quaternion.identity);
+
+            Esdeveniment e = new Esdeveniment(objecteLlibreria, this.gameObject, tActual, novaEntitat, Esdeveniment.Tipus.eNotificacioDisponible);
+            UIScript.Instancia.UltimEsdeveniment(e);
+
             objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(novaEntitat, this.gameObject);
-            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsBloquejat += (tActual - ultimTemps);
             ultimTemps = tActual;
             GenerarEsdevenimentArribada(tActual); // Es programa un nou esdeveniment d'arribada

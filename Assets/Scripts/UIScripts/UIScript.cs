@@ -368,12 +368,15 @@ public class UIScript : MonoBehaviour
         if (prefabLogs != null){
             var nouText = Instantiate(prefabLogs);
             string esdev = "";
-            if (e.tipusEsdeveniment == Esdeveniment.Tipus.PROCESSOS) esdev = "PROCESSOS";
-            else esdev = "ARRIBADES";
+            if (e.tipusEsdeveniment == Esdeveniment.Tipus.PROCESSOS) esdev = "eProces";
+            else if (e.tipusEsdeveniment == Esdeveniment.Tipus.ARRIBADES) esdev = "eArribada";
+            else if (e.tipusEsdeveniment == Esdeveniment.Tipus.eNotificacioDisponible) esdev = "eNotificacioDisponible";
+            else if (e.tipusEsdeveniment == Esdeveniment.Tipus.eRepEntitat) esdev = "eRepEntitat";
+
             TMP_Text text1 = nouText.transform.GetChild(0).GetComponent<TMP_Text>();
             TMP_Text text2 = nouText.transform.GetChild(1).GetComponent<TMP_Text>();
             TMP_Text text3 = nouText.transform.GetChild(2).GetComponent<TMP_Text>();
-            text1.text = e.obteProductor().transform.name;
+            text1.text = e.obteConsumidor().transform.name;
             text1.color = Color.green;
             text2.text = e.temps.ToString();
             text2.color = Color.green;
@@ -411,6 +414,6 @@ public class UIScript : MonoBehaviour
     }
 
     public void ActualitzarTempsActual(float tActual){
-        if(tempsActual != null) tempsActual.text = "Temps actual " + tActual;
+        if(tempsActual != null) tempsActual.text = "Temps actual: " + tActual;
     }
 }

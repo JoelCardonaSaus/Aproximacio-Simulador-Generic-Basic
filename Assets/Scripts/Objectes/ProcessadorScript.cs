@@ -81,9 +81,11 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
 
     public override void RepEntitat(GameObject entitat, GameObject objecteLlibreria)
     {
+        float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
+        Esdeveniment e = new Esdeveniment(objecteLlibreria, this.gameObject, tActual, entitat, Esdeveniment.Tipus.eRepEntitat);
+        UIScript.Instancia.UltimEsdeveniment(e);
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         if (estat == estats.DISPONIBLE){
-            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsDisponible += (tActual-ultimTemps);
             ultimTemps = tActual;
             GenerarEsdevenimentProces(entitat, tActual);
@@ -94,7 +96,6 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
             etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
         }
         else if (estat == estats.PROCESSANT){
-            float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
             tempsProcessat += (tActual-ultimTemps);
             ultimTemps = tActual;
             GenerarEsdevenimentProces(entitat, tActual);
@@ -110,6 +111,9 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
     public override bool NotificacioDisponible(GameObject objecteLlibreria)
     {
         float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
+        Esdeveniment e = new Esdeveniment(objecteLlibreria, this.gameObject, tActual, null, Esdeveniment.Tipus.eNotificacioDisponible);
+        UIScript.Instancia.UltimEsdeveniment(e);
+
         if (estat == estats.DISPONIBLE){
             tempsDisponible += (tActual-ultimTemps);
             ultimTemps = tActual;
