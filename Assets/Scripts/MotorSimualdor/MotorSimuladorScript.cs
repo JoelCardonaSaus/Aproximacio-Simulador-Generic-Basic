@@ -7,7 +7,6 @@ public class MotorSimuladorScript : MonoBehaviour
 {
     private int idSeguentObjecte;
     public float escalaTemps;
-    private int entitatsTemporals = 0;
     private GameObject generadorPrefab;
     private GameObject cuaPrefab;
     private GameObject processadorPrefab;
@@ -200,16 +199,8 @@ public class MotorSimuladorScript : MonoBehaviour
         AfegirObjecte(objecteNou);
     }
 
-    public void CanviaEntitatsTemporals(int entitatsSeleccionades){
-        entitatsTemporals = entitatsSeleccionades;
-    }
-
     public void CanviaTempsMaxim(float tMax){
         tempsMaxim = tMax;
-    }
-
-    public int ObteEntitatsSeleccionades(){
-        return entitatsTemporals;
     }
 
     public int ObteIdSeguentObjecte(){

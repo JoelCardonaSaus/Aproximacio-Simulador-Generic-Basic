@@ -59,7 +59,6 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         etiquetes.text = "0/1\n"+transform.name;
         GenerarEsdevenimentArribada(MotorSimuladorScript.Instancia.ObteTempsActual());
         tempsEntreEntitats = new List<double>();
-        entitatTemporal = entitatsTemporals[MotorSimuladorScript.Instancia.ObteEntitatsSeleccionades()];
     }
     
     public override void RepEntitat(GameObject entitat, GameObject objecteLlibreria){} // El generador mai rebra una entitat
@@ -211,11 +210,12 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         return false;
     }
 
-    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, float[] nousParametres, string nom){
+    public void ActualitzaPropietats(politiquesEnrutament novaPolitica, distribucionsProbabilitat d, float[] nousParametres, string nom, int entitatsTemp){
         transform.name = nom;
         etiquetes.text = "0/1\n"+transform.name;
         enrutament = novaPolitica;
         distribucio = d;
+        entitatTemporal = entitatsTemporals[entitatsTemp];
         double[] aux = new double[nousParametres.Length];
         for (int i = 0; i < nousParametres.Length; ++i) aux[i] = (double)nousParametres[i];
         parametres = aux;

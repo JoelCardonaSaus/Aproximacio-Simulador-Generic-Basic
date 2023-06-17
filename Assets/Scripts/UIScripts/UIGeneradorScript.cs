@@ -11,6 +11,11 @@ public class UIGeneradorScript : MonoBehaviour
     private GeneradorScript.distribucionsProbabilitat distribucioConfirmada;
     private string nomActual;
     private string nomConfirmat;
+    public Dropdown entitat;
+
+    private enum entitats { PAQUETS, PERSONES, CERCLES };
+    private entitats entitatsActuals = entitats.PAQUETS;
+    private entitats entitatsConfirmades = entitats.PAQUETS;
     private float[] parametresActuals;
     private float[] parametresConfirmats;
     public InputField nomObjecte;
@@ -116,6 +121,21 @@ public class UIGeneradorScript : MonoBehaviour
                 parametresActuals = new float[2];
                 iParam1.text = ""; iParam2.text = "";
             } 
+        } else {
+            aplicar.interactable = false;
+            cancela.interactable = false;
+        }
+    }
+
+    public void CanviEntitatsSeleccionat()
+    {
+        if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT)
+        {
+            cancela.interactable = true;
+            aplicar.interactable = true;
+            if (entitat.value == 0) entitatsActuals = entitats.PAQUETS;
+            else if (entitat.value == 1) entitatsActuals = entitats.PERSONES;
+            else if (entitat.value == 2) entitatsActuals = entitats.CERCLES;
         } else {
             aplicar.interactable = false;
             cancela.interactable = false;
@@ -243,9 +263,12 @@ public class UIGeneradorScript : MonoBehaviour
         distribucioConfirmada = distribucioActual;
         parametresConfirmats = parametresActuals;
         nomConfirmat = nomActual;
+        if (entitatsActuals != entitatsConfirmades){
+            entitatsConfirmades = entitatsActuals;
+        }
         cancela.interactable = false;
         aplicar.interactable = false;
-        generadorScript.ActualitzaPropietats(politicaActual, distribucioActual, parametresActuals, nomActual);
+        generadorScript.ActualitzaPropietats(politicaActual, distribucioActual, parametresActuals, nomActual, (int)entitatsConfirmades);
     }
 
     public void CancelaCanvis(){
@@ -282,6 +305,11 @@ public class UIGeneradorScript : MonoBehaviour
             iParam2.text = parametresConfirmats[1].ToString();
             iParam3.text = parametresConfirmats[2].ToString();
         }
+
+        entitatsActuals = entitatsConfirmades;
+        if (entitatsConfirmades == entitats.PAQUETS) entitat.value = 0;
+        else if (entitatsConfirmades == entitats.PERSONES) entitat.value = 1;
+        else if (entitatsConfirmades == entitats.CERCLES) entitat.value = 2;
     }
 
     void Start()

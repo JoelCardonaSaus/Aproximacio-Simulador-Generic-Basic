@@ -79,7 +79,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Cancelar
+  m_Text: "Cancel\xB7lar"
 --- !u!1 &3767175491475767135
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,8 +409,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -112.09001, y: 209.40002}
-  m_SizeDelta: {x: 124.1723, y: 28.9969}
+  m_AnchoredPosition: {x: -87.08806, y: 209.40002}
+  m_SizeDelta: {x: 174.18, y: 28.9969}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2913977185093915884
 CanvasRenderer:

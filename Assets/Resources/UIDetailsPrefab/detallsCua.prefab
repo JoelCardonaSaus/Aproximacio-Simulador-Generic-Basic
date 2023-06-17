@@ -159,7 +159,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Cancelar
+  m_Text: "Cancel\xB7lar"
 --- !u!1 &628939751425293133
 GameObject:
   m_ObjectHideFlags: 0
@@ -1067,8 +1067,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -112.09001, y: 209.40002}
-  m_SizeDelta: {x: 124.1723, y: 28.9969}
+  m_AnchoredPosition: {x: -89.35661, y: 209.40002}
+  m_SizeDelta: {x: 169.6392, y: 28.9969}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2913977185093915884
 CanvasRenderer:
@@ -2424,8 +2424,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -112.09, y: 133.9}
-  m_SizeDelta: {x: 124.1723, y: 22.4263}
+  m_AnchoredPosition: {x: -89.356, y: 133.9}
+  m_SizeDelta: {x: 169.64, y: 22.426}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8923309829446520004
 CanvasRenderer:
@@ -2455,7 +2455,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Enrutament:'
+  m_text: 'Encaminament:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2662,8 +2662,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -111, y: 135.37}
-  m_SizeDelta: {x: 124.1723, y: 45.2511}
+  m_AnchoredPosition: {x: -86.543, y: 135.37}
+  m_SizeDelta: {x: 173.09, y: 45.2511}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8923309830557507841
 CanvasRenderer:
@@ -2728,7 +2728,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 1
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
