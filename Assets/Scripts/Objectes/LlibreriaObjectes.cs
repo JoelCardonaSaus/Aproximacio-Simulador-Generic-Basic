@@ -74,8 +74,18 @@ public abstract class LlibreriaObjectes : MonoBehaviour
         lr.positionCount = 2;
         lr.startWidth = 0.8f;
         lr.endWidth = 0.8f;
-        lr.SetPosition(0, transform.position);
-        lr.SetPosition(1, objecte.transform.position);
+        Vector2 posicioInicial = this.gameObject.transform.position;
+        Vector2 posicioFinal = objecte.transform.position;
+        if (this.gameObject.transform.position.x > objecte.transform.position.x) {
+            posicioInicial.x = this.gameObject.transform.position.x-1.5f;
+            posicioFinal.x = objecte.transform.position.x+1.5f;
+        } else {
+            posicioInicial.x = this.gameObject.transform.position.x+1.5f;
+            posicioFinal.x = objecte.transform.position.x-1.5f;            
+        }
+
+        lr.SetPosition(0, posicioInicial);
+        lr.SetPosition(1, posicioFinal);
         lr.textureMode = LineTextureMode.Tile;
         lr.startColor = Color.green;
         lr.endColor = Color.green;
@@ -110,7 +120,13 @@ public abstract class LlibreriaObjectes : MonoBehaviour
 
     public void CanviaPosicioPredecessor(GameObject objecte){
         int i = SeguentsObjectes.IndexOf(objecte);
-        gameObject.transform.GetChild(2+i).GetComponent<LineRenderer>().SetPosition(1, objecte.transform.position);
+        Vector2 posicioFinal = objecte.transform.position;
+        if (this.gameObject.transform.position.x > objecte.transform.position.x) {
+            posicioFinal.x = objecte.transform.position.x+1.5f;
+        } else {
+            posicioFinal.x = objecte.transform.position.x-1.5f;            
+        }
+        gameObject.transform.GetChild(2+i).GetComponent<LineRenderer>().SetPosition(1, posicioFinal);
     }
 
 }

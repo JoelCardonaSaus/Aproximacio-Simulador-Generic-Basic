@@ -132,8 +132,18 @@ public class SortidaScript : LlibreriaObjectes
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + posicioRatoliOffset;
         for (int i = 0; i < SeguentsObjectes.Count; i++){
             LineRenderer lr = gameObject.transform.GetChild(2+i).GetComponent<LineRenderer>();
-            lr.SetPosition(0, transform.position);
-            lr.SetPosition(1, SeguentsObjectes[i].transform.position);
+            Vector2 posicioInicial = this.gameObject.transform.position;
+            Vector2 posicioFinal = SeguentsObjectes[i].transform.position;
+            if (this.gameObject.transform.position.x > SeguentsObjectes[i].transform.position.x) {
+                posicioInicial.x = this.gameObject.transform.position.x-1.5f;
+                posicioFinal.x = SeguentsObjectes[i].transform.position.x+1.5f;
+            } else {
+                posicioInicial.x = this.gameObject.transform.position.x+1.5f;
+                posicioFinal.x = SeguentsObjectes[i].transform.position.x-1.5f;            
+            }
+
+            lr.SetPosition(0, posicioInicial);
+            lr.SetPosition(1, posicioFinal);
         }
         for (int i = 0; i < ObjectesPredecessors.Count; i++){
             ObjectesPredecessors[i].GetComponent<LlibreriaObjectes>().CanviaPosicioPredecessor(this.gameObject);
