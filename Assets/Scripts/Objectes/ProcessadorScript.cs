@@ -86,6 +86,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         UIScript.Instancia.UltimEsdeveniment(e);
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         if (estat == estats.DISPONIBLE){
+            entitat.transform.SetParent(this.gameObject.transform);
             tempsDisponible += (tActual-ultimTemps);
             ultimTemps = tActual;
             GenerarEsdevenimentProces(entitat, tActual);
@@ -96,6 +97,7 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
             etiquetes.text = (entitatsProcessant.Count+entitatsAEnviar.Count)+"/"+capacitat+"\n"+transform.name;
         }
         else if (estat == estats.PROCESSANT){
+            entitat.transform.SetParent(this.gameObject.transform);
             tempsProcessat += (tActual-ultimTemps);
             ultimTemps = tActual;
             GenerarEsdevenimentProces(entitat, tActual);

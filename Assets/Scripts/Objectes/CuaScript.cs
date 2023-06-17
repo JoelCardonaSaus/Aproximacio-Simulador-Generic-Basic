@@ -78,6 +78,7 @@ public class CuaScript : LlibreriaObjectes
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         if (estat == states.NOBUIT){
             //Avisem als seguents objecte que hi ha més d'un element per enviar
+            entitat.transform.SetParent(this.gameObject.transform);
             cuaObjecte.Enqueue(entitat);
             tempsObjecteCua.Add(entitat, tActual);
             tempsNoBuit += (tActual - ultimTemps);
@@ -86,6 +87,7 @@ public class CuaScript : LlibreriaObjectes
             else estat = states.PLE;
         }
         else if (estat == states.BUIT){
+            entitat.transform.SetParent(this.gameObject.transform);
             int nDisponible = CercaDisponible();
             tempsBuit += (tActual - ultimTemps);
             ultimTemps = tActual;
