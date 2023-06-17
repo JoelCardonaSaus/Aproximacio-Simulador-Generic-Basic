@@ -21,6 +21,7 @@ public class CuaScript : LlibreriaObjectes
     private float ultimTemps = 0;
     private float tempsTotalEntitatsEnviades = 0;
     private int entitatsEnviades = 0;
+    private float tempsTotalEntitatsCua = 0;
 
     // Variable per poder moure els objectes
     Vector3 posicioRatoliOffset;
@@ -63,6 +64,7 @@ public class CuaScript : LlibreriaObjectes
         ultimTemps = 0;
         entitatsEnviades = 0;
         tempsTotalEntitatsEnviades = 0;
+        tempsTotalEntitatsCua = 0;
         string capacitat;
         if (capacitatMaxima == -1) capacitat = "∞";
         else capacitat = capacitatMaxima.ToString();
@@ -77,8 +79,10 @@ public class CuaScript : LlibreriaObjectes
 
         entitat.transform.position = transform.position + new Vector3(0,+1,0);
         if (estat == states.NOBUIT){
+            tempsTotalEntitatsCua += (tActual-ultimTemps)*cuaObjecte.Count;
             //Avisem als seguents objecte que hi ha més d'un element per enviar
             entitat.transform.SetParent(this.gameObject.transform);
+
             cuaObjecte.Enqueue(entitat);
             tempsObjecteCua.Add(entitat, tActual);
             tempsNoBuit += (tActual - ultimTemps);
@@ -100,6 +104,9 @@ public class CuaScript : LlibreriaObjectes
                 if (capacitatMaxima == -1 || capacitatMaxima > cuaObjecte.Count) estat = states.NOBUIT;
                 else estat = states.PLE;
             }
+        }
+        else if (estat == states.PLE){
+            tempsTotalEntitatsCua += (tActual-ultimTemps)*cuaObjecte.Count;
         }
         string capacitat;
         if (capacitatMaxima == -1) capacitat = "∞";
@@ -129,7 +136,7 @@ public class CuaScript : LlibreriaObjectes
             tempsObjecteCua.Remove(entitat);
             ++entitatsEnviades;
             objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
-           
+            tempsTotalEntitatsCua += (tActual-ultimTemps)*cuaObjecte.Count;
             string capacitat;
             if (capacitatMaxima == -1) capacitat = "∞";
             else capacitat = capacitatMaxima.ToString();
@@ -173,6 +180,7 @@ public class CuaScript : LlibreriaObjectes
             tempsObjecteCua.Remove(entitat);
             ++entitatsEnviades;
             objecteLlibreria.GetComponent<LlibreriaObjectes>().RepEntitat(entitat, this.gameObject);
+            tempsTotalEntitatsCua += (tActual-ultimTemps)*cuaObjecte.Count;
             string capacitat;
             if (capacitatMaxima == -1) capacitat = "∞";
             else capacitat = capacitatMaxima.ToString();
@@ -213,6 +221,8 @@ public class CuaScript : LlibreriaObjectes
     {
         if (capacitatMaxima == -1 || cuaObjecte.Count < capacitatMaxima){
             float tActual = MotorSimuladorScript.Instancia.ObteTempsActual();
+            tempsTotalEntitatsCua += (tActual-ultimTemps)*cuaObjecte.Count;
+
             if (estat == states.BUIT) tempsBuit += (tActual-ultimTemps);
             else if (estat == states.NOBUIT) tempsNoBuit += (tActual-ultimTemps);
             ultimTemps = tActual;
@@ -238,6 +248,7 @@ public class CuaScript : LlibreriaObjectes
         ultimTemps = 0;
         entitatsEnviades = 0;
         tempsTotalEntitatsEnviades = 0;
+        tempsTotalEntitatsCua = 0;
         string capacitat;
         if (capacitatMaxima == -1) capacitat = "∞";
         else capacitat = capacitatMaxima.ToString();
@@ -268,6 +279,7 @@ public class CuaScript : LlibreriaObjectes
     public override void ActualizaEstadistics(){
         string estadistics = "Output: " + entitatsEnviades+"\n";
         float tempsActual = (MotorSimuladorScript.Instancia.ObteTempsActual());
+        tempsTotalEntitatsCua += (tempsActual-ultimTemps)*cuaObjecte.Count;
         etiquetes.text = cuaObjecte.Count.ToString();
         if (capacitatMaxima == -1) etiquetes.text += "/∞";
         else etiquetes.text += "/" + capacitatMaxima;
@@ -286,7 +298,8 @@ public class CuaScript : LlibreriaObjectes
         float percBuit = (float)Math.Round(100*(tempsBuit/(tempsActual)), 2);
         float percNoBuit = (float)Math.Round(100*(tempsNoBuit/(tempsActual)), 2);
         float percPle = (float)Math.Round(100-(percBuit+percNoBuit), 2);
-        if (entitatsEnviades != 0) estadistics += "Temps mig entitats a la cua: " + Math.Round((tempsTotalEntitatsEnviades/entitatsEnviades),2) +"\n";
+        if (entitatsEnviades != 0) estadistics += "Temps mig entitats a la cua: " + Math.Round((tempsTotalEntitatsCua/(cuaObjecte.Count+entitatsEnviades)),2) +"\n";
+        else estadistics += "Temps mig entitats a la cua: " + Math.Round(tempsTotalEntitatsCua,2) +"\n";
         estadistics += "% Buit: " + percBuit + "\n";
         estadistics += "% No Buit: " + percNoBuit + "\n";
         estadistics += "% Ple: " + percPle + "\n";
