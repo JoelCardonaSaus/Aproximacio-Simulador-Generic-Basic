@@ -52,7 +52,7 @@ public class CuaTests
     }
 
     [Test]
-    public void CuaRepUnObjecteIEnviaAlSeguent()
+    public void CuaRepUnaEntitatIEnviaAlSeguent()
     {
         GameObject cua2 = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
         cua.GetComponent<CuaScript>().AfegeixSeguentObjecte(cua2);
@@ -68,7 +68,7 @@ public class CuaTests
     }
 
     [Test]
-    public void CuaRepUnObjecteINoPotEnviarAlSeguent()
+    public void CuaRepUnaEntitatINoPotEnviarAlSeguent()
     {
         GameObject cua2 = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
         cua.GetComponent<CuaScript>().AfegeixSeguentObjecte(cua2);
@@ -85,7 +85,7 @@ public class CuaTests
     }
 
     [Test]
-    public void CuaRepUnaEntitatCapacitatNoInfinitaIMesGranA1()
+    public void CuaNoBuidaNotificacioDisponible()
     {
         cua.GetComponent<CuaScript>().capacitatMaxima = 2;
         cua.GetComponent<CuaScript>().IniciaSimulacio();
@@ -94,7 +94,47 @@ public class CuaTests
             cua.GetComponent<CuaScript>().RepEntitat(entitatAux, null);
         }
 
+        GameObject aux = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
+        cua.GetComponent<CuaScript>().NotificacioDisponible(aux);
+
+        Assert.That(cua.GetComponent<CuaScript>().ObteEstat(), Is.EqualTo(0));
+        Assert.That(cua.GetComponent<CuaScript>().ObteEntitatsEnviades(), Is.EqualTo(1));
+
+    }
+
+    [Test]
+    public void CuaPlenaNotificacioDisponible()
+    {
+        cua.GetComponent<CuaScript>().capacitatMaxima = 2;
+        cua.GetComponent<CuaScript>().IniciaSimulacio();
+        for (int i = 0; i < 2; i++){
+            if (cua.GetComponent<CuaScript>().EstaDisponible(null)){
+                GameObject entitatAux = GameObject.Instantiate(entitatTemporalPrefab);
+                cua.GetComponent<CuaScript>().RepEntitat(entitatAux, null);
+            }
+        }
+
+        GameObject aux = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
+        aux.GetComponent<CuaScript>().capacitatMaxima = 1;
+        cua.GetComponent<CuaScript>().NotificacioDisponible(aux);
+
         Assert.That(cua.GetComponent<CuaScript>().ObteEstat(), Is.EqualTo(1));
+        Assert.That(cua.GetComponent<CuaScript>().ObteEntitatsEnviades(), Is.EqualTo(1));
+
+    }
+
+    [Test]
+    public void CuaBuidaNotificacioDisponible()
+    {
+        cua.GetComponent<CuaScript>().capacitatMaxima = 2;
+        cua.GetComponent<CuaScript>().IniciaSimulacio();
+
+        GameObject aux = GameObject.Instantiate(Resources.Load("LlibreriaObjectes/Cua/Cua")) as GameObject;
+        cua.GetComponent<CuaScript>().NotificacioDisponible(aux);
+
+        Assert.That(cua.GetComponent<CuaScript>().ObteEstat(), Is.EqualTo(0));
+        Assert.That(cua.GetComponent<CuaScript>().ObteEntitatsEnviades(), Is.EqualTo(0));
+
     }
    
 }

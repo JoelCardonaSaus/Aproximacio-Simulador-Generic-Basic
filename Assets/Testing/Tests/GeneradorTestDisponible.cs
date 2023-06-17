@@ -52,6 +52,17 @@ public class GeneradorTestDisponible
 
         Assert.AreEqual(MotorSimuladorScript.Instancia.ObteTempsSeguentEsdeveniment(), 5);
     }
+
+    [Test]
+    public void GeneradorPassaDeBloquejatADesbloquejat()
+    {
+        GeneradorScript gs = generador.GetComponent<GeneradorScript>();
+        gs.estat = GeneradorScript.estats.BLOQUEJAT;
+        gs.NotificacioDisponible(cua);
+
+        Assert.AreEqual(gs.estat, GeneradorScript.estats.GENERANT);
+        Assert.AreEqual(gs.getNGenerats(), 1);
+    }
     
 }
 
