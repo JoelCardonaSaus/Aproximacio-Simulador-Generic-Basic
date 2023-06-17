@@ -2098,7 +2098,7 @@ MonoBehaviour:
   camara: {fileID: 745082941}
   zoomSlider: {fileID: 612951658}
   minZoom: 6
-  maxZoom: 13
+  maxZoom: 22
 --- !u!1 &752604188
 GameObject:
   m_ObjectHideFlags: 0
