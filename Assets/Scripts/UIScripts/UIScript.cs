@@ -383,6 +383,7 @@ public class UIScript : MonoBehaviour
             text3.text = esdev;
             text3.color = Color.green;
             nouText.transform.SetParent(contentView.transform);
+            nouText.transform.localScale = new Vector3(1,1,1);
             if (contentView.transform.childCount > 1){
                 contentView.transform.GetChild(contentView.transform.childCount-2).transform.GetChild(0).GetComponent<TMP_Text>().color = Color.black;
                 contentView.transform.GetChild(contentView.transform.childCount-2).transform.GetChild(1).GetComponent<TMP_Text>().color = Color.black;
