@@ -8,7 +8,7 @@ public class EstadisticsController : MonoBehaviour
 { 
     //public double[] timeInStates = { 20, 30, 5 }; // FREE, BUSY, BROKEN
     //public string[] etiquetes = { "FREE", "BUSY", "BROKEN" };
-
+    /*
     private void Start()
     {
     }
@@ -91,5 +91,5 @@ public class EstadisticsController : MonoBehaviour
         }
         File.WriteAllBytes(dirPath + nomImatge + ".png", bytesTexture);
     }
-
+    */
 }

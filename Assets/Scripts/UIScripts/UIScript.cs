@@ -22,6 +22,7 @@ public class UIScript : MonoBehaviour
     public Button reiniciar;
     public Button configuracio;
     public Button seguentEsdev;
+    public Button sortir;
 
     private GameObject generadorPrefab;
     private GameObject cuaPrefab;
@@ -92,6 +93,14 @@ public class UIScript : MonoBehaviour
 
         
         
+    }
+
+    public void aturarAplicacio(){
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 
     public bool RatoliSobreBotonsUI(){
