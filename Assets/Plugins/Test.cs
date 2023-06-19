@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField] private int hitCount = 0;
+[SerializeField] private int hitCount = 0;
 
     void Start() // 13
     {

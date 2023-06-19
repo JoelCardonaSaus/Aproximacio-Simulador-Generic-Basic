@@ -298,14 +298,26 @@ public class CuaScript : LlibreriaObjectes
         float percBuit = (float)Math.Round(100*(tempsBuit/(tempsActual)), 2);
         float percNoBuit = (float)Math.Round(100*(tempsNoBuit/(tempsActual)), 2);
         float percPle = (float)Math.Round(100-(percBuit+percNoBuit), 2);
-        if (entitatsEnviades != 0) estadistics += "Temps mig entitats a la cua: " + Math.Round((tempsTotalEntitatsCua/(cuaObjecte.Count+entitatsEnviades)),2) +"\n";
-        else estadistics += "Temps mig entitats a la cua: " + Math.Round(tempsTotalEntitatsCua,2) +"\n";
+        float tempsEntreE;
+        if (entitatsEnviades != 0){
+            tempsEntreE = (float)Math.Round((tempsTotalEntitatsCua/(cuaObjecte.Count+entitatsEnviades)), 2);
+            estadistics += "Temps mig entitats a la cua: " + Math.Round((tempsTotalEntitatsCua/(cuaObjecte.Count+entitatsEnviades)),2) +"\n";
+        }
+        else{
+            tempsEntreE = (float)Math.Round(tempsTotalEntitatsCua,2);
+            estadistics += "Temps mig entitats a la cua: " + Math.Round(tempsTotalEntitatsCua,2) +"\n";
+        }
         estadistics += "% Buit: " + percBuit + "\n";
         estadistics += "% No Buit: " + percNoBuit + "\n";
         estadistics += "% Ple: " + percPle + "\n";
 
-        
         etiquetes.text += estadistics; 
+        
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "nEntitatsEnviades", entitatsEnviades);
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "%TempsBuit", percBuit);
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "%TempsNoBuit", percNoBuit);
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "%TempsPle", percPle);
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "TempsMitjaCua", tempsEntreE);
     }
 
     //////////////////////////////////////////////////////////////////////

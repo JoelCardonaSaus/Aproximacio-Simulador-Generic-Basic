@@ -179,9 +179,13 @@ public class GeneradorScript : LlibreriaObjectes, ITractarEsdeveniment
         if (nEntitatsGenerades != 0) estadistics += "Temps entre entitats: " + (float)Math.Round(tempsTotal/nEntitatsGenerades) +"\n";
         estadistics += "% Generant: " + percGenerant + "\n";
         estadistics += "% Bloquejat: " + percBloquejat + "\n";
-
-        
         etiquetes.text += estadistics; 
+
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "nEntitatsGenerades", nEntitatsGenerades);
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "%TempsBloquejat", percBloquejat);
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "%TempsGenerant", percGenerant);
+        if (nEntitatsGenerades!= 0) BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "TempsEntreEntitats", (float)Math.Round(tempsTotal/nEntitatsGenerades));
+        else BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "TempsEntreEntitats", tempsTotal);
 
     }
 
