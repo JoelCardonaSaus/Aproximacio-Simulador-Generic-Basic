@@ -101,8 +101,12 @@ public class SortidaScript : LlibreriaObjectes
         
         etiqueta.text = transform.name + "\n";
         if (nEntitatsDestruides != 0) estadistics += "Temps mig entitats destruides: " + (float)Math.Round((tempsActual/(nEntitatsDestruides)),2) +"\n";
-
+        else estadistics += "Temps mig entitats destruides: " + (float)Math.Round((tempsActual),2) +"\n";
         etiqueta.text += estadistics; 
+
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "nEntitatsDestruides", nEntitatsDestruides);
+        if (nEntitatsDestruides != 0) BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "TempsEntreEntitats", (float)Math.Round((tempsActual/(nEntitatsDestruides)),2));
+        else BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "TempsEntreEntitats", (float)Math.Round((tempsActual),2));
     }
 
     //////////////////////////////////////////////////////////////////////

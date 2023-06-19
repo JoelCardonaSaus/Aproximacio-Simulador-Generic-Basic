@@ -296,13 +296,19 @@ public class ProcessadorScript : LlibreriaObjectes, ITractarEsdeveniment
         float percDisponible = (float)Math.Round(100*(tempsDisponible/(tempsActual)),2);
         float percProcessant = (float)Math.Round(100*(tempsProcessat/(tempsActual)),2);
         float percBloquejat = (float)Math.Round(100-(percDisponible+percProcessant),2);
-        if (nEntitatsEnviades != 0) estadistics += "Temps mig processat: " + (float)Math.Round((tempsMigEntitatsProcessador/(entitatsProcessant.Count + nEntitatsTractades)),2) +"\n";
+        if (nEntitatsEnviades != 0 || entitatsProcessant.Count != 0) estadistics += "Temps mig processat: " + (float)Math.Round((tempsMigEntitatsProcessador/(entitatsProcessant.Count + nEntitatsTractades)),2) +"\n";
         estadistics += "% Disponible: " + percDisponible + "\n";
         estadistics += "% Processant: " + percProcessant + "\n";
         estadistics += "% Bloquejat: " + percBloquejat + "\n";
 
-        
         etiquetes.text += estadistics; 
+
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "nEntitatsEnviades", nEntitatsEnviades);
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "%TempsDisponible", percDisponible);
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "%TempsProcessant", percProcessant);
+        BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "%TempsBloquejat", percBloquejat);
+        if (nEntitatsEnviades != 0 || entitatsProcessant.Count != 0) BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "TempsMitjaProces", (float)Math.Round((tempsMigEntitatsProcessador/(entitatsProcessant.Count + nEntitatsTractades)),2));
+        else BDEstadistics.Instancia.ActualitzaEstadistics(transform.name, "TempsMitjaProces", (float)Math.Round(tempsMigEntitatsProcessador, 2));
 
     }
 

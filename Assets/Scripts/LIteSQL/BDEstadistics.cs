@@ -35,7 +35,6 @@ public class BDEstadistics : MonoBehaviour
         IDbConnection dbConnection = CrearIObrirBD();
         IDbCommand dbCommandInsertValue = dbConnection.CreateCommand();
         string val = valor.ToString().Replace(",", ".");
-        Debug.Log("INSERT OR REPLACE INTO Estadistics VALUES ('" +nomObjecte+"', '" + nomEstadistic +"', " + val + ")");
         dbCommandInsertValue.CommandText = "INSERT OR REPLACE INTO Estadistics VALUES ('" +nomObjecte+"', '" + nomEstadistic +"', " + val + ")";
         dbCommandInsertValue.ExecuteNonQuery(); // 11
 
