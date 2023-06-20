@@ -194,7 +194,7 @@ public class UIScript : MonoBehaviour
             } else {  
                 comencarPausar.transform.GetChild(0).GetComponent<Image>().sprite = Sprite.Create(imatgesStartPause[1], new Rect(0, 0, imatgesStartPause[1].width, imatgesStartPause[1].height), new Vector2(0.5f, 0.5f));
                 estat = estatsSimulacio.SIMULANT;
-                MotorSimuladorScript.Instancia.IniciaSimulacio();
+                if (MotorSimuladorScript.Instancia.estat == MotorSimuladorScript.estats.ATURAT) MotorSimuladorScript.Instancia.IniciaSimulacio();
                 logs.SetActive(true);
             }
         }
