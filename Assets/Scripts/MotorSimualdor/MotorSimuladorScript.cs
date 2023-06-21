@@ -38,7 +38,7 @@ public class MotorSimuladorScript : MonoBehaviour
                 if (instancia == null){
                     GameObject singletonObject = new GameObject();
                     instancia = singletonObject.AddComponent<MotorSimuladorScript>();
-                    singletonObject.name = typeof(UIScript).ToString();
+                    singletonObject.name = typeof(MotorSimuladorScript).ToString();
                     DontDestroyOnLoad(singletonObject);
                 }
             }
